@@ -10,6 +10,8 @@ public class Runner {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         frame.pack();
+
+        screen.animate();
         
     }
 }
