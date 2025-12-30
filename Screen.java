@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,7 +21,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int dimensionX = 448;
     int dimensionY = 448;
 
- 
+    Pacman pacman;
     
     ImageIcon redGhostNormal;
     ImageIcon redGhostDead;
@@ -49,14 +51,33 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int ghostWidth = 14;
     int ghostLength = 14;
 
-    int gridLengthAndWidth;
   
-    ArrayList<ArrayList<Integer>> arr;
-    Scanner scanner;
+    
+    ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
 
     //constructor
     public Screen() {
-        
+        File mazeFile = new File("mazes/maze1.txt");
+        Scanner fin = null;
+        try {
+            fin = new Scanner(mazeFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        while (fin.hasNextLine() ) {
+            String currentLine = fin.nextLine();                    
+            ArrayList<Integer> smallArr = new ArrayList<>();
+            for (int i = 0; i < currentLine.length(); i++) {
+                if (currentLine.charAt(i) != ' ') {
+                    int value = Character.getNumericValue(currentLine.charAt(i));
+                    smallArr.add(value);
+                    arr.add(smallArr);
+                }
+                
+            }
+            // 
+            // grid[pacmanX][pacmanY] is that position blocked or not
+        }
 
         redGhostNormal = new ImageIcon("pacman-art/ghosts/blinky.png");
         // need to add the dead sprite for red ghost
@@ -68,8 +89,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         // need to add the dead sprite for blue ghost
         frightenedGhost = new ImageIcon("pacman-art/ghosts/frightened.png");
 
-        gridLengthAndWidth = 16;
-
        
 
         scaledRedGhostNormal = redGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
@@ -79,21 +98,16 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         scaledYellowGhostNormal = yellowGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
          // need to add the dead sprite for yellow ghost
         scaledBlueGhostNormal = blueGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-         // need to add the dead sprite for blue ghost
+         // need to add the dead sprite for blue ghost\
 
-        
-
-        FileReader file_io = new FileReader(new File("mazes/maze1.txt"));
-        scanner = new Scanner(file_io);
-
-        // todo: file io
-        // assume that we read in maze1.txt into arr
+         pacman = new Pacman();
 
     }
 
     public void animate(){
 
     }
+
     @Override
     public Dimension getPreferredSize(){
         return new Dimension(dimensionX, dimensionY);
@@ -104,16 +118,21 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         //code to move the pacman
         if(event.getKeyCode() == 39) {
             //move the pacman to the right and change the image to the right
+            pacman.pacmanDirectionRight();
         }
         if(event.getKeyCode() == 37) {
             //move the pacman to the left and change the image to the left
+            pacman.pacmanDirectionLeft();
         }
         if(event.getKeyCode() == 38) {
             //move the pacman up and change the image to the up
+            pacman.pacmanDirectionUp();
         }
         if(event.getKeyCode() == 40) {
             //move the pacman down and change the image to the down
+            pacman.pacmanDirectionDown();        
         }
+
     }
 
     @Override
@@ -136,6 +155,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         for(int i = 0; i <= dimensionX;i += 16) {
             graphics.drawLine(i,0,i,dimensionX);
         }
+
+        pacman.drawPacman(graphics);
+        
         
     }
 }
