@@ -6,10 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.util.random.*;
 import java.util.*;
 
 //add dying animation when pacman dies
@@ -18,45 +16,83 @@ import java.util.*;
 public class Screen extends JPanel implements ActionListener, KeyListener {
 
     // variables
-    int dimensionX = 448;
-    int dimensionY = 448;
+    int dimensionX = 896;
+    int dimensionY = 896;
 
     Pacman pacman;
+
     
-    ImageIcon redGhostNormal;
+    ImageIcon redGhostRight;
+    ImageIcon redGhostLeft;
+    ImageIcon redGhostUp;
+    ImageIcon redGhostDown;
     ImageIcon redGhostDead;
-    ImageIcon pinkGhostNormal;
+    ImageIcon pinkGhostRight;
+    ImageIcon pinkGhostLeft;
     ImageIcon pinkGhostDead;
-    ImageIcon yellowGhostNormal;
+    ImageIcon pinkGhostUp;
+    ImageIcon pinkGhostDown;
+    ImageIcon yellowGhostRight;
+    ImageIcon yellowGhostLeft;
     ImageIcon yellowGhostDead;
-    ImageIcon blueGhostNormal;
+    ImageIcon yellowGhostUp;
+    ImageIcon yellowGhostDown;
+    ImageIcon blueGhostRight;
+    ImageIcon blueGhostLeft;
+    ImageIcon blueGhostUp;
+    ImageIcon blueGhostDown;
     ImageIcon blueGhostDead;
-    ImageIcon frightenedGhost;
+    ImageIcon bluePhaseScaredGhost;
+    ImageIcon whitePhaseScaredGhost;
+    ImageIcon upDeadGhost;
+    ImageIcon downDeadGhost;
+    ImageIcon leftDeadGhost;
+    ImageIcon rightDeadGhost;
    
    
 
-    Image scaledRedGhostNormal;
+    Image scaledRedGhostRight;
+    Image scaledRedGhostLeft;
+    Image scaledRedGhostUp;
+    Image scaledRedGhostDown;
     Image scaledRedGhostDead;
-    Image scaledPinkGhostNormal;
+    Image scaledPinkGhostRight;
+    Image scaledPinkGhostLeft;
+    Image scaledPinkGhostUp;
+    Image scaledPinkGhostDown;
     Image scaledPinkGhostDead;
-    Image scaledYellowGhostNormal;
+    Image scaledYellowGhostRight;
+    Image scaledYellowGhostLeft;
+    Image scaledYellowGhostUp;
+    Image scaledYellowGhostDown;
     Image scaledYellowGhostDead;
-    Image scaledBlueGhostNormal;
+    Image scaledBlueGhostRight;
+    Image scaledBlueGhostLeft;
+    Image scaledBlueGhostUp;
+    Image scaledBlueGhostDown;
     Image scaledBlueGhostDead;
-    Image scaledFrightenedGhost;
+    Image scaledBluePhaseScaredGhost;
+    Image scaledWhitePhaseScaredGhost;
+    Image scaledUpDeadGhost;
+    Image scaledDownDeadGhost;
+    Image scaledLeftDeadGhost;
+    Image scaledRightDeadGhost;
 
-    int pacmanWidth = 13;
-    int pacmanLength = 13;
+    int pacmanWidth = 26;
+    int pacmanLength = 26;
 
-    int ghostWidth = 14;
-    int ghostLength = 14;
-
-  
+    int ghostWidth = 28;
+    int ghostLength = 28;
     
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
 
+    int gridLengthWidth;
+
     //constructor
     public Screen() {
+        this.addKeyListener(this);
+
+
         File mazeFile = new File("mazes/maze1.txt");
         Scanner fin = null;
         try {
@@ -79,33 +115,69 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             // grid[pacmanX][pacmanY] is that position blocked or not
         }
 
-        redGhostNormal = new ImageIcon("pacman-art/ghosts/blinky.png");
-        // need to add the dead sprite for red ghost
-        pinkGhostNormal = new ImageIcon("pacman-art/ghosts/pinky.png");
-        // need to add the dead sprite for pink ghost
-        yellowGhostNormal = new ImageIcon("pacman-art/ghosts/inky.png");
-        // need to add the dead sprite for yellow ghost
-        blueGhostNormal = new ImageIcon("pacman-art/ghosts/clyde.png");
-        // need to add the dead sprite for blue ghost
-        frightenedGhost = new ImageIcon("pacman-art/ghosts/frightened.png");
-
+        redGhostRight = new ImageIcon("pacman-art/RedGhostRight.png");
+        redGhostLeft = new ImageIcon("pacman-art/RedGhostLeft.png");
+        redGhostUp = new ImageIcon("pacman-art/RedGhostUp.png");
+        redGhostDown = new ImageIcon("pacman-art/RedGhostDown.png");
+        pinkGhostRight = new ImageIcon("pacman-art/PinkGhostRight.png");
+        pinkGhostLeft = new ImageIcon("pacman-art/PinkGhostLeft.png");
+        pinkGhostUp = new ImageIcon("pacman-art/PinkGhostUp.png");
+        pinkGhostDown = new ImageIcon("pacman-art/PinkGhostDown.png");
+        yellowGhostRight = new ImageIcon("pacman-art/YellowGhostRight.png");
+        yellowGhostLeft = new ImageIcon("pacman-art/YellowGhostLeft.png");
+        yellowGhostUp = new ImageIcon("pacman-art/YellowGhostUp.png");
+        yellowGhostDown = new ImageIcon("pacman-art/YellowGhostDown.png");
+        blueGhostRight = new ImageIcon("pacman-art/BlueGhostRight.png");
+        blueGhostLeft = new ImageIcon("pacman-art/BlueGhostLeft.png");
+        blueGhostUp = new ImageIcon("pacman-art/BlueGhostUp.png");
+        blueGhostDown = new ImageIcon("pacman-art/BlueGhostDown.png");
+        bluePhaseScaredGhost = new ImageIcon("pacman-art/BluePhaseScaredGhost.png");
+        whitePhaseScaredGhost = new ImageIcon("pacman-art/WhitePhaseScaredGhost.png");
+        upDeadGhost = new ImageIcon("pacman-art/UpDeadGhost.png");
+        downDeadGhost = new ImageIcon("pacman-art/DownDeadGhost.png");
+        leftDeadGhost = new ImageIcon("pacman-art/LeftDeadGhost.png");
+        rightDeadGhost = new ImageIcon("pacman-art/RightDeadGhost.png");
        
 
-        scaledRedGhostNormal = redGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        // need to add the dead sprite for red ghost
-        scaledPinkGhostNormal = pinkGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-         // need to add the dead sprite for pink ghost
-        scaledYellowGhostNormal = yellowGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-         // need to add the dead sprite for yellow ghost
-        scaledBlueGhostNormal = blueGhostNormal.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-         // need to add the dead sprite for blue ghost\
+        scaledRedGhostRight = redGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledRedGhostLeft = redGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledRedGhostUp = redGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledRedGhostDown = redGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledPinkGhostRight = pinkGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledPinkGhostLeft = pinkGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledPinkGhostUp = pinkGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledPinkGhostDown = pinkGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledYellowGhostRight = yellowGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledYellowGhostLeft = yellowGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledYellowGhostUp = yellowGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledYellowGhostDown = yellowGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledBlueGhostRight = blueGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledBlueGhostLeft = blueGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledBlueGhostUp = blueGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledBlueGhostDown = blueGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledBluePhaseScaredGhost = bluePhaseScaredGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledWhitePhaseScaredGhost = whitePhaseScaredGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledUpDeadGhost = upDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledDownDeadGhost = downDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledLeftDeadGhost = leftDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
+        scaledRightDeadGhost = rightDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
 
          pacman = new Pacman();
 
+         gridLengthWidth = 32;
+
     }
 
-    public void animate(){
-
+    public void animate() {
+        while (true) {
+            repaint();  
+            try {
+                Thread.sleep(50);// sleeps for 50 milliseconds
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // reset the interruption status
+                e.printStackTrace(); // or handle it in some other way
+            }
+        }
     }
 
     @Override
@@ -114,23 +186,40 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     }
 
     @Override
+    public void paintComponent(Graphics graphics){
+        for (int i = 0; i <= dimensionX;i += gridLengthWidth) {
+            graphics.drawLine(i,0,i,dimensionY);
+            graphics.drawLine(0,i,dimensionX,i);
+        }
+        pacman.drawPacman(graphics);
+    }
+
+    @Override
     public void keyPressed(KeyEvent event){
         //code to move the pacman
         if(event.getKeyCode() == 39) {
             //move the pacman to the right and change the image to the right
             pacman.pacmanDirectionRight();
+            pacman.pacmanAnimationRight();
+            System.out.println("hello right");
         }
         if(event.getKeyCode() == 37) {
             //move the pacman to the left and change the image to the left
             pacman.pacmanDirectionLeft();
+            pacman.pacmanAnimationLeft();
+            System.out.println("hello left");
         }
         if(event.getKeyCode() == 38) {
             //move the pacman up and change the image to the up
             pacman.pacmanDirectionUp();
+            pacman.pacmanAnimationUp();
+            System.out.println("hello up");
         }
         if(event.getKeyCode() == 40) {
             //move the pacman down and change the image to the down
-            pacman.pacmanDirectionDown();        
+            pacman.pacmanDirectionDown();
+            pacman.pacmanAnimationDown();    
+            System.out.println("hello down");    
         }
 
     }
@@ -150,14 +239,4 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         // Required by ActionListener interface
     }
 
-    @Override
-    public void paintComponent(Graphics graphics){
-        for(int i = 0; i <= dimensionX;i += 16) {
-            graphics.drawLine(i,0,i,dimensionX);
-        }
-
-        pacman.drawPacman(graphics);
-        
-        
-    }
 }
