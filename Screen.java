@@ -90,8 +90,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     //constructor
     public Screen() {
-        this.addKeyListener(this);
 
+        setFocusable(true);
+        addKeyListener(this);
 
         File mazeFile = new File("mazes/maze1.txt");
         Scanner fin = null;
@@ -107,7 +108,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 if (currentLine.charAt(i) != ' ') {
                     int value = Character.getNumericValue(currentLine.charAt(i));
                     smallArr.add(value);
-                    arr.add(smallArr);
+                    arr.add(smallArr);  
                 }
                 
             }
@@ -162,9 +163,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         scaledLeftDeadGhost = leftDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
         scaledRightDeadGhost = rightDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
 
-         pacman = new Pacman();
-
-         gridLengthWidth = 32;
+        pacman = new Pacman();
+        gridLengthWidth = 32;
 
     }
 
@@ -196,6 +196,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyPressed(KeyEvent event){
+        System.out.println("jfklasdjfkls");
         //code to move the pacman
         if(event.getKeyCode() == 39) {
             //move the pacman to the right and change the image to the right

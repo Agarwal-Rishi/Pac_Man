@@ -127,7 +127,7 @@ public class Pacman {
     public void drawPacman(Graphics graphics) {
         if (currentPacmanImage != null) {
             graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, null);
-            System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
+            // System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
         }
     }
 
