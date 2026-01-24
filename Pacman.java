@@ -69,7 +69,14 @@ public class Pacman {
     int pacmanX = 400;
     int pacmanY = 400;
 
-    public Pacman() {
+    int gridX;
+    int gridY;
+
+    Direction currentDirection;
+
+    ArrayList<ArrayList<Integer>> arr;
+
+    public Pacman(ArrayList<ArrayList<Integer>> arr) {
 
         pacmanPhase1 = new ImageIcon("pacman-art/PacmanPhase1.png");
         pacmanRightPhase2 = new ImageIcon("pacman-art/PacmanRightPhase2.png");
@@ -120,7 +127,14 @@ public class Pacman {
 
         currentPacmanImage = scaledPacmanRight[0];
 
-        pacmanImageIndex = 0;
+        pacmanImageIndex = 0;   
+
+        currentDirection = Direction.STOP;
+
+        this.arr = arr;
+
+        gridX = pacmanX/32;
+        gridY = pacmanY/32;
         
     }
         
@@ -161,18 +175,51 @@ public class Pacman {
         }
         currentPacmanImage = scaledPacmanDown[pacmanImageIndex];
     }
+    public void pacmanAnimationDying() {
+        pacmanImageIndex += 1;
+        if (pacmanImageIndex == 10) {
+            pacmanImageIndex = 0;
+        }
+        currentPacmanImage = scaledPacmanDying[pacmanImageIndex];
+    }
+    public void move() {
+        if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX) == 1) {
+            pacmanX += 4;
+            this.pacmanAnimationRight();
+            currentDirection = Direction.STOP;
+        }
+        else if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX) == 1) {
+            pacmanX -= 4;
+            this.pacmanAnimationLeft();
+            currentDirection = Direction.STOP;
+        }
+        else if (currentDirection == Direction.DOWN && this.arr.get(gridY).get(gridX) == 1) {
+            pacmanY += 4;
+            this.pacmanAnimationDown();
+            currentDirection = Direction.STOP;
+        }
+        else if (currentDirection == Direction.UP && this.arr.get(gridY).get(gridX) == 1) {
+            pacmanY -= 4;
+            this.pacmanAnimationUp();
+            currentDirection = Direction.STOP;
+        }
+        else if (currentDirection == Direction.STOP) {
+            currentPacmanImage = scaledPacmanPhase1;
+        }
+    }
 
-    public void pacmanDirectionRight() {
-        pacmanX += 5;
+    public int getPacmanX() {
+        return this.pacmanX;
+    }
 
+    public int getPacmanY() {
+        return this.pacmanY;
     }
-    public void pacmanDirectionLeft() {
-        pacmanX -= 5;
+    public Direction getCurrentDirection() {
+        return this.currentDirection;
     }
-    public void pacmanDirectionUp() {
-        pacmanY -= 5;
+    public Image getCurrentPacmanImage() {
+        return this.currentPacmanImage;
     }
-    public void pacmanDirectionDown() {
-        pacmanY += 5;
-    }
+
 }
