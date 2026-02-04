@@ -55,8 +55,8 @@ public class Pacman {
     Image scaledPacmanDyingPhase13;
 
     Image currentPacmanImage;
-    int pacmanWidth = 26;
-    int pacmanLength = 26;
+    int pacmanWidth = 32;
+    int pacmanLength = 32;
 
     Image[] scaledPacmanRight;
     Image[] scaledPacmanLeft;
@@ -66,8 +66,8 @@ public class Pacman {
 
     int pacmanImageIndex;
 
-    int pacmanX = 400;
-    int pacmanY = 400;
+    int pacmanX = 416;
+    int pacmanY = 416;
 
     int gridX;
     int gridY;
@@ -75,6 +75,7 @@ public class Pacman {
     Direction currentDirection;
 
     ArrayList<ArrayList<Integer>> arr;
+    
 
     public Pacman(ArrayList<ArrayList<Integer>> arr) {
 
@@ -183,27 +184,70 @@ public class Pacman {
         currentPacmanImage = scaledPacmanDying[pacmanImageIndex];
     }
     public void move() {
-        if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX) == 1) {
-            pacmanX += 4;
-            this.pacmanAnimationRight();
+        gridY = pacmanY/32;
+        gridX = pacmanX/32;
+        if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
+            gridX += 1;
+        }
+        if (pacmanY % 32 != 0 && currentDirection == Direction.UP) {
+            gridY += 1;
+        } 
+
+        if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
+            currentDirection = Direction.STOP;
+        } else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
+            if (pacmanX % 32 != 0) {
+                if (arr.get(gridY + 1).get(gridX + 1) == 1) {
+                    currentDirection = Direction.STOP;
+                }else {
+                    pacmanX += 4;
+                    this.pacmanAnimationRight();
+                }
+            } else {
+                pacmanX += 4;
+                this.pacmanAnimationRight();
+            }
+        }
+
+
+        if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
             currentDirection = Direction.STOP;
         }
-        else if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX) == 1) {
+        else if(currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) != 1) {
+            if (pacmanX % 32 != 0) {
+                if (arr.get(gridY + 1).get(gridX - 1) == 1) {
+                    currentDirection = Direction.STOP;
+                }
+            }
             pacmanX -= 4;
             this.pacmanAnimationLeft();
+        }
+        if (currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) == 1) {
             currentDirection = Direction.STOP;
         }
-        else if (currentDirection == Direction.DOWN && this.arr.get(gridY).get(gridX) == 1) {
+        else if(currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) != 1) {
+            if (pacmanX % 32 != 0) {
+                if (arr.get(gridY + 1).get(gridX + 1) == 1) {
+                    currentDirection = Direction.STOP;
+                }
+            }
             pacmanY += 4;
             this.pacmanAnimationDown();
+        }
+        if (currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) == 1) {
             currentDirection = Direction.STOP;
         }
-        else if (currentDirection == Direction.UP && this.arr.get(gridY).get(gridX) == 1) {
+        else if(currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) != 1) {
+            if (pacmanX % 32 != 0) {
+                if (arr.get(gridY - 1).get(gridX + 1) == 1) {
+                    currentDirection = Direction.STOP;
+                }
+            }
             pacmanY -= 4;
             this.pacmanAnimationUp();
-            currentDirection = Direction.STOP;
         }
-        else if (currentDirection == Direction.STOP) {
+        
+        if (currentDirection == Direction.STOP) {
             currentPacmanImage = scaledPacmanPhase1;
         }
     }
@@ -221,5 +265,5 @@ public class Pacman {
     public Image getCurrentPacmanImage() {
         return this.currentPacmanImage;
     }
-
 }
+

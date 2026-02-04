@@ -20,75 +20,19 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int pacmanWidth = 26;
     int pacmanLength = 26;
     int gridLengthWidth = 32;
-    int ghostWidth = 28;
-    int ghostLength = 28;
+    int powerPelletWidth = 3;
+    int powerPelletLength = 3;
 
     Pacman pacman;
-
-    ImageIcon redGhostRight;
-    ImageIcon redGhostLeft;
-    ImageIcon redGhostUp;
-    ImageIcon redGhostDown;
-    ImageIcon redGhostDead;
-    ImageIcon pinkGhostRight;
-    ImageIcon pinkGhostLeft;
-    ImageIcon pinkGhostDead;
-    ImageIcon pinkGhostUp;
-    ImageIcon pinkGhostDown;
-    ImageIcon yellowGhostRight;
-    ImageIcon yellowGhostLeft;
-    ImageIcon yellowGhostDead;
-    ImageIcon yellowGhostUp;
-    ImageIcon yellowGhostDown;
-    ImageIcon blueGhostRight;
-    ImageIcon blueGhostLeft;
-    ImageIcon blueGhostUp;
-    ImageIcon blueGhostDown;
-    ImageIcon blueGhostDead;
-    ImageIcon bluePhaseScaredGhost;
-    ImageIcon whitePhaseScaredGhost;
-    ImageIcon upDeadGhost;
-    ImageIcon downDeadGhost;
-    ImageIcon leftDeadGhost;
-    ImageIcon rightDeadGhost;
+    Ghosts ghosts;
 
     ImageIcon wall;
-   
-
-    Image scaledRedGhostRight;
-    Image scaledRedGhostLeft;
-    Image scaledRedGhostUp;
-    Image scaledRedGhostDown;
-    Image scaledRedGhostDead;
-    Image scaledPinkGhostRight;
-    Image scaledPinkGhostLeft;
-    Image scaledPinkGhostUp;
-    Image scaledPinkGhostDown;
-    Image scaledPinkGhostDead;
-    Image scaledYellowGhostRight;
-    Image scaledYellowGhostLeft;
-    Image scaledYellowGhostUp;
-    Image scaledYellowGhostDown;
-    Image scaledYellowGhostDead;
-    Image scaledBlueGhostRight;
-    Image scaledBlueGhostLeft;
-    Image scaledBlueGhostUp;
-    Image scaledBlueGhostDown;
-    Image scaledBlueGhostDead;
-    Image scaledBluePhaseScaredGhost;
-    Image scaledWhitePhaseScaredGhost;
-    Image scaledUpDeadGhost;
-    Image scaledDownDeadGhost;
-    Image scaledLeftDeadGhost;
-    Image scaledRightDeadGhost;
-
     Image scaledWall;
 
-    
-    
-    ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
+    ImageIcon powerPellet;
+    Image scaledPowerPellet;
 
-    
+    ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
 
     // constructor
     public Screen() {
@@ -129,59 +73,14 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             System.out.println();
         }
 
-        redGhostRight = new ImageIcon("pacman-art/RedGhostRight.png");
-        redGhostLeft = new ImageIcon("pacman-art/RedGhostLeft.png");
-        redGhostUp = new ImageIcon("pacman-art/RedGhostUp.png");
-        redGhostDown = new ImageIcon("pacman-art/RedGhostDown.png");
-        pinkGhostRight = new ImageIcon("pacman-art/PinkGhostRight.png");
-        pinkGhostLeft = new ImageIcon("pacman-art/PinkGhostLeft.png");
-        pinkGhostUp = new ImageIcon("pacman-art/PinkGhostUp.png");
-        pinkGhostDown = new ImageIcon("pacman-art/PinkGhostDown.png");
-        yellowGhostRight = new ImageIcon("pacman-art/YellowGhostRight.png");
-        yellowGhostLeft = new ImageIcon("pacman-art/YellowGhostLeft.png");
-        yellowGhostUp = new ImageIcon("pacman-art/YellowGhostUp.png");
-        yellowGhostDown = new ImageIcon("pacman-art/YellowGhostDown.png");
-        blueGhostRight = new ImageIcon("pacman-art/BlueGhostRight.png");
-        blueGhostLeft = new ImageIcon("pacman-art/BlueGhostLeft.png");
-        blueGhostUp = new ImageIcon("pacman-art/BlueGhostUp.png");
-        blueGhostDown = new ImageIcon("pacman-art/BlueGhostDown.png");
-        bluePhaseScaredGhost = new ImageIcon("pacman-art/BluePhaseScaredGhost.png");
-        whitePhaseScaredGhost = new ImageIcon("pacman-art/WhitePhaseScaredGhost.png");
-        upDeadGhost = new ImageIcon("pacman-art/UpDeadGhost.png");
-        downDeadGhost = new ImageIcon("pacman-art/DownDeadGhost.png");
-        leftDeadGhost = new ImageIcon("pacman-art/LeftDeadGhost.png");
-        rightDeadGhost = new ImageIcon("pacman-art/RightDeadGhost.png");
+        powerPellet = new ImageIcon("pacman-art/other/dot.png");
+        scaledPowerPellet = powerPellet.getImage().getScaledInstance(powerPelletWidth,powerPelletLength, Image.SCALE_SMOOTH);
 
         wall = new ImageIcon("pacman-art/wallFinal.png");
-
-        scaledRedGhostRight = redGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledRedGhostLeft = redGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledRedGhostUp = redGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledRedGhostDown = redGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledPinkGhostRight = pinkGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledPinkGhostLeft = pinkGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledPinkGhostUp = pinkGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledPinkGhostDown = pinkGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledYellowGhostRight = yellowGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledYellowGhostLeft = yellowGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledYellowGhostUp = yellowGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledYellowGhostDown = yellowGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledBlueGhostRight = blueGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledBlueGhostLeft = blueGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledBlueGhostUp = blueGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledBlueGhostDown = blueGhostDown.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledBluePhaseScaredGhost = bluePhaseScaredGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledWhitePhaseScaredGhost = whitePhaseScaredGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledUpDeadGhost = upDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledDownDeadGhost = downDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledLeftDeadGhost = leftDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-        scaledRightDeadGhost = rightDeadGhost.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
-
-        
-
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
 
         pacman = new Pacman(arr);
+        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX());
     }
 
     public void animate() {
@@ -207,6 +106,11 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void paintComponent(Graphics graphics){
+        super.paintComponent(graphics);
+
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0,0,dimensionX,dimensionY);
+
         for (int i = 0; i <= dimensionX; i += gridLengthWidth) {
             graphics.drawLine(i,0,i,dimensionY);
             graphics.drawLine(0,i,dimensionX,i);
@@ -221,6 +125,17 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 } 
             }
         }
+        for (int i = 0; i < arr.size(); i++) {
+            for (int j = 0; j < arr.get(i).size(); j++) {
+                if (arr.get(i).get(j) == 1) {
+                    if (this.arr.get(i).get(j) != 1) {
+                        graphics.drawImage(scaledPowerPellet, i, j, this);
+                    }
+                } 
+            }
+        }
+
+        
     }
 
     @Override
