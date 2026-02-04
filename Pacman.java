@@ -196,10 +196,10 @@ public class Pacman {
         if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
         } else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
-            if (pacmanX % 32 != 0) {
+            if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
-                }else {
+                } else {
                     pacmanX += 4;
                     this.pacmanAnimationRight();
                 }
@@ -212,9 +212,8 @@ public class Pacman {
 
         if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
             currentDirection = Direction.STOP;
-        }
-        else if(currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) != 1) {
-            if (pacmanX % 32 != 0) {
+        } else if(currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) != 1) {
+            if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX - 1) == 1) {
                     currentDirection = Direction.STOP;
                 }
@@ -222,10 +221,10 @@ public class Pacman {
             pacmanX -= 4;
             this.pacmanAnimationLeft();
         }
+
         if (currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) == 1) {
             currentDirection = Direction.STOP;
-        }
-        else if(currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) != 1) {
+        } else if(currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) != 1) {
             if (pacmanX % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
@@ -234,10 +233,10 @@ public class Pacman {
             pacmanY += 4;
             this.pacmanAnimationDown();
         }
+
         if (currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) == 1) {
             currentDirection = Direction.STOP;
-        }
-        else if(currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) != 1) {
+        } else if(currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) != 1) {
             if (pacmanX % 32 != 0) {
                 if (arr.get(gridY - 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
