@@ -1,16 +1,8 @@
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.util.random.*;
-import java.util.*;
 
-public class Pacman {
+public class Pacman {   
     //variables
     ImageIcon pacmanPhase1;
     ImageIcon pacmanRightPhase2;
@@ -183,19 +175,21 @@ public class Pacman {
         }
         currentPacmanImage = scaledPacmanDying[pacmanImageIndex];
     }
-    public void move() {
-        gridY = pacmanY/32;
-        gridX = pacmanX/32;
+    public void move() {    
+        gridY = pacmanY /32;
+        gridX = pacmanX /32;
         if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
             gridX += 1;
         }
         if (pacmanY % 32 != 0 && currentDirection == Direction.UP) {
-            gridY += 1;
+            gridY += 1; 
         } 
 
         if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
-        } else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
+        } else if(currentDirection == Direction.RIGHT && gridX + 1 == 29) {
+            gridX = 1;
+        }  else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
             if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
@@ -208,30 +202,24 @@ public class Pacman {
                 this.pacmanAnimationRight();
             }
         }
-
+        
 
         if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
             currentDirection = Direction.STOP;
+        } else if(currentDirection == Direction.LEFT && gridX - 1 == 0) {
+            gridX = 1;
         } else if(currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) != 1) {
             if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX - 1) == 1) {
                     currentDirection = Direction.STOP;
+                }else {
+                    pacmanX -= 4;
+                    this.pacmanAnimationLeft();
                 }
+            } else {
+                pacmanX -= 4;
+                this.pacmanAnimationLeft();
             }
-            pacmanX -= 4;
-            this.pacmanAnimationLeft();
-        }
-
-        if (currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) == 1) {
-            currentDirection = Direction.STOP;
-        } else if(currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) != 1) {
-            if (pacmanX % 32 != 0) {
-                if (arr.get(gridY + 1).get(gridX + 1) == 1) {
-                    currentDirection = Direction.STOP;
-                }
-            }
-            pacmanY += 4;
-            this.pacmanAnimationDown();
         }
 
         if (currentDirection == Direction.UP && this.arr.get(gridY - 1).get(gridX) == 1) {
@@ -240,15 +228,34 @@ public class Pacman {
             if (pacmanX % 32 != 0) {
                 if (arr.get(gridY - 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
+                }else {
+                    pacmanY -= 4;
+                    this.pacmanAnimationUp();
                 }
+            } else {
+                pacmanY -= 4;
+                this.pacmanAnimationUp();
             }
-            pacmanY -= 4;
-            this.pacmanAnimationUp();
         }
+
+        if (currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) == 1) {
+            currentDirection = Direction.STOP;
+        } else if(currentDirection == Direction.DOWN && this.arr.get(gridY + 1).get(gridX) != 1) {
+            if (pacmanX % 32 != 0) {
+                if (arr.get(gridY + 1).get(gridX + 1) == 1) {
+                    currentDirection = Direction.STOP;
+                }else {
+                    pacmanY += 4;
+                    this.pacmanAnimationDown();
+                }
+            } else {
+                pacmanY += 4;
+                this.pacmanAnimationDown();
+            }
+        }
+
+
         
-        if (currentDirection == Direction.STOP) {
-            currentPacmanImage = scaledPacmanPhase1;
-        }
     }
 
     public int getPacmanX() {

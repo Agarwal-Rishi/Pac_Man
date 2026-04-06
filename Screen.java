@@ -40,7 +40,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        File mazeFile = new File("mazes/maze3.txt");
+        File mazeFile = new File("mazes/maze4.txt");
         Scanner fin = null;
         try {
             fin = new Scanner(mazeFile);
@@ -80,13 +80,14 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
 
         pacman = new Pacman(arr);
-        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX());
+        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX(),pacman.getCurrentDirection());
     }
 
     public void animate() {
         while (true) {
             repaint();  
             pacman.move();
+            ghosts.ghostAnimate(pacman.currentDirection);
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
