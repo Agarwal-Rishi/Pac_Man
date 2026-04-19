@@ -29,10 +29,14 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     ImageIcon wall;
     Image scaledWall;
 
+
     ImageIcon powerPellet;
     Image scaledPowerPellet;
 
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
+
+    JTextField score = new JTextField(1);
+     
 
     // constructor
     public Screen() {
@@ -95,7 +99,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 Thread.currentThread().interrupt(); // reset the interruption status
                 e.printStackTrace(); // or handle it in some other way
             }
-        } 
+        }
     } 
 
     
@@ -123,15 +127,15 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             for (int j = 0; j < arr.get(i).size(); j++) {
                 if (arr.get(i).get(j) == 1) {
                     graphics.drawImage(scaledWall, j * 32, i * 32, this);
+                    arr.get(i).set(j, 2);
                 } 
             }
         }
-        for (int i = 0; i < arr.size(); i++) {
-            for (int j = 0; j < arr.get(i).size(); j++) {
-                if (arr.get(i).get(j) == 1) {
-                    if (this.arr.get(i).get(j) != 1) {
-                        graphics.drawImage(scaledPowerPellet, i, j, this);
-                    }
+        for (int i = 0; i < this.arr.size(); i++) {
+            for (int j = 0; j < this.arr.get(i).size(); j++) {
+                if (this.arr.get(i).get(j) == 0) {
+                    graphics.drawImage(scaledPowerPellet, i, j, this);
+                    
                 } 
             }
         }
@@ -165,6 +169,22 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         
         
 
+    }
+
+    public boolean scoreFunction() {
+        for(int i = 0; i < this.arr.size();i++) {
+            for(int j = 0;j < this.arr.get(i).size();j++) {
+                if (this.arr.get(i).get(j) == 2) {
+                    int scorePlaceHolder;
+                    scorePlaceHolder += 1;
+                    score.setText(String.valueOf(scorePlaceHolder));
+                }
+                if (this.arr.get(i).get(j) == 3) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

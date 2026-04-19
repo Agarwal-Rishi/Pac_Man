@@ -98,37 +98,34 @@ public class Ghosts {
 
     static {
         List<Pair<Integer, Integer>> yellowCoords = new ArrayList<>();
-        yellowCoords.add(new Pair<>(2,21));
-        yellowCoords.add(new Pair<>(2,22));
-        yellowCoords.add(new Pair<>(2,23));
-        yellowCoords.add(new Pair<>(2,24));
-        yellowCoords.add(new Pair<>(2,25));
-        yellowCoords.add(new Pair<>(2,26));
-        yellowCoords.add(new Pair<>(2,27));
-
-        yellowCoords.add(new Pair<>(3,21));
-        yellowCoords.add(new Pair<>(4,21));
-        yellowCoords.add(new Pair<>(5,21));
-        yellowCoords.add(new Pair<>(6,21));
-        yellowCoords.add(new Pair<>(7,21));
-        yellowCoords.add(new Pair<>(8,21));
-        yellowCoords.add(new Pair<>(9,21));
-
-        yellowCoords.add(new Pair<>(3,27));
-        yellowCoords.add(new Pair<>(4,27));
-        yellowCoords.add(new Pair<>(5,27));
-        yellowCoords.add(new Pair<>(6,27));
-        yellowCoords.add(new Pair<>(7,27));
-        yellowCoords.add(new Pair<>(8,27));
-        yellowCoords.add(new Pair<>(9,27));
-
-        yellowCoords.add(new Pair<>(10,21));
-        yellowCoords.add(new Pair<>(10,22));
-        yellowCoords.add(new Pair<>(10,23));
-        yellowCoords.add(new Pair<>(10,24));
-        yellowCoords.add(new Pair<>(10,25));
-        yellowCoords.add(new Pair<>(10,26));
-        yellowCoords.add(new Pair<>(10,27));
+        yellowCoords.add(new Pair<Integer,Integer>(2,21));
+        yellowCoords.add(new Pair<Integer,Integer>(3,21));
+        yellowCoords.add(new Pair<Integer,Integer>(4,21));
+        yellowCoords.add(new Pair<Integer,Integer>(5,21));
+        yellowCoords.add(new Pair<Integer,Integer>(6,21));
+        yellowCoords.add(new Pair<Integer,Integer>(7,21));
+        yellowCoords.add(new Pair<Integer,Integer>(8,21));
+        yellowCoords.add(new Pair<Integer,Integer>(9,21));
+        yellowCoords.add(new Pair<Integer,Integer>(10,21));
+        yellowCoords.add(new Pair<Integer,Integer>(10,22));
+        yellowCoords.add(new Pair<Integer,Integer>(10,23));
+        yellowCoords.add(new Pair<Integer,Integer>(10,24));
+        yellowCoords.add(new Pair<Integer,Integer>(10,25));
+        yellowCoords.add(new Pair<Integer,Integer>(10,26));
+        yellowCoords.add(new Pair<Integer,Integer>(10,27));
+        yellowCoords.add(new Pair<Integer,Integer>(9,27));
+        yellowCoords.add(new Pair<Integer,Integer>(8,27));
+        yellowCoords.add(new Pair<Integer,Integer>(7,27));
+        yellowCoords.add(new Pair<Integer,Integer>(6,27));
+        yellowCoords.add(new Pair<Integer,Integer>(5,27));
+        yellowCoords.add(new Pair<Integer,Integer>(4,27));
+        yellowCoords.add(new Pair<Integer,Integer>(3,27));
+        yellowCoords.add(new Pair<Integer,Integer>(2,27));
+        yellowCoords.add(new Pair<Integer,Integer>(2,26));
+        yellowCoords.add(new Pair<Integer,Integer>(2,25));
+        yellowCoords.add(new Pair<Integer,Integer>(2,24));
+        yellowCoords.add(new Pair<Integer,Integer>(2,23));
+        yellowCoords.add(new Pair<Integer,Integer>(2,22));
         
         yellowCornerPairs = Collections.unmodifiableList(yellowCoords);
     }
@@ -137,13 +134,6 @@ public class Ghosts {
         List<Pair<Integer, Integer>> redCoords = new ArrayList<>();
 
         redCoords.add(new Pair<Integer,Integer>(19,2));
-        redCoords.add(new Pair<Integer,Integer>(19,3));
-        redCoords.add(new Pair<Integer,Integer>(19,4));
-        redCoords.add(new Pair<Integer,Integer>(19,5));
-        redCoords.add(new Pair<Integer,Integer>(19,6));
-        redCoords.add(new Pair<Integer,Integer>(19,7));
-        redCoords.add(new Pair<Integer,Integer>(19,8));
-
         redCoords.add(new Pair<Integer,Integer>(20,2));
         redCoords.add(new Pair<Integer,Integer>(21,2));
         redCoords.add(new Pair<Integer,Integer>(22,2));
@@ -151,15 +141,6 @@ public class Ghosts {
         redCoords.add(new Pair<Integer,Integer>(24,2));
         redCoords.add(new Pair<Integer,Integer>(25,2));
         redCoords.add(new Pair<Integer,Integer>(26,2));
-
-        redCoords.add(new Pair<Integer,Integer>(20,8));
-        redCoords.add(new Pair<Integer,Integer>(21,8));
-        redCoords.add(new Pair<Integer,Integer>(22,8));
-        redCoords.add(new Pair<Integer,Integer>(23,8));
-        redCoords.add(new Pair<Integer,Integer>(24,8));
-        redCoords.add(new Pair<Integer,Integer>(25,8));
-        redCoords.add(new Pair<Integer,Integer>(26,8));
-
         redCoords.add(new Pair<Integer,Integer>(27,2));
         redCoords.add(new Pair<Integer,Integer>(27,3));
         redCoords.add(new Pair<Integer,Integer>(27,4));
@@ -167,6 +148,19 @@ public class Ghosts {
         redCoords.add(new Pair<Integer,Integer>(27,6));
         redCoords.add(new Pair<Integer,Integer>(27,7));
         redCoords.add(new Pair<Integer,Integer>(27,8));
+        redCoords.add(new Pair<Integer,Integer>(26,8));
+        redCoords.add(new Pair<Integer,Integer>(25,8));
+        redCoords.add(new Pair<Integer,Integer>(24,8));
+        redCoords.add(new Pair<Integer,Integer>(23,8));
+        redCoords.add(new Pair<Integer,Integer>(22,8));
+        redCoords.add(new Pair<Integer,Integer>(21,8));
+        redCoords.add(new Pair<Integer,Integer>(20,8));
+        redCoords.add(new Pair<Integer,Integer>(19,8));
+        redCoords.add(new Pair<Integer,Integer>(19,7));
+        redCoords.add(new Pair<Integer,Integer>(19,6));
+        redCoords.add(new Pair<Integer,Integer>(19,5));
+        redCoords.add(new Pair<Integer,Integer>(19,4));
+        redCoords.add(new Pair<Integer,Integer>(19,3));
 
         redCornerPairs = Collections.unmodifiableList(redCoords);
     }
@@ -174,13 +168,6 @@ public class Ghosts {
     static{
         List<Pair<Integer, Integer>> pinkCoords = new ArrayList<>();
         pinkCoords.add(new Pair<Integer,Integer>(2,2));
-        pinkCoords.add(new Pair<Integer,Integer>(2,3));
-        pinkCoords.add(new Pair<Integer,Integer>(2,4));
-        pinkCoords.add(new Pair<Integer,Integer>(2,5));
-        pinkCoords.add(new Pair<Integer,Integer>(2,6));
-        pinkCoords.add(new Pair<Integer,Integer>(2,7));
-        pinkCoords.add(new Pair<Integer,Integer>(2,8));
-
         pinkCoords.add(new Pair<Integer,Integer>(3,2));
         pinkCoords.add(new Pair<Integer,Integer>(4,2));
         pinkCoords.add(new Pair<Integer,Integer>(5,2));
@@ -188,15 +175,6 @@ public class Ghosts {
         pinkCoords.add(new Pair<Integer,Integer>(7,2));
         pinkCoords.add(new Pair<Integer,Integer>(8,2));
         pinkCoords.add(new Pair<Integer,Integer>(9,2));
-
-        pinkCoords.add(new Pair<Integer,Integer>(3,8));
-        pinkCoords.add(new Pair<Integer,Integer>(4,8));
-        pinkCoords.add(new Pair<Integer,Integer>(5,8));
-        pinkCoords.add(new Pair<Integer,Integer>(6,8));
-        pinkCoords.add(new Pair<Integer,Integer>(7,8));
-        pinkCoords.add(new Pair<Integer,Integer>(8,8));
-        pinkCoords.add(new Pair<Integer,Integer>(9,8));
-
         pinkCoords.add(new Pair<Integer,Integer>(10,2));
         pinkCoords.add(new Pair<Integer,Integer>(10,3));
         pinkCoords.add(new Pair<Integer,Integer>(10,4));
@@ -204,19 +182,25 @@ public class Ghosts {
         pinkCoords.add(new Pair<Integer,Integer>(10,6));
         pinkCoords.add(new Pair<Integer,Integer>(10,7));
         pinkCoords.add(new Pair<Integer,Integer>(10,8));
+        pinkCoords.add(new Pair<Integer,Integer>(9,8));
+        pinkCoords.add(new Pair<Integer,Integer>(8,8));
+        pinkCoords.add(new Pair<Integer,Integer>(7,8));
+        pinkCoords.add(new Pair<Integer,Integer>(6,8));
+        pinkCoords.add(new Pair<Integer,Integer>(5,8));
+        pinkCoords.add(new Pair<Integer,Integer>(4,8));
+        pinkCoords.add(new Pair<Integer,Integer>(3,8));
+        pinkCoords.add(new Pair<Integer,Integer>(2,8));
+        pinkCoords.add(new Pair<Integer,Integer>(2,7));
+        pinkCoords.add(new Pair<Integer,Integer>(2,6));
+        pinkCoords.add(new Pair<Integer,Integer>(2,5));
+        pinkCoords.add(new Pair<Integer,Integer>(2,4));
+        pinkCoords.add(new Pair<Integer,Integer>(2,3));
         pinkCornerPairs = Collections.unmodifiableList(pinkCoords);
     }
 
     static{
         List<Pair<Integer, Integer>> blueCoords = new ArrayList<>();
         blueCoords.add(new Pair<Integer,Integer>(19,21));
-        blueCoords.add(new Pair<Integer,Integer>(19,22));
-        blueCoords.add(new Pair<Integer,Integer>(19,23));
-        blueCoords.add(new Pair<Integer,Integer>(19,24));
-        blueCoords.add(new Pair<Integer,Integer>(19,25));
-        blueCoords.add(new Pair<Integer,Integer>(19,26));
-        blueCoords.add(new Pair<Integer,Integer>(19,27));
-
         blueCoords.add(new Pair<Integer,Integer>(20,21));
         blueCoords.add(new Pair<Integer,Integer>(21,21));
         blueCoords.add(new Pair<Integer,Integer>(22,21));
@@ -224,15 +208,6 @@ public class Ghosts {
         blueCoords.add(new Pair<Integer,Integer>(24,21));
         blueCoords.add(new Pair<Integer,Integer>(25,21));
         blueCoords.add(new Pair<Integer,Integer>(26,21));
-
-        blueCoords.add(new Pair<Integer,Integer>(20,27));
-        blueCoords.add(new Pair<Integer,Integer>(21,27));
-        blueCoords.add(new Pair<Integer,Integer>(22,27));
-        blueCoords.add(new Pair<Integer,Integer>(23,27));
-        blueCoords.add(new Pair<Integer,Integer>(24,27));
-        blueCoords.add(new Pair<Integer,Integer>(25,27));
-        blueCoords.add(new Pair<Integer,Integer>(26,27));
-
         blueCoords.add(new Pair<Integer,Integer>(27,21));
         blueCoords.add(new Pair<Integer,Integer>(27,22));
         blueCoords.add(new Pair<Integer,Integer>(27,23));
@@ -240,6 +215,19 @@ public class Ghosts {
         blueCoords.add(new Pair<Integer,Integer>(27,25));
         blueCoords.add(new Pair<Integer,Integer>(27,26));
         blueCoords.add(new Pair<Integer,Integer>(27,27));
+        blueCoords.add(new Pair<Integer,Integer>(26,27));
+        blueCoords.add(new Pair<Integer,Integer>(25,27));
+        blueCoords.add(new Pair<Integer,Integer>(24,27));
+        blueCoords.add(new Pair<Integer,Integer>(23,27));
+        blueCoords.add(new Pair<Integer,Integer>(22,27));
+        blueCoords.add(new Pair<Integer,Integer>(21,27));
+        blueCoords.add(new Pair<Integer,Integer>(20,27));
+        blueCoords.add(new Pair<Integer,Integer>(19,27));
+        blueCoords.add(new Pair<Integer,Integer>(19,26));
+        blueCoords.add(new Pair<Integer,Integer>(19,25));
+        blueCoords.add(new Pair<Integer,Integer>(19,24));
+        blueCoords.add(new Pair<Integer,Integer>(19,23));
+        blueCoords.add(new Pair<Integer,Integer>(19,22));
         blueCoords = Collections.unmodifiableList(blueCoords);
     }
 
