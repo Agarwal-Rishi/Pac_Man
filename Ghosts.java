@@ -9,8 +9,8 @@ public class Ghosts {
     int ghostWidth = 28;
     int ghostLength = 28;
 
-    int redGhostX = 470;
-    int redGhostY = 470;
+    int redGhostX = 480;
+    int redGhostY = 480;
     int yellowGhostX = 450;
     int yellowGhostY = 450;
     int blueGhostX = 430;
