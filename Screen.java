@@ -20,8 +20,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int pacmanWidth = 26;
     int pacmanLength = 26;
     int gridLengthWidth = 32;
-    int powerPelletWidth = 3;
-    int powerPelletLength = 3;
+    int powerPelletWidth = 6;
+    int powerPelletLength = 6;
+    int bigPowerPelletWidth = 16;
+    int bigPowerPelletLength = 16;
 
     Pacman pacman;
     Ghosts ghosts;
@@ -32,12 +34,12 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     ImageIcon powerPellet;
     Image scaledPowerPellet;
+    ImageIcon bigPowerPellet;
+    Image scaledBigPowerPellet;
 
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
-
-    JTextField score = new JTextField(1);
-     
-
+    
+    int score;
     // constructor
     public Screen() {
 
@@ -70,6 +72,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         // iterate through grid and ensure everything was read in correctly
         // TODO: URGENT
 
+
         for(int i = 0; i < arr.size(); i++) {
             for(int j = 0; j < arr.get(i).size(); j++) {
                 System.out.print(arr.get(i).get(j) + " ");
@@ -80,18 +83,23 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         powerPellet = new ImageIcon("pacman-art/other/dot.png");
         scaledPowerPellet = powerPellet.getImage().getScaledInstance(powerPelletWidth,powerPelletLength, Image.SCALE_SMOOTH);
 
+        bigPowerPellet = new ImageIcon("pacman-art/other/dot.png");
+        scaledPowerPellet = powerPellet.getImage().getScaledInstance(bigPowerPelletWidth,bigPowerPelletLength, Image.SCALE_SMOOTH);
+
         wall = new ImageIcon("pacman-art/wallFinal.png");
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
 
         pacman = new Pacman(arr);
-        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX(),pacman.getCurrentDirection());
+        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX(),pacman.getCurrentDirection(),pacman.getGridX(),pacman.getGridY());
+
+        score = 0;
     }
 
     public void animate() {
         while (true) {
             repaint();  
             pacman.move();
-            ghosts.ghostAnimate(pacman.currentDirection);
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY());
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
@@ -131,6 +139,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 } 
             }
         }
+
         for (int i = 0; i < this.arr.size(); i++) {
             for (int j = 0; j < this.arr.get(i).size(); j++) {
                 if (this.arr.get(i).get(j) == 0) {
@@ -139,7 +148,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 } 
             }
         }
-
+        
+        graphics.drawString(String.valueOf(score), 5, 5);
         
     }
 
@@ -171,20 +181,11 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    public boolean scoreFunction() {
-        for(int i = 0; i < this.arr.size();i++) {
-            for(int j = 0;j < this.arr.get(i).size();j++) {
-                if (this.arr.get(i).get(j) == 2) {
-                    int scorePlaceHolder;
-                    scorePlaceHolder += 1;
-                    score.setText(String.valueOf(scorePlaceHolder));
-                }
-                if (this.arr.get(i).get(j) == 3) {
-                    return true;
-                }
-            }
+    public void checkLocation() {
+        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
+            score += 1;
+            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
         }
-        return false;
     }
 
     @Override

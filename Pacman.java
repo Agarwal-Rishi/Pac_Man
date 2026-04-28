@@ -265,6 +265,12 @@ public class Pacman {
     public int getPacmanY() {
         return this.pacmanY;
     }
+    public int getGridX() {
+        return this.gridX;
+    }
+    public int getGridY() {
+        return this.gridY;
+    }
     public Direction getCurrentDirection() {
         return this.currentDirection;
     }

@@ -1,3 +1,4 @@
+import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -258,7 +259,6 @@ public class Ghosts {
         downDeadGhost = new ImageIcon("pacman-art/DownDeadGhost.png");
         leftDeadGhost = new ImageIcon("pacman-art/LeftDeadGhost.png");
         rightDeadGhost = new ImageIcon("pacman-art/RightDeadGhost.png");
-
         scaledRedGhostRight = redGhostRight.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
         scaledRedGhostLeft = redGhostLeft.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
         scaledRedGhostUp = redGhostUp.getImage().getScaledInstance(ghostWidth, ghostLength, Image.SCALE_SMOOTH);
@@ -286,7 +286,7 @@ public class Ghosts {
 
         this.pacmanX = pacmanX;
         this.pacmanY = pacmanY;
-        this.currentPacmanDirection = currentPacmaDirection;
+        this.currentPacmanDirection = currentPacmanDirection;
 
         gridBlueGhostX = blueGhostX/32;
         gridBlueGhostY = blueGhostY/32;
@@ -302,8 +302,10 @@ public class Ghosts {
         
     }
 
-    public void ghostAnimate(Direction currentDirection) {
+    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY) {
         this.blueGhostChaseAlgorithm(currentDirection);
+        this.vulnerableGhosts(gridPacmanX,gridPacmanY);
+
     }
     
     public void redGhostChaseAlgorithm() {
@@ -979,7 +981,7 @@ public class Ghosts {
                     pinkGhostY -= 4;
                 }
             }
-        for(int i = 0;i < pinkCornerPairs.size();i++) {
+        }for(int i = 0;i < pinkCornerPairs.size();i++) {
             Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
             gridPinkGhostX = futurePair.left();
             gridPinkGhostY = futurePair.right();
@@ -989,19 +991,20 @@ public class Ghosts {
         }
     }
 
-    public void redGhostVulnerable() {
-
+    public boolean vulnerableGhosts(int gridPacmanX, int gridPacmanY) {
+        if (arr.get(gridPacmanY).get(gridPacmanX) == 3) {
+            return true;    
+        }
+        return false;
     }
 
-    public void blueGhostVulnerable() {
+    
 
-    }
 
-    public void yellowGhostVulnerable() {
-
-    }
-
-    public void pinkGhostVulnerable() {
-        
-    }
+    public void paintComponent(Graphics graphics) {
+        graphics.drawImage(blueGhostUp.getImage(), blueGhostX, blueGhostY, null);
+        graphics.drawImage(redGhostUp.getImage(), redGhostX, redGhostY, null);
+        graphics.drawImage(yellowGhostUp.getImage(), yellowGhostX, yellowGhostY, null);
+        graphics.drawImage(pinkGhostUp.getImage(), pinkGhostX, pinkGhostY, null);
+    }  
 }
