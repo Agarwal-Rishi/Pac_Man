@@ -149,8 +149,16 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             }
         }
         
-        graphics.drawString(String.valueOf(score), 5, 5);
+        ghosts.paintComponent(graphics, this.ghostsVulnerable());
         
+        graphics.drawString(String.valueOf(score), 5, 5); 
+    }
+
+    private boolean ghostsVulnerable() {
+        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
+            return true;        
+        }
+        return false;
     }
 
     @Override

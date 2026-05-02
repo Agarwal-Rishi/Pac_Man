@@ -89,6 +89,7 @@ public class Ghosts {
     Direction currentGhostDirection;
 
     Direction currentPacmanDirection;
+
     
     record Pair<L, R>(L left, R right) {}
 
@@ -305,7 +306,9 @@ public class Ghosts {
     public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY) {
         this.blueGhostChaseAlgorithm(currentDirection);
         this.vulnerableGhosts(gridPacmanX,gridPacmanY);
-
+        while (true) {
+            repaint();
+        }
     }
     
     public void redGhostChaseAlgorithm() {
@@ -586,7 +589,7 @@ public class Ghosts {
                     if (pacmanY % 32 != 0) {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
                             currentGhostDirection = Direction.STOP;
-                        }else {
+                        } else {
                             yellowGhostX -= 4;
                         }
                     } else {
@@ -699,6 +702,54 @@ public class Ghosts {
             
     }
 
+    public void moveYellowGhost(Direction dir ) {
+        currentGhostDirection = dir;
+        // Right: X:1 Y:1
+        // Left: X:-1 Y:1
+        //Up: X: 1  Y: -1
+        //Down: X:1 Y:1
+        // Down, Up, Right, Left
+        int[] yUpdatesForMod = {1, 1, 1, -1};
+        int[] xUpdatesForMod = {1, -1, 1, 1};
+        int[] xUpdates = {0, 0, 1, -1};
+        int[] yUpdates = {1, -1, 0, 0};
+
+        int dirIndex;
+        int modDirIndex;
+        if (dir == Direction.RIGHT) {
+            dirIndex = 2;
+            modDirIndex = 2;
+        } else if (dir == Direction.LEFT) {
+            dirIndex = 3;
+            modDirIndex = 3;
+        } else if (dir == Direction.UP) {
+            dirIndex = 1;
+            modDirIndex = 1;
+        } else {
+            dirIndex = 0;
+            modDirIndex = 0;
+        }
+
+        if (this.arr.get(gridYellowGhostY + yUpdates[dirIndex]).get(gridYellowGhostX + xUpdates[dirIndex]) == 1) {
+            currentGhostDirection = Direction.STOP;
+        } else if(this.arr.get(gridYellowGhostY + yUpdates[dirIndex]).get(gridYellowGhostX + xUpdates[dirIndex]) != 1) {
+            if (pacmanY % 32 != 0) {
+                if (arr.get(gridYellowGhostY + yUpdatesForMod[modDirIndex]).get(gridYellowGhostX + xUpdatesForMod[modDirIndex]) == 1) { // complicated case (diagonal)
+                    currentGhostDirection = Direction.STOP;
+                    // 
+                    // 
+                    //
+                } else {
+                    yellowGhostY += 4 * yUpdates[dirIndex];
+                    yellowGhostX += 4 * xUpdates[dirIndex];
+                }
+            } else {
+                yellowGhostY += 4 * yUpdates[dirIndex];
+                yellowGhostX += 4 * xUpdates[dirIndex];
+            }
+        }
+    }
+
     public void yellowGhostScatter() {
         int targetYellowGhostLocationX = 2;
         int targetYellowGhostLocationY  = 21;
@@ -772,6 +823,7 @@ public class Ghosts {
         }
     }
 
+
     public void blueGhostScatter() {
         int targetBlueGhostLocationX = 19;
         int targetBlueGhostLocationY = 21;
@@ -820,7 +872,7 @@ public class Ghosts {
                     blueGhostY += 4;
                 }
             }
-        }else if(targetBlueGhostLocationY < 0) {
+        } else if(targetBlueGhostLocationY < 0) {
             currentGhostDirection = Direction.UP;
             if (this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) == 1) {
                 currentGhostDirection = Direction.STOP;
@@ -835,12 +887,14 @@ public class Ghosts {
                     blueGhostY -= 4;
                 }
             }
-        for(int i = 0;i < blueCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
-            gridBlueGhostX = futurePair.left();
-            gridBlueGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = blueCornerPairs.get(0);
+
+            for(int i = 0;i < blueCornerPairs.size();i++) {
+                Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
+                gridBlueGhostX = futurePair.left();
+                gridBlueGhostY = futurePair.right();
+                if (futurePair == null) {
+                    futurePair = blueCornerPairs.get(0);
+                }
             }
         }
     }
@@ -893,7 +947,7 @@ public class Ghosts {
                     redGhostY += 4;
                 }
             }
-        }else if(targetRedGhostLocationY < 0) {
+        } else if(targetRedGhostLocationY < 0) {
             currentGhostDirection = Direction.UP;
             if (this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) == 1) {
                 currentGhostDirection = Direction.STOP;
@@ -908,12 +962,13 @@ public class Ghosts {
                     redGhostY -= 4;
                 }
             }
-        for(int i = 0;i < redCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
-            gridRedGhostX = futurePair.left();
-            gridRedGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = redCornerPairs.get(0);
+            for (int i = 0;i < redCornerPairs.size();i++) {
+                Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
+                gridRedGhostX = futurePair.left();
+                gridRedGhostY = futurePair.right();
+                if (futurePair == null) {
+                    futurePair = redCornerPairs.get(0);
+                }
             }
         }
     }
@@ -966,7 +1021,7 @@ public class Ghosts {
                     pinkGhostY += 4;
                 }
             }
-        }else if(targetPinkGhostLocationY < 0) {
+        } else if(targetPinkGhostLocationY < 0) {
             currentGhostDirection = Direction.UP;
             if (this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) == 1) {
                 currentGhostDirection = Direction.STOP;
@@ -981,7 +1036,9 @@ public class Ghosts {
                     pinkGhostY -= 4;
                 }
             }
-        }for(int i = 0;i < pinkCornerPairs.size();i++) {
+        }
+        
+        for(int i = 0;i < pinkCornerPairs.size();i++) {
             Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
             gridPinkGhostX = futurePair.left();
             gridPinkGhostY = futurePair.right();
@@ -992,19 +1049,28 @@ public class Ghosts {
     }
 
     public boolean vulnerableGhosts(int gridPacmanX, int gridPacmanY) {
-        if (arr.get(gridPacmanY).get(gridPacmanX) == 3) {
-            return true;    
+        if (this.arr.get(gridPacmanY).get(gridPacmanX) == 3) {
+            return true;        
         }
         return false;
     }
 
-    
+    public void paintComponent(Graphics graphics, boolean ghostsVulnerable) {
+        if (vulnerableGhosts(pacmanX, pacmanY) == true) {
+            if (System.currentTimeMillis() < timerEnd1)  {
+                graphics.drawImage(scaledBlueGhostDead, blueGhostX, blueGhostY, null);
+                graphics.drawImage(scaledBlueGhostDead, redGhostX, redGhostY, null);
+                graphics.drawImage(scaledBlueGhostDead, yellowGhostX, yellowGhostY, null);
+                graphics.drawImage(scaledBlueGhostDead, pinkGhostX, pinkGhostY, null);
+            } else {
 
+            }
+        } else{
+            graphics.drawImage(blueGhostUp.getImage(), blueGhostX, blueGhostY, null);
+            graphics.drawImage(redGhostUp.getImage(), redGhostX, redGhostY, null);
+            graphics.drawImage(yellowGhostUp.getImage(), yellowGhostX, yellowGhostY, null);
+            graphics.drawImage(pinkGhostUp.getImage(), pinkGhostX, pinkGhostY, null);
+        }
 
-    public void paintComponent(Graphics graphics) {
-        graphics.drawImage(blueGhostUp.getImage(), blueGhostX, blueGhostY, null);
-        graphics.drawImage(redGhostUp.getImage(), redGhostX, redGhostY, null);
-        graphics.drawImage(yellowGhostUp.getImage(), yellowGhostX, yellowGhostY, null);
-        graphics.drawImage(pinkGhostUp.getImage(), pinkGhostX, pinkGhostY, null);
     }  
 }
