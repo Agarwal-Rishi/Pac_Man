@@ -90,7 +90,6 @@ public class Ghosts {
 
     Direction currentPacmanDirection;
 
-    
     record Pair<L, R>(L left, R right) {}
 
     private static final List<Pair<Integer, Integer>> yellowCornerPairs;
@@ -230,12 +229,8 @@ public class Ghosts {
         blueCoords.add(new Pair<Integer,Integer>(19,24));
         blueCoords.add(new Pair<Integer,Integer>(19,23));
         blueCoords.add(new Pair<Integer,Integer>(19,22));
-        blueCoords = Collections.unmodifiableList(blueCoords);
+        blueCornerPairs = Collections.unmodifiableList(blueCoords);
     }
-
-
-    
-
 
     public Ghosts(ArrayList<ArrayList<Integer>> arr,int pacmanY,int pacmanX,Direction currentPacmaDirection) {
         redGhostRight = new ImageIcon("pacman-art/RedGhostRight.png");
@@ -303,14 +298,13 @@ public class Ghosts {
         
     }
 
-    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY) {
+    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts) {
         this.blueGhostChaseAlgorithm(currentDirection);
-        this.vulnerableGhosts(gridPacmanX,gridPacmanY);
         while (true) {
-            repaint();
+            this.paintComponent(null, false, gridPacmanX, gridPacmanY);
         }
     }
-    
+
     public void redGhostChaseAlgorithm() {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
@@ -675,7 +669,7 @@ public class Ghosts {
                         yellowGhostY += 4;
                     }
                 }
-            }else if(targetYellowGhostLocationY < 0) {
+            } else if(targetYellowGhostLocationY < 0) {
                 currentGhostDirection = Direction.UP;
                 if (this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) == 1) {
                     currentGhostDirection = Direction.STOP;
@@ -690,16 +684,16 @@ public class Ghosts {
                         yellowGhostY -= 4;
                     }
                 } 
-            for(int i = 0;i < yellowCornerPairs.size();i++) {
-                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-                gridYellowGhostX = futurePair.left();
-                gridYellowGhostY = futurePair.right();
-                if (futurePair == null) {
-                    futurePair = yellowCornerPairs.get(0);
+                for(int i = 0;i < yellowCornerPairs.size();i++) {
+                    Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
+                    gridYellowGhostX = futurePair.left();
+                    gridYellowGhostY = futurePair.right();
+                    if (futurePair == null) {
+                        futurePair = yellowCornerPairs.get(0);
+                    }
                 }
-            }
+            }       
         }
-            
     }
 
     public void moveYellowGhost(Direction dir ) {
@@ -813,12 +807,13 @@ public class Ghosts {
                     yellowGhostY -= 4;
                 }
             }
-        for(int i = 0;i < yellowCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-            gridYellowGhostX = futurePair.left();
-            gridYellowGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = yellowCornerPairs.get(0);
+            for(int i = 0;i < yellowCornerPairs.size();i++) {
+                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
+                gridYellowGhostX = futurePair.left();
+                gridYellowGhostY = futurePair.right();
+                if (futurePair == null) {
+                    futurePair = yellowCornerPairs.get(0);
+                }
             }
         }
     }
@@ -1048,22 +1043,21 @@ public class Ghosts {
         }
     }
 
-    public boolean vulnerableGhosts(int gridPacmanX, int gridPacmanY) {
-        if (this.arr.get(gridPacmanY).get(gridPacmanX) == 3) {
-            return true;        
-        }
-        return false;
-    }
-
-    public void paintComponent(Graphics graphics, boolean ghostsVulnerable) {
-        if (vulnerableGhosts(pacmanX, pacmanY) == true) {
+    public void paintComponent(Graphics graphics, boolean ghostsVulnerable, long timerEnd1, long timerEnd2) {
+        if (ghostsVulnerable == true) {
             if (System.currentTimeMillis() < timerEnd1)  {
-                graphics.drawImage(scaledBlueGhostDead, blueGhostX, blueGhostY, null);
-                graphics.drawImage(scaledBlueGhostDead, redGhostX, redGhostY, null);
-                graphics.drawImage(scaledBlueGhostDead, yellowGhostX, yellowGhostY, null);
-                graphics.drawImage(scaledBlueGhostDead, pinkGhostX, pinkGhostY, null);
+                graphics.drawImage(scaledBluePhaseScaredGhost, blueGhostX, blueGhostY, null);
+                graphics.drawImage(scaledBluePhaseScaredGhost, redGhostX, redGhostY, null);
+                graphics.drawImage(scaledBluePhaseScaredGhost, yellowGhostX, yellowGhostY, null);
+                graphics.drawImage(scaledBluePhaseScaredGhost, pinkGhostX, pinkGhostY, null);
             } else {
-
+                Image[] flashArrayImages = {scaledBluePhaseScaredGhost, scaledWhitePhaseScaredGhost};
+                for(int i = 0;i < flashArrayImages.length;i++) {
+                    graphics.drawImage(flashArrayImages[i], blueGhostX, blueGhostY, null);
+                    graphics.drawImage(flashArrayImages[i], redGhostX, redGhostY, null);
+                    graphics.drawImage(flashArrayImages[i], yellowGhostX, yellowGhostY, null);
+                    graphics.drawImage(flashArrayImages[i], pinkGhostX, pinkGhostY, null);
+                }
             }
         } else{
             graphics.drawImage(blueGhostUp.getImage(), blueGhostX, blueGhostY, null);
@@ -1073,4 +1067,37 @@ public class Ghosts {
         }
 
     }  
+
+    public int getGridRedGhostX() {
+        return this.gridRedGhostX;
+    }
+
+    public int getGridRedGhostY() {
+        return this.gridRedGhostY;
+    }
+
+    public int getGridPinkGhostX() {
+        return this.gridPinkGhostX;
+    }
+
+    public int getGridPinkGhostY() {
+        return this.gridPinkGhostY;
+    }
+    
+    public int getGridYellowGhostX() {
+        return this.gridYellowGhostX;
+    }
+
+    public int getGridYellowGhostY() {
+        return this.gridYellowGhostY;
+    }
+    
+    public int getGridBlueGhostX() {
+        return this.gridBlueGhostX;
+    }
+
+    public int getGridBlueGhostY() {
+        return this.gridBlueGhostY;
+    }
+
 }

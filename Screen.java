@@ -37,6 +37,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     ImageIcon bigPowerPellet;
     Image scaledBigPowerPellet;
 
+    long timerEnd1 = System.currentTimeMillis() + 8000;
+    long timerEnd2 = System.currentTimeMillis() + 10000;
+
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     
     int score;
@@ -99,7 +102,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         while (true) {
             repaint();  
             pacman.move();
-            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY());
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable());
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
@@ -108,9 +111,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 e.printStackTrace(); // or handle it in some other way
             }
         }
-    } 
-
-    
+    }     
 
     @Override
     public Dimension getPreferredSize(){
@@ -135,7 +136,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             for (int j = 0; j < arr.get(i).size(); j++) {
                 if (arr.get(i).get(j) == 1) {
                     graphics.drawImage(scaledWall, j * 32, i * 32, this);
-                    arr.get(i).set(j, 2);
                 } 
             }
         }
@@ -145,18 +145,22 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 if (this.arr.get(i).get(j) == 0) {
                     graphics.drawImage(scaledPowerPellet, i, j, this);
                     
-                } 
+                } else if(this.arr.get(i).get(j) == 3) {
+                    graphics.drawImage(scaledBigPowerPellet, i, j, this);
+                }
             }
         }
-        
-        ghosts.paintComponent(graphics, this.ghostsVulnerable());
+
+        ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
         
         graphics.drawString(String.valueOf(score), 5, 5); 
     }
-
+    // some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file
+    //TODO: URGENT
+    // CREATE BOOLEAN FUCTION THAT MAKES SURE THAT GHOSTS ARE ONLY VULNERABLE WHEN THEY ARE DEAD, NOT IF THEY ARE ALIVE
     private boolean ghostsVulnerable() {
-        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
-            return true;        
+        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {    
+            return true;  
         }
         return false;
     }
@@ -191,8 +195,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     public void checkLocation() {
         if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
-            score += 1;
+            score += 10;
             this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
+        } else if(this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
+            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 4);
         }
     }
 
