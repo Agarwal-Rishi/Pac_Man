@@ -37,8 +37,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     ImageIcon bigPowerPellet;
     Image scaledBigPowerPellet;
 
-    long timerEnd1 = System.currentTimeMillis() + 8000;
-    long timerEnd2 = System.currentTimeMillis() + 10000;
+    long timerEnd1;
+    long timerEnd2;
 
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     
@@ -48,6 +48,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
         setFocusable(true);
         addKeyListener(this);
+
+        this.timerEnd2 = System.currentTimeMillis();
 
         File mazeFile = new File("mazes/maze4.txt");
         Scanner fin = null;
@@ -93,7 +95,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
 
         pacman = new Pacman(arr);
-        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX(),pacman.getCurrentDirection(),pacman.getGridX(),pacman.getGridY());
+        ghosts = new Ghosts(arr,pacman.getPacmanY(),pacman.getPacmanX(),pacman.getCurrentDirection());
 
         score = 0;
     }
@@ -159,10 +161,11 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     //TODO: URGENT
     // CREATE BOOLEAN FUCTION THAT MAKES SURE THAT GHOSTS ARE ONLY VULNERABLE WHEN THEY ARE DEAD, NOT IF THEY ARE ALIVE
     private boolean ghostsVulnerable() {
-        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {    
-            return true;  
+        if (System.currentTimeMillis() < this.timerEnd2) {
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -198,7 +201,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             score += 10;
             this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
         } else if(this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
-            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 4);
+            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
+            timerEnd1 = System.currentTimeMillis() + 8000;
+            timerEnd2 = System.currentTimeMillis() + 10000;
         }
     }
 

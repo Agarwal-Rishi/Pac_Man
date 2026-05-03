@@ -232,7 +232,7 @@ public class Ghosts {
         blueCornerPairs = Collections.unmodifiableList(blueCoords);
     }
 
-    public Ghosts(ArrayList<ArrayList<Integer>> arr,int pacmanY,int pacmanX,Direction currentPacmaDirection) {
+    public Ghosts(ArrayList<ArrayList<Integer>> arr,int pacmanY,int pacmanX,Direction currentPacmanDirection) {
         redGhostRight = new ImageIcon("pacman-art/RedGhostRight.png");
         redGhostLeft = new ImageIcon("pacman-art/RedGhostLeft.png");
         redGhostUp = new ImageIcon("pacman-art/RedGhostUp.png");
@@ -1060,10 +1060,10 @@ public class Ghosts {
                 }
             }
         } else{
-            graphics.drawImage(blueGhostUp.getImage(), blueGhostX, blueGhostY, null);
-            graphics.drawImage(redGhostUp.getImage(), redGhostX, redGhostY, null);
-            graphics.drawImage(yellowGhostUp.getImage(), yellowGhostX, yellowGhostY, null);
-            graphics.drawImage(pinkGhostUp.getImage(), pinkGhostX, pinkGhostY, null);
+            graphics.drawImage(scaledBlueGhostUp, blueGhostX, blueGhostY, null);
+            graphics.drawImage(scaledRedGhostUp, redGhostX, redGhostY, null);
+            graphics.drawImage(scaledYellowGhostUp, yellowGhostX, yellowGhostY, null);
+            graphics.drawImage(scaledPinkGhostUp, pinkGhostX, pinkGhostY, null);
         }
 
     }  
