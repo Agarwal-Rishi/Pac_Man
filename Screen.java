@@ -20,10 +20,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int pacmanWidth = 26;
     int pacmanLength = 26;
     int gridLengthWidth = 32;
-    int powerPelletWidth = 6;
-    int powerPelletLength = 6;
-    int bigPowerPelletWidth = 16;
-    int bigPowerPelletLength = 16;
+    int powerPelletWidth = 16;
+    int powerPelletLength = 16;
+    int bigPowerPelletWidth = 32;
+    int bigPowerPelletLength = 32;
 
     Pacman pacman;
     Ghosts ghosts;
@@ -78,18 +78,13 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         // TODO: URGENT
 
 
-        for(int i = 0; i < arr.size(); i++) {
-            for(int j = 0; j < arr.get(i).size(); j++) {
-                System.out.print(arr.get(i).get(j) + " ");
-            }
-            System.out.println();
-        }
+        
 
-        powerPellet = new ImageIcon("pacman-art/other/dot.png");
+        powerPellet = new ImageIcon("pacman-art/other/Pellet.png");
         scaledPowerPellet = powerPellet.getImage().getScaledInstance(powerPelletWidth,powerPelletLength, Image.SCALE_SMOOTH);
 
-        bigPowerPellet = new ImageIcon("pacman-art/other/dot.png");
-        scaledPowerPellet = powerPellet.getImage().getScaledInstance(bigPowerPelletWidth,bigPowerPelletLength, Image.SCALE_SMOOTH);
+        bigPowerPellet = new ImageIcon("pacman-art/other/PowerPellet.png");
+        scaledBigPowerPellet = bigPowerPellet.getImage().getScaledInstance(bigPowerPelletWidth,bigPowerPelletLength, Image.SCALE_SMOOTH);
 
         wall = new ImageIcon("pacman-art/wallFinal.png");
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
@@ -145,10 +140,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         for (int i = 0; i < this.arr.size(); i++) {
             for (int j = 0; j < this.arr.get(i).size(); j++) {
                 if (this.arr.get(i).get(j) == 0) {
-                    graphics.drawImage(scaledPowerPellet, i, j, this);
-                    
-                } else if(this.arr.get(i).get(j) == 3) {
-                    graphics.drawImage(scaledBigPowerPellet, i, j, this);
+                    graphics.drawImage(scaledPowerPellet, i * 32, j * 32, this);
+                } else if(this.arr.get(i).get(j) ==  3) {
+                    graphics.drawImage(scaledBigPowerPellet, i * 32, j * 32, this);
                 }
             }
         }

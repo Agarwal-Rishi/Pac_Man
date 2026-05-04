@@ -300,9 +300,6 @@ public class Ghosts {
 
     public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts) {
         this.blueGhostChaseAlgorithm(currentDirection);
-        while (true) {
-            this.paintComponent(null, false, gridPacmanX, gridPacmanY);
-        }
     }
 
     public void redGhostChaseAlgorithm() {
