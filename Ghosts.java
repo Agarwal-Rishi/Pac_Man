@@ -8,13 +8,14 @@ import javax.swing.ImageIcon;
 public class Ghosts {
     int ghostWidth = 28;
     int ghostLength = 28;
+    int normalGhostSpeed = 4;
 
-    int redGhostX = 480;
-    int redGhostY = 480;
-    int yellowGhostX = 450;
-    int yellowGhostY = 450;
-    int blueGhostX = 430;
-    int blueGhostY = 430;
+    int redGhostX = 448;
+    int redGhostY = 416;
+    int yellowGhostX = 480;
+    int yellowGhostY = 416;
+    int blueGhostX = 384;
+    int blueGhostY = 416;
     int pinkGhostX = 416;
     int pinkGhostY = 416;
 
@@ -89,6 +90,14 @@ public class Ghosts {
     Direction currentGhostDirection;
 
     Direction currentPacmanDirection;
+
+    long firstSwitch;
+    long secondSwitch;
+    long thirdSwitch;
+    long fourthSwitch;
+    long fifthSwitch;
+    long sixthSwitch;
+    long seventhSwitch;
 
     record Pair<L, R>(L left, R right) {}
 
@@ -298,8 +307,32 @@ public class Ghosts {
         
     }
 
-    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts) {
-        this.blueGhostChaseAlgorithm(currentDirection);
+    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted) {
+        if (gameStarted) {
+            firstSwitch = System.currentTimeMillis() + 7000;
+            secondSwitch = System.currentTimeMillis() + 27000;
+            thirdSwitch = System.currentTimeMillis() + 34000;
+            fourthSwitch = System.currentTimeMillis() + 54000;
+            fifthSwitch = System.currentTimeMillis() + 59000;
+            sixthSwitch = System.currentTimeMillis() + 79000;
+            seventhSwitch = System.currentTimeMillis() + 84000;
+
+            if (System.currentTimeMillis() < firstSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.blueGhostScatter();
+            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() < secondSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm();
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
+            } else if (vulnerableGhosts) {
+                
+            }
+        }
+
+
     }
 
     public void redGhostChaseAlgorithm() {
@@ -316,10 +349,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY - 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostY -= 4;
+                        redGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    redGhostY -= 4;
+                    redGhostY -= normalGhostSpeed;
                 }
             }
         } else if(gridPacmanY > gridRedGhostY) {
@@ -331,10 +364,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostY += 4;
+                        redGhostY += normalGhostSpeed;
                     }
                 } else {
-                    redGhostY += 4;
+                    redGhostY += normalGhostSpeed;
                 }
             }
         } else if(gridPacmanX > gridRedGhostX) {
@@ -346,10 +379,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostX += 4;
+                        redGhostX += normalGhostSpeed;
                     }
                 } else {
-                    redGhostX += 4;
+                    redGhostX += normalGhostSpeed;
                 }
             }
         } else if(gridPacmanX < gridRedGhostX) {
@@ -361,10 +394,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostX -= 4;
+                        redGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    redGhostX -= 4;
+                    redGhostX -= normalGhostSpeed;
                 }
             }
         }
@@ -386,10 +419,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY - 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostY -= 4;
+                        pinkGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostY -= 4;
+                    pinkGhostY -= normalGhostSpeed;
                 }
             }
         } else if(gridPacmanY + 4 > gridPinkGhostY) {
@@ -401,10 +434,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostY += 4;
+                        pinkGhostY += normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostY += 4;
+                    pinkGhostY += normalGhostSpeed;
                 }
             }
         } else if(gridPacmanX + 4 > gridPinkGhostX) {
@@ -416,10 +449,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostX += 4;
+                        pinkGhostX += normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostX += 4;
+                    pinkGhostX += normalGhostSpeed;
                 }
             }
         } else if(gridPacmanX - 4 < gridPinkGhostX) {
@@ -431,10 +464,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostX -= 4;
+                        pinkGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostX -= 4;
+                    pinkGhostX -= normalGhostSpeed;
                 }
             }
         }
@@ -477,10 +510,10 @@ public class Ghosts {
                     if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        blueGhostX += 4;
+                        blueGhostX += normalGhostSpeed;
                     }
                 } else {
-                    blueGhostX += 4;
+                    blueGhostX += normalGhostSpeed;
                 }
             }
        } else if(targetBlueGhostLocationX < 0) {
@@ -492,10 +525,10 @@ public class Ghosts {
                 if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX - 1) == 1) {
                     currentGhostDirection = Direction.STOP;
                 }else {
-                    blueGhostX -= 4;
+                    blueGhostX -= normalGhostSpeed;
                 }
             } else {
-                blueGhostX -= 4;
+                blueGhostX -= normalGhostSpeed;
             }
         }
        } else if(targetBlueGhostLocationY > 0) {
@@ -507,10 +540,10 @@ public class Ghosts {
                 if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
                     currentGhostDirection = Direction.STOP;
                 }else {
-                    blueGhostY += 4;
+                    blueGhostY += normalGhostSpeed;
                 }
             } else {
-                blueGhostY += 4;
+                blueGhostY += normalGhostSpeed;
             }
         }
        }else if(targetBlueGhostLocationY < 0) {
@@ -522,10 +555,10 @@ public class Ghosts {
                 if (arr.get(gridBlueGhostY - 1).get(gridBlueGhostX + 1) == 1) {
                     currentGhostDirection = Direction.STOP;
                 }else {
-                    blueGhostY -= 4;
+                    blueGhostY -= normalGhostSpeed;
                 }
             } else {
-                blueGhostY -= 4;
+                blueGhostY -= normalGhostSpeed;
             }
         }
        }
@@ -566,10 +599,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostX += 4;
+                            yellowGhostX += normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostX += 4;
+                        yellowGhostX += normalGhostSpeed;
                     }
                 }
             } else if(targetYellowGhostLocationX < 0) {
@@ -581,10 +614,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         } else {
-                            yellowGhostX -= 4;
+                            yellowGhostX -= normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostX -= 4;
+                        yellowGhostX -= normalGhostSpeed;
                     }
                 }
             } else if(targetYellowGhostLocationY > 0) {
@@ -596,10 +629,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostY += 4;
+                            yellowGhostY += normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostY += 4;
+                        yellowGhostY += normalGhostSpeed;
                     }
                 }
             }else if(targetYellowGhostLocationY < 0) {
@@ -611,10 +644,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostY -= 4;
+                            yellowGhostY -= normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostY -= 4;
+                        yellowGhostY -= normalGhostSpeed;
                     }
                 }
             }
@@ -630,10 +663,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostX += 4;
+                            yellowGhostX += normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostX += 4;
+                        yellowGhostX += normalGhostSpeed;
                     }
                 }
             } else if(targetYellowGhostLocationX < 0) {
@@ -645,10 +678,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostX -= 4;
+                            yellowGhostX -= normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostX -= 4;
+                        yellowGhostX -= normalGhostSpeed;
                     }
                 }
             } else if(targetYellowGhostLocationY > 0) {
@@ -660,10 +693,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostY += 4;
+                            yellowGhostY += normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostY += 4;
+                        yellowGhostY += normalGhostSpeed;
                     }
                 }
             } else if(targetYellowGhostLocationY < 0) {
@@ -675,10 +708,10 @@ public class Ghosts {
                         if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
                             currentGhostDirection = Direction.STOP;
                         }else {
-                            yellowGhostY -= 4;
+                            yellowGhostY -= normalGhostSpeed;
                         }
                     } else {
-                        yellowGhostY -= 4;
+                        yellowGhostY -= normalGhostSpeed;
                     }
                 } 
                 for(int i = 0;i < yellowCornerPairs.size();i++) {
@@ -731,12 +764,12 @@ public class Ghosts {
                     // 
                     //
                 } else {
-                    yellowGhostY += 4 * yUpdates[dirIndex];
-                    yellowGhostX += 4 * xUpdates[dirIndex];
+                    yellowGhostY += normalGhostSpeed * yUpdates[dirIndex];
+                    yellowGhostX += normalGhostSpeed * xUpdates[dirIndex];
                 }
             } else {
-                yellowGhostY += 4 * yUpdates[dirIndex];
-                yellowGhostX += 4 * xUpdates[dirIndex];
+                yellowGhostY += normalGhostSpeed * yUpdates[dirIndex];
+                yellowGhostX += normalGhostSpeed * xUpdates[dirIndex];
             }
         }
     }
@@ -753,10 +786,10 @@ public class Ghosts {
                     if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        yellowGhostX += 4;
+                        yellowGhostX += normalGhostSpeed;
                     }
                 } else {
-                    yellowGhostX += 4;
+                    yellowGhostX += normalGhostSpeed;
                 }
             }
         } else if(targetYellowGhostLocationX < 0) {
@@ -768,10 +801,10 @@ public class Ghosts {
                     if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        yellowGhostX -= 4;
+                        yellowGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    yellowGhostX -= 4;
+                    yellowGhostX -= normalGhostSpeed;
                 }
             }
         } else if(targetYellowGhostLocationY > 0) {
@@ -783,10 +816,10 @@ public class Ghosts {
                     if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        yellowGhostY += 4;
+                        yellowGhostY += normalGhostSpeed;
                     }
                 } else {
-                    yellowGhostY += 4;
+                    yellowGhostY += normalGhostSpeed;
                 }
             }
         }else if(targetYellowGhostLocationY < 0) {
@@ -798,10 +831,10 @@ public class Ghosts {
                     if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        yellowGhostY -= 4;
+                        yellowGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    yellowGhostY -= 4;
+                    yellowGhostY -= normalGhostSpeed;
                 }
             }
             for(int i = 0;i < yellowCornerPairs.size();i++) {
@@ -828,10 +861,10 @@ public class Ghosts {
                     if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        blueGhostX += 4;
+                        blueGhostX += normalGhostSpeed;
                     }
                 } else {
-                    blueGhostX += 4;
+                    blueGhostX += normalGhostSpeed;
                 }
             }
         } else if(targetBlueGhostLocationX < 0) {
@@ -843,10 +876,10 @@ public class Ghosts {
                     if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        blueGhostX -= 4;
+                        blueGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    blueGhostX -= 4;
+                    blueGhostX -= normalGhostSpeed;
                 }
             }
         } else if(targetBlueGhostLocationY > 0) {
@@ -858,10 +891,10 @@ public class Ghosts {
                     if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        blueGhostY += 4;
+                        blueGhostY += normalGhostSpeed;
                     }
                 } else {
-                    blueGhostY += 4;
+                    blueGhostY += normalGhostSpeed;
                 }
             }
         } else if(targetBlueGhostLocationY < 0) {
@@ -873,10 +906,10 @@ public class Ghosts {
                     if (arr.get(gridBlueGhostY - 1).get(gridBlueGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        blueGhostY -= 4;
+                        blueGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    blueGhostY -= 4;
+                    blueGhostY -= normalGhostSpeed;
                 }
             }
 
@@ -903,10 +936,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostX += 4;
+                        redGhostX += normalGhostSpeed;
                     }
                 } else {
-                    redGhostX += 4;
+                    redGhostX += normalGhostSpeed;
                 }
             }
         } else if(targetRedGhostLocationX < 0) {
@@ -918,10 +951,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostX -= 4;
+                        redGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    redGhostX -= 4;
+                    redGhostX -= normalGhostSpeed;
                 }
             }
         } else if(targetRedGhostLocationY > 0) {
@@ -933,10 +966,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostY += 4;
+                        redGhostY += normalGhostSpeed;
                     }
                 } else {
-                    redGhostY += 4;
+                    redGhostY += normalGhostSpeed;
                 }
             }
         } else if(targetRedGhostLocationY < 0) {
@@ -948,10 +981,10 @@ public class Ghosts {
                     if (arr.get(gridRedGhostY - 1).get(gridRedGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        redGhostY -= 4;
+                        redGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    redGhostY -= 4;
+                    redGhostY -= normalGhostSpeed;
                 }
             }
             for (int i = 0;i < redCornerPairs.size();i++) {
@@ -977,10 +1010,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostX += 4;
+                        pinkGhostX += normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostX += 4;
+                    pinkGhostX += normalGhostSpeed;
                 }
             }
         } else if(targetPinkGhostLocationX < 0) {
@@ -992,10 +1025,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX - 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostX -= 4;
+                        pinkGhostX -= normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostX -= 4;
+                    pinkGhostX -= normalGhostSpeed;
                 }
             }
         } else if(targetPinkGhostLocationY > 0) {
@@ -1007,10 +1040,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostY += 4;
+                        pinkGhostY += normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostY += 4;
+                    pinkGhostY += normalGhostSpeed;
                 }
             }
         } else if(targetPinkGhostLocationY < 0) {
@@ -1022,10 +1055,10 @@ public class Ghosts {
                     if (arr.get(gridPinkGhostY - 1).get(gridPinkGhostX + 1) == 1) {
                         currentGhostDirection = Direction.STOP;
                     }else {
-                        pinkGhostY -= 4;
+                        pinkGhostY -= normalGhostSpeed;
                     }
                 } else {
-                    pinkGhostY -= 4;
+                    pinkGhostY -= normalGhostSpeed;
                 }
             }
         }

@@ -40,6 +40,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     long timerEnd1;
     long timerEnd2;
 
+    boolean gameStarted = false;
+
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     
     int score;
@@ -72,7 +74,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             }
             arr.add(smallArr);
         }
-        System.out.println("howManyTimes: " + howManyTimes);
+
 
         // iterate through grid and ensure everything was read in correctly
         // TODO: URGENT
@@ -80,11 +82,13 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
         
 
-        powerPellet = new ImageIcon("pacman-art/other/Pellet.png");
+        powerPellet = new ImageIcon("pacman-art/Pellet.png");
         scaledPowerPellet = powerPellet.getImage().getScaledInstance(powerPelletWidth,powerPelletLength, Image.SCALE_SMOOTH);
 
-        bigPowerPellet = new ImageIcon("pacman-art/other/PowerPellet.png");
+        bigPowerPellet = new ImageIcon("pacman-art/PowerPellet.png");
         scaledBigPowerPellet = bigPowerPellet.getImage().getScaledInstance(bigPowerPelletWidth,bigPowerPelletLength, Image.SCALE_SMOOTH);
+
+        
 
         wall = new ImageIcon("pacman-art/wallFinal.png");
         scaledWall = wall.getImage().getScaledInstance(gridLengthWidth, gridLengthWidth, Image.SCALE_SMOOTH);
@@ -98,8 +102,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     public void animate() {
         while (true) {
             repaint();  
-            pacman.move();
-            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable());
+            pacman.move(gameStarted);
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted);
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
@@ -140,9 +144,9 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         for (int i = 0; i < this.arr.size(); i++) {
             for (int j = 0; j < this.arr.get(i).size(); j++) {
                 if (this.arr.get(i).get(j) == 0) {
-                    graphics.drawImage(scaledPowerPellet, i * 32, j * 32, this);
+                    graphics.drawImage(scaledPowerPellet, j * 32, i * 32, this);
                 } else if(this.arr.get(i).get(j) ==  3) {
-                    graphics.drawImage(scaledBigPowerPellet, i * 32, j * 32, this);
+                    graphics.drawImage(scaledBigPowerPellet, j * 32, i * 32, this);
                 }
             }
         }
@@ -151,9 +155,19 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         
         graphics.drawString(String.valueOf(score), 5, 5); 
     }
-    // some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file
-    //TODO: URGENT
-    // CREATE BOOLEAN FUCTION THAT MAKES SURE THAT GHOSTS ARE ONLY VULNERABLE WHEN THEY ARE DEAD, NOT IF THEY ARE ALIVE
+    // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.
+    
+    private boolean deadOrAlive() {
+        if (ghostsVulnerable()) {
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
+
     private boolean ghostsVulnerable() {
         if (System.currentTimeMillis() < this.timerEnd2) {
             return true;
@@ -169,21 +183,28 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             // move the pacman to the right and change the image to the right
             pacman.currentDirection = Direction.RIGHT;
             pacman.pacmanAnimationRight();
+            gameStarted = true;
+            
         }
         if (event.getKeyCode() == 37) {
             // move the pacman to the left and change the image to the left
             pacman.currentDirection = Direction.LEFT;
             pacman.pacmanAnimationLeft();
+            gameStarted = true;
+            
         }
         if (event.getKeyCode() == 38) {
             // move the pacman up and change the image to the up
             pacman.currentDirection = Direction.UP;
             pacman.pacmanAnimationUp();
+            gameStarted = true;
+            
         }
         if (event.getKeyCode() == 40) {
             // move the pacman down and change the image to the down
             pacman.currentDirection = Direction.DOWN;
             pacman.pacmanAnimationDown();
+            gameStarted = true;
         }
         
         
