@@ -103,6 +103,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         while (true) {
             repaint();  
             pacman.move(gameStarted);
+            this.checkLocation();     
             ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted);
             
             try {
@@ -181,29 +182,29 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         // code to move the pacman
         if (event.getKeyCode() == 39) {
             // move the pacman to the right and change the image to the right
-            pacman.currentDirection = Direction.RIGHT;
-            pacman.pacmanAnimationRight();
+            this.pacman.currentDirection = Direction.RIGHT;
+            this.pacman.pacmanAnimationRight();
             gameStarted = true;
             
         }
         if (event.getKeyCode() == 37) {
             // move the pacman to the left and change the image to the left
-            pacman.currentDirection = Direction.LEFT;
-            pacman.pacmanAnimationLeft();
+            this.pacman.currentDirection = Direction.LEFT;
+            this.pacman.pacmanAnimationLeft();
             gameStarted = true;
             
         }
         if (event.getKeyCode() == 38) {
             // move the pacman up and change the image to the up
-            pacman.currentDirection = Direction.UP;
-            pacman.pacmanAnimationUp();
+            this.pacman.currentDirection = Direction.UP;
+            this.pacman.pacmanAnimationUp();
             gameStarted = true;
             
         }
         if (event.getKeyCode() == 40) {
             // move the pacman down and change the image to the down
-            pacman.currentDirection = Direction.DOWN;
-            pacman.pacmanAnimationDown();
+            this.pacman.currentDirection = Direction.DOWN;
+            this.pacman.pacmanAnimationDown();
             gameStarted = true;
         }
         

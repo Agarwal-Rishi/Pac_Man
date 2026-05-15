@@ -317,17 +317,29 @@ public class Ghosts {
             sixthSwitch = System.currentTimeMillis() + 79000;
             seventhSwitch = System.currentTimeMillis() + 84000;
 
-            if (System.currentTimeMillis() < firstSwitch) {
+            if (System.currentTimeMillis() <= firstSwitch) {
                 this.blueGhostScatter();
                 this.redGhostScatter();
                 this.pinkGhostScatter();
                 this.blueGhostScatter();
-            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() < secondSwitch) {
+                this.pinkGhostScatter();
+            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
                 this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm();
                 this.pinkGhostChaseAlgorithm();
                 this.yellowGhostChaseAlgorithm();
-            } else if (vulnerableGhosts) {
+            } else if(secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= thirdSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.blueGhostScatter();
+                this.pinkGhostScatter();
+            } else if(thirdSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fourthSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm();
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
+            } else if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
                 
             }
         }
@@ -1063,8 +1075,8 @@ public class Ghosts {
             }
         }
         
-        for(int i = 0;i < pinkCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
+        for(int i = 0; i < pinkCornerPairs.size(); i++) {
+            Pair<Integer, Integer> futurePair = pinkCornerPairs.get((i + 1) % pinkCornerPairs.size());
             gridPinkGhostX = futurePair.left();
             gridPinkGhostY = futurePair.right();
             if (futurePair == null) {

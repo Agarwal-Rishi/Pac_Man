@@ -67,7 +67,7 @@ public class Pacman {
         pacmanLeftPhase2 = new ImageIcon("pacman-art/PacmanLeftPhase2.png");
         pacmanUpPhase2 = new ImageIcon("pacman-art/PacmanUpPhase2.png");
         pacmanDownPhase2 = new ImageIcon("pacman-art/PacmanDownPhase2.png");
-        pacmanRightPhase3 = new ImageIcon("pacman-art/PacmanRightPhase3");
+        pacmanRightPhase3 = new ImageIcon("pacman-art/PacmanRightPhase3.png");
         pacmanLeftPhase3 = new ImageIcon("pacman-art/PacmanLeftPhase3.png");
         pacmanUpPhase3 = new ImageIcon("pacman-art/PacmanUpPhase3.png");
         pacmanDownPhase3 = new ImageIcon("pacman-art/PacmanDownPhase3.png");
@@ -115,43 +115,46 @@ public class Pacman {
     public void drawPacman(Graphics graphics) {
         if (currentPacmanImage != null) {
             graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, null);
-            // System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
+            System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
         }
     }
 
     public void pacmanAnimationRight() {
-        pacmanImageIndex += 1;
-        if (pacmanImageIndex == 3) {
+        if (pacmanImageIndex != 2) {
+            pacmanImageIndex += 1;
+        }else {
             pacmanImageIndex = 0;
         }
         currentPacmanImage = scaledPacmanRight[pacmanImageIndex];
     }
 
     public void pacmanAnimationLeft() {
-        System.out.println();
-        pacmanImageIndex += 1;
-        if (pacmanImageIndex == 3) {
+        if (pacmanImageIndex != 2) {
+            pacmanImageIndex += 1;
+        }else {
             pacmanImageIndex = 0;
         }
         currentPacmanImage = scaledPacmanLeft[pacmanImageIndex];
     }
 
     public void pacmanAnimationUp() {
-        pacmanImageIndex += 1;
-        if (pacmanImageIndex == 3) {
+        if (pacmanImageIndex != 2) {
+            pacmanImageIndex += 1;
+        }else {
             pacmanImageIndex = 0;
         }
         currentPacmanImage = scaledPacmanUp[pacmanImageIndex];
     }
     public void pacmanAnimationDown() {
-        pacmanImageIndex += 1;
-        if (pacmanImageIndex == 3) {
+        if (pacmanImageIndex != 2) {
+            pacmanImageIndex += 1;
+        }else {
             pacmanImageIndex = 0;
         }
         currentPacmanImage = scaledPacmanDown[pacmanImageIndex];
     }
     
-    public void move(boolean gameStarted) {    
+    public void move(boolean gameStarted) {
         gridY = pacmanY /32;
         gridX = pacmanX /32;
         if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
@@ -163,9 +166,9 @@ public class Pacman {
 
         if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
-        } else if(currentDirection == Direction.RIGHT && gridX + 1 == 29) {
+        } else if(currentDirection == Direction.RIGHT && gridX == 27) {
             gridX = 1;
-        }  else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
+        } else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
             if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
