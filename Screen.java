@@ -213,14 +213,36 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     }
 
     public void checkLocation() {
-        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
-            score += 10;
-            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
-        } else if(this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
-            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
-            timerEnd1 = System.currentTimeMillis() + 8000;
-            timerEnd2 = System.currentTimeMillis() + 10000;
+        int amount = 32 - (this.pacman.getPacmanY() - (this.pacman.getGridY() * 32));
+        if (amount > 16) {
+            if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
+                this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
+                score += 100;
+            }
+        } else if (amount == 16) {
+            if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
+                score += 100;
+                this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
+            }
+            
+            if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
+                score += 100;
+                this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 0);
+            }
+        } else if (amount < 16) {
+            if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
+                this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 2);
+                score += 100;
+            }
         }
+        // if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
+        //     score += 10;
+        //     this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
+        // } else if(this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
+        //     this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
+        //     timerEnd1 = System.currentTimeMillis() + 8000;
+        //     timerEnd2 = System.currentTimeMillis() + 10000;
+        // }
     }
 
     @Override
