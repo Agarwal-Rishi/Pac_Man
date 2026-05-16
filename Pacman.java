@@ -155,19 +155,22 @@ public class Pacman {
     }
     
     public void move(boolean gameStarted) {
-        gridY = pacmanY /32;
-        gridX = pacmanX /32;
+        gridY = pacmanY / 32;
+        gridX = pacmanX / 32;
         if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
             gridX += 1;
         }
         if (pacmanY % 32 != 0 && currentDirection == Direction.UP) {
             gridY += 1; 
         } 
-
-        if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
+        System.out.println(gridX);
+        System.out.println(gridY);
+        System.out.println("here");
+        if (currentDirection == Direction.RIGHT && gridX == 27) {
+            System.out.println("set x to 0");
+            pacmanX = 0;
+        } else if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
-        } else if(currentDirection == Direction.RIGHT && gridX == 27) {
-            gridX = 1;
         } else if(currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) != 1) {
             if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
@@ -181,12 +184,10 @@ public class Pacman {
                 this.pacmanAnimationRight();
             }
         }
-        
-
-        if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
+        if(currentDirection == Direction.LEFT && gridX == 0) {
+            pacmanX = 864;
+        } else if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
             currentDirection = Direction.STOP;
-        } else if(currentDirection == Direction.LEFT && gridX - 1 == 0) {
-            gridX = 1;
         } else if(currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) != 1) {
             if (pacmanY % 32 != 0) {
                 if (arr.get(gridY + 1).get(gridX - 1) == 1) {

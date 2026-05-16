@@ -20,8 +20,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int pacmanWidth = 26;
     int pacmanLength = 26;
     int gridLengthWidth = 32;
-    int powerPelletWidth = 16;
-    int powerPelletLength = 16;
+    int powerPelletWidth = 32;
+    int powerPelletLength = 32;
     int bigPowerPelletWidth = 32;
     int bigPowerPelletLength = 32;
 
