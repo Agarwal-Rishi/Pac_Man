@@ -2,7 +2,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.Vector;
+
 import javax.swing.ImageIcon;
 
 public class Ghosts {
@@ -318,11 +325,10 @@ public class Ghosts {
             seventhSwitch = System.currentTimeMillis() + 84000;
 
             if (System.currentTimeMillis() <= firstSwitch) {
-                this.blueGhostScatter();
-                this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.blueGhostScatter();
-                this.pinkGhostScatter();
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm();
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
             } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
                 this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm();
@@ -340,8 +346,96 @@ public class Ghosts {
                 this.pinkGhostChaseAlgorithm();
                 this.yellowGhostChaseAlgorithm();
             } else if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
-                
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.yellowGhostScatter();
+            } else if(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm();
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
+            } else if(sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.yellowGhostScatter();
+            } else if(System.currentTimeMillis() <= seventhSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.yellowGhostChaseAlgorithm();
+                this.redGhostChaseAlgorithm();
+                this.pinkGhostChaseAlgorithm();
             }
+        }
+
+    }
+
+    public Direction bfs(int startX, int startY, int endX, int endY) {
+        HashMap<Pair<Integer, Integer>, Pair<Integer, Integer>> hashmap = new HashMap<>();
+        Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
+        HashSet<Pair<Integer, Integer>> hashSet = new HashSet<>();
+        boolean pacmanFound = false;
+        // TO REMEMBER: URGENT
+        // dirtomove = bfs(start, end), 
+        // take in: start location, end location
+        // returb: directiont o move in
+
+        Pair<Integer, Integer> start = new Pair<Integer,Integer>(startX, startY);
+        queue.add(start);
+        hashmap.put(start, null);
+
+        int[] xdiffs = {-1, 0, 1, 0};
+        int[] ydiffs = {0, -1, 0, 1};
+        
+        while (!queue.isEmpty() && !pacmanFound) {
+            // fix: queue values should be sanitized by here
+            Pair<Integer, Integer> cur = queue.poll();
+            if (cur == new Pair<Integer,Integer>(endX, endY)) {
+                break;
+            }
+
+            if (hashSet.contains(cur)) {
+                continue;
+            } else{
+                hashSet.add(cur);
+            }
+            
+            for (int i = 0; i < 4; i++) {
+                int diff_x = xdiffs[i];
+                int diff_y = ydiffs[i];
+                if (arr.get(cur.right() + diff_y).get(cur.left + diff_x) != 1 && cur.right() + diff_y != 28 && cur.left() != 28) {
+                    Pair<Integer, Integer> nei = new Pair<Integer,Integer>(cur.left() + diff_x, cur.right() + diff_y);
+                    queue.add(nei);
+                    hashmap.put(nei, cur);
+                }
+            }
+        }
+
+        if (pacmanFound == false) {
+            return Direction.STOP;
+        } else {
+            Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
+            while (backtrackStart != start) {
+                backtrackStart = hashmap.get(backtrackStart);
+                int startDiff = Math.abs((backtrackStart.left() + backtrackStart.right()) - (start.left() + start.right()));
+                if (startDiff == 1) {
+                    if (start.right() == backtrackStart.right() + 1) {
+                        return Direction.UP;
+                    }
+                    if (start.right() == backtrackStart.right() - 1) {
+                        return Direction.UP;
+                    }
+                    if (start.left() == backtrackStart.left() + 1) {
+                        return Direction.LEFT;
+                    }
+                    if (start.left() == backtrackStart.left() - 1) {
+                        return Direction.RIGHT;
+                    }
+                } else{
+                    continue;
+                }
+            }
+
         }
 
 
@@ -352,137 +446,45 @@ public class Ghosts {
         gridRedGhostX = redGhostX / 32;
         int gridPacmanX = pacmanX / 32;
         int gridPacmanY = pacmanY / 32;
-        if (gridPacmanY < gridRedGhostY) {
-            currentGhostDirection = Direction.UP;
-            if (arr.get(gridRedGhostY - 1).get(gridRedGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;                     
-            }else if(currentGhostDirection == Direction.UP && this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridRedGhostY - 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    redGhostY -= normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanY > gridRedGhostY) {
-            currentGhostDirection = Direction.DOWN;
-            if (currentGhostDirection == Direction.DOWN && this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.DOWN && this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    redGhostY += normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanX > gridRedGhostX) {
-            currentGhostDirection = Direction.RIGHT;
-            if (currentGhostDirection == Direction.RIGHT && this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.RIGHT && this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    redGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanX < gridRedGhostX) {
-            currentGhostDirection = Direction.LEFT;
-            if (currentGhostDirection == Direction.LEFT && this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.LEFT && this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    redGhostX -= normalGhostSpeed;
-                }
-            }
-        }
-         
+        
+        if (this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.RIGHT) {
+            redGhostX += 4;
+        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.LEFT) {
+            redGhostX -= 4;
+        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.UP) {
+            redGhostY -= 4;
+        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.DOWN) {
+            redGhostY += 4;
+        } 
     }
-
 
     public void pinkGhostChaseAlgorithm() {
         gridPinkGhostY = pinkGhostY / 32;
         gridPinkGhostX = pinkGhostX / 32;
         int gridPacmanY = pacmanY / 32;
         int gridPacmanX = pacmanX / 32;
-        if (gridPacmanY - 4 < gridPinkGhostY) {
-            currentGhostDirection = Direction.UP;
-            if (currentGhostDirection == Direction.UP && this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.UP && this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridPinkGhostY - 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostY -= normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanY + 4 > gridPinkGhostY) {
-            currentGhostDirection = Direction.DOWN;
-            if (currentGhostDirection == Direction.DOWN && this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.DOWN && this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostY += normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanX + 4 > gridPinkGhostX) {
-            currentGhostDirection = Direction.RIGHT;
-            if (currentGhostDirection == Direction.RIGHT && this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.RIGHT && this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(gridPacmanX - 4 < gridPinkGhostX) {
-            currentGhostDirection = Direction.LEFT;
-            if (currentGhostDirection == Direction.LEFT && this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(currentGhostDirection == Direction.LEFT && this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostX -= normalGhostSpeed;
-                }
-            }
+        int xChange = 0;
+        int yChange = 0;
+        if (currentPacmanDirection == Direction.RIGHT) {
+            xChange = 4;
+        } else if (currentPacmanDirection == Direction.LEFT) {
+            xChange = -4;
+        } else if (currentPacmanDirection == Direction.UP) {
+            yChange = -4;
+        } else if (currentPacmanDirection == Direction.DOWN) {
+            yChange = 4;
         }
+        Direction shortenedBFS = this.bfs(gridPinkGhostX, gridPinkGhostY, gridPacmanX + xChange, gridPacmanY + yChange);
+        if (shortenedBFS == Direction.RIGHT) {
+            pinkGhostX += 4;
+        } else if (shortenedBFS == Direction.LEFT) {
+            pinkGhostX -= 4;
+        } else if(shortenedBFS == Direction.UP) {
+            pinkGhostY -= 4;
+        } else if (shortenedBFS == Direction.DOWN) {
+            pinkGhostY += 4;
+        }
+        
     }
 
     public void blueGhostChaseAlgorithm(Direction currentDirection) {
@@ -492,93 +494,31 @@ public class Ghosts {
         gridBlueGhostX = blueGhostX / 32;
         gridRedGhostX = redGhostX / 32;
         gridRedGhostY = redGhostY / 32;
-        // where pacman will go
-        int targetPacmanLocationX = 0;
-        int targetPacmanLocationY = 0;
-
-        if (currentDirection == Direction.RIGHT) {
-            targetPacmanLocationX = gridPacmanX + 2;
-        } else if(currentDirection == Direction.LEFT) {
-            targetPacmanLocationX = gridPacmanX - 2;
-        } else if(currentDirection == Direction.UP) {
-            targetPacmanLocationY = gridPacmanY - 2;
-        } else if(currentDirection == Direction.DOWN) {
-            targetPacmanLocationY = gridPacmanY + 2;
-        } else {
-            targetPacmanLocationX = gridPacmanX;
-            targetPacmanLocationY = gridPacmanY;
-        }
-        // where inky will go
-
-       int targetBlueGhostLocationX = 2 * (targetPacmanLocationX - gridRedGhostX);
-       int targetBlueGhostLocationY = 2 * (targetPacmanLocationY - gridRedGhostY);
-
-       if (targetBlueGhostLocationX > 0) {
-            currentGhostDirection = Direction.RIGHT;
-            if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        blueGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    blueGhostX += normalGhostSpeed;
-                }
-            }
-       } else if(targetBlueGhostLocationX < 0) {
-        currentGhostDirection = Direction.LEFT;
-        if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) == 1) {
-            currentGhostDirection = Direction.STOP;
-        } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) != 1) {
-            if (pacmanY % 32 != 0) {
-                if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX - 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                }else {
-                    blueGhostX -= normalGhostSpeed;
-                }
-            } else {
-                blueGhostX -= normalGhostSpeed;
-            }
-        }
-       } else if(targetBlueGhostLocationY > 0) {
-        currentGhostDirection = Direction.DOWN;
-        if (this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) == 1) {
-            currentGhostDirection = Direction.STOP;
-        } else if(this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) != 1) {
-            if (pacmanX % 32 != 0) {
-                if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                }else {
-                    blueGhostY += normalGhostSpeed;
-                }
-            } else {
-                blueGhostY += normalGhostSpeed;
-            }
-        }
-       }else if(targetBlueGhostLocationY < 0) {
-        currentGhostDirection = Direction.UP;
-        if (this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) == 1) {
-            currentGhostDirection = Direction.STOP;
-        } else if(this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) != 1) {
-            if (pacmanX % 32 != 0) {
-                if (arr.get(gridBlueGhostY - 1).get(gridBlueGhostX + 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                }else {
-                    blueGhostY -= normalGhostSpeed;
-                }
-            } else {
-                blueGhostY -= normalGhostSpeed;
-            }
-        }
-       }
-
         
+        int xChange = 0;
+        int yChange = 0;
+        if (currentPacmanDirection == Direction.RIGHT) {
+            xChange = 2;
+        } else if (currentPacmanDirection == Direction.LEFT) {
+            xChange = -2;
+        } else if (currentPacmanDirection == Direction.UP) {
+            yChange = -2;
+        } else if (currentPacmanDirection == Direction.DOWN) {
+            yChange = 2;
+        }
         
-        
-
+        int targetLocX = gridRedGhostX + 2 * (gridPacmanX + xChange - gridRedGhostX);
+        int targetLocY = gridRedGhostY + 2 * (gridPacmanY + yChange - gridRedGhostY);
+        Direction shortenedBFS = this.bfs(gridPinkGhostX, gridPinkGhostY, targetLocX, targetLocY + yChange);
+        if (shortenedBFS == Direction.RIGHT) {
+            gridBlueGhostX += 4;
+        } else if (shortenedBFS == Direction.LEFT) {
+            gridBlueGhostX -= 4;
+        } else if(shortenedBFS == Direction.UP) {
+            gridBlueGhostY -= 4;
+        } else if (shortenedBFS == Direction.DOWN) {
+            gridBlueGhostY += 4;
+        }
     }
 
     public void yellowGhostChaseAlgorithm() {
@@ -586,269 +526,17 @@ public class Ghosts {
         int gridPacmanX = pacmanX / 32;
         gridYellowGhostY = yellowGhostY / 32;
         gridYellowGhostX = yellowGhostX / 32;
-        // where pacman will go
-        int targetYellowGhostLocationX = gridPacmanX;
-        int targetYellowGhostLocationY = gridPacmanY;
-
-        boolean sameY = false;
-        boolean sameX = false;
-
-        if (gridPacmanY == yellowGhostY) {                  
-            sameY = true;
-        }
-        if (gridPacmanX == yellowGhostX) {
-            sameX = true;
-        }
-
-
-        if (targetYellowGhostLocationX > 8) {
-            if (targetYellowGhostLocationX > 0) {
-                currentGhostDirection = Direction.RIGHT;
-                if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) != 1) {
-                    if (pacmanY % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostX += normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostX += normalGhostSpeed;
-                    }
-                }
-            } else if(targetYellowGhostLocationX < 0) {
-                currentGhostDirection = Direction.LEFT;
-                if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) != 1) {
-                    if (pacmanY % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        } else {
-                            yellowGhostX -= normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostX -= normalGhostSpeed;
-                    }
-                }
-            } else if(targetYellowGhostLocationY > 0) {
-                currentGhostDirection = Direction.DOWN;
-                if (this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) != 1) {
-                    if (pacmanX % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostY += normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostY += normalGhostSpeed;
-                    }
-                }
-            }else if(targetYellowGhostLocationY < 0) {
-                currentGhostDirection = Direction.UP;
-                if (this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) != 1) {
-                    if (pacmanX % 32 != 0) {
-                        if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostY -= normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostY -= normalGhostSpeed;
-                    }
-                }
+        if (Math.abs(gridPacmanX + gridPacmanY - gridYellowGhostX + gridYellowGhostY) != 8) {
+            if (this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.RIGHT) {
+                redGhostX += 4;
+            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.LEFT) {
+                yellowGhostX -= 4;
+            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.UP) {
+                yellowGhostY -= 4;
+            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.DOWN) {
+                yellowGhostY += 4;
             }
         } else {
-            targetYellowGhostLocationX = 2;
-            targetYellowGhostLocationY  = 21;
-            if (targetYellowGhostLocationX > 0) {
-                currentGhostDirection = Direction.RIGHT;
-                if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) != 1) {
-                    if (pacmanY % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostX += normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostX += normalGhostSpeed;
-                    }
-                }
-            } else if(targetYellowGhostLocationX < 0) {
-                currentGhostDirection = Direction.LEFT;
-                if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) != 1) {
-                    if (pacmanY % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostX -= normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostX -= normalGhostSpeed;
-                    }
-                }
-            } else if(targetYellowGhostLocationY > 0) {
-                currentGhostDirection = Direction.DOWN;
-                if (this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) != 1) {
-                    if (pacmanX % 32 != 0) {
-                        if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostY += normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostY += normalGhostSpeed;
-                    }
-                }
-            } else if(targetYellowGhostLocationY < 0) {
-                currentGhostDirection = Direction.UP;
-                if (this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) == 1) {
-                    currentGhostDirection = Direction.STOP;
-                } else if(this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) != 1) {
-                    if (pacmanX % 32 != 0) {
-                        if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
-                            currentGhostDirection = Direction.STOP;
-                        }else {
-                            yellowGhostY -= normalGhostSpeed;
-                        }
-                    } else {
-                        yellowGhostY -= normalGhostSpeed;
-                    }
-                } 
-                for(int i = 0;i < yellowCornerPairs.size();i++) {
-                    Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-                    gridYellowGhostX = futurePair.left();
-                    gridYellowGhostY = futurePair.right();
-                    if (futurePair == null) {
-                        futurePair = yellowCornerPairs.get(0);
-                    }
-                }
-            }       
-        }
-    }
-
-    public void moveYellowGhost(Direction dir ) {
-        currentGhostDirection = dir;
-        // Right: X:1 Y:1
-        // Left: X:-1 Y:1
-        //Up: X: 1  Y: -1
-        //Down: X:1 Y:1
-        // Down, Up, Right, Left
-        int[] yUpdatesForMod = {1, 1, 1, -1};
-        int[] xUpdatesForMod = {1, -1, 1, 1};
-        int[] xUpdates = {0, 0, 1, -1};
-        int[] yUpdates = {1, -1, 0, 0};
-
-        int dirIndex;
-        int modDirIndex;
-        if (dir == Direction.RIGHT) {
-            dirIndex = 2;
-            modDirIndex = 2;
-        } else if (dir == Direction.LEFT) {
-            dirIndex = 3;
-            modDirIndex = 3;
-        } else if (dir == Direction.UP) {
-            dirIndex = 1;
-            modDirIndex = 1;
-        } else {
-            dirIndex = 0;
-            modDirIndex = 0;
-        }
-
-        if (this.arr.get(gridYellowGhostY + yUpdates[dirIndex]).get(gridYellowGhostX + xUpdates[dirIndex]) == 1) {
-            currentGhostDirection = Direction.STOP;
-        } else if(this.arr.get(gridYellowGhostY + yUpdates[dirIndex]).get(gridYellowGhostX + xUpdates[dirIndex]) != 1) {
-            if (pacmanY % 32 != 0) {
-                if (arr.get(gridYellowGhostY + yUpdatesForMod[modDirIndex]).get(gridYellowGhostX + xUpdatesForMod[modDirIndex]) == 1) { // complicated case (diagonal)
-                    currentGhostDirection = Direction.STOP;
-                    // 
-                    // 
-                    //
-                } else {
-                    yellowGhostY += normalGhostSpeed * yUpdates[dirIndex];
-                    yellowGhostX += normalGhostSpeed * xUpdates[dirIndex];
-                }
-            } else {
-                yellowGhostY += normalGhostSpeed * yUpdates[dirIndex];
-                yellowGhostX += normalGhostSpeed * xUpdates[dirIndex];
-            }
-        }
-    }
-
-    public void yellowGhostScatter() {
-        int targetYellowGhostLocationX = 2;
-        int targetYellowGhostLocationY  = 21;
-        if (targetYellowGhostLocationX > 0) {
-            currentGhostDirection = Direction.RIGHT;
-            if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        yellowGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    yellowGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(targetYellowGhostLocationX < 0) {
-            currentGhostDirection = Direction.LEFT;
-            if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        yellowGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    yellowGhostX -= normalGhostSpeed;
-                }
-            }
-        } else if(targetYellowGhostLocationY > 0) {
-            currentGhostDirection = Direction.DOWN;
-            if (this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        yellowGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    yellowGhostY += normalGhostSpeed;
-                }
-            }
-        }else if(targetYellowGhostLocationY < 0) {
-            currentGhostDirection = Direction.UP;
-            if (this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        yellowGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    yellowGhostY -= normalGhostSpeed;
-                }
-            }
             for(int i = 0;i < yellowCornerPairs.size();i++) {
                 Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
                 gridYellowGhostX = futurePair.left();
@@ -861,228 +549,309 @@ public class Ghosts {
     }
 
 
-    public void blueGhostScatter() {
-        int targetBlueGhostLocationX = 19;
-        int targetBlueGhostLocationY = 21;
-        if (targetBlueGhostLocationX > 0) {
-            currentGhostDirection = Direction.RIGHT;
-            if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        blueGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    blueGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(targetBlueGhostLocationX < 0) {
-            currentGhostDirection = Direction.LEFT;
-            if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        blueGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    blueGhostX -= normalGhostSpeed;
-                }
-            }
-        } else if(targetBlueGhostLocationY > 0) {
-            currentGhostDirection = Direction.DOWN;
-            if (this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        blueGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    blueGhostY += normalGhostSpeed;
-                }
-            }
-        } else if(targetBlueGhostLocationY < 0) {
-            currentGhostDirection = Direction.UP;
-            if (this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridBlueGhostY - 1).get(gridBlueGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        blueGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    blueGhostY -= normalGhostSpeed;
-                }
-            }
-
-            for(int i = 0;i < blueCornerPairs.size();i++) {
-                Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
-                gridBlueGhostX = futurePair.left();
-                gridBlueGhostY = futurePair.right();
-                if (futurePair == null) {
-                    futurePair = blueCornerPairs.get(0);
-                }
-            }
+    public void yellowGhostScatter() {
+        gridYellowGhostY = yellowGhostY / 32;
+        gridYellowGhostX = yellowGhostX / 32;
+        int targetYellowGhostLocationX = 2;
+        int targetYellowGhostLocationY  = 21;
+        Direction shortenedBFS = this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY)
+        if (shortenedBFS == Direction.RIGHT) {
+            
         }
+        // if (targetYellowGhostLocationX > 0) {
+        //     currentGhostDirection = Direction.RIGHT;
+        //     if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX + 1) != 1) {
+        //         if (yellowGhostY % 32 != 0) {
+        //             if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 yellowGhostX += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             yellowGhostX += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetYellowGhostLocationX < 0) {
+        //     currentGhostDirection = Direction.LEFT;
+        //     if (this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridYellowGhostY).get(gridYellowGhostX - 1) != 1) {
+        //         if (yellowGhostY % 32 != 0) {
+        //             if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX - 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 yellowGhostX -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             yellowGhostX -= normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetYellowGhostLocationY > 0) {
+        //     currentGhostDirection = Direction.DOWN;
+        //     if (this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridYellowGhostY + 1).get(gridYellowGhostX) != 1) {
+        //         if (yellowGhostX % 32 != 0) {
+        //             if (arr.get(gridYellowGhostY + 1).get(gridYellowGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 yellowGhostY += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             yellowGhostY += normalGhostSpeed;
+        //         }
+        //     }
+        // }else if(targetYellowGhostLocationY < 0) {
+        //     currentGhostDirection = Direction.UP;
+        //     if (this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridYellowGhostY - 1).get(gridYellowGhostX) != 1) {
+        //         if (yellowGhostX % 32 != 0) {
+        //             if (arr.get(gridYellowGhostY - 1).get(gridYellowGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 yellowGhostY -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             yellowGhostY -= normalGhostSpeed;
+        //         }
+        //     }
+        //     for(int i = 0;i < yellowCornerPairs.size();i++) {
+        //         Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
+        //         gridYellowGhostX = futurePair.left();
+        //         gridYellowGhostY = futurePair.right();
+        //         if (futurePair == null) {
+        //             futurePair = yellowCornerPairs.get(0);
+        //         }
+        //     }
+        // }
+    }
+
+
+    public void blueGhostScatter() {
+        // int targetBlueGhostLocationX = 19;
+        // int targetBlueGhostLocationY = 21;
+        // if (targetBlueGhostLocationX > 0) {
+        //     currentGhostDirection = Direction.RIGHT;
+        //     if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX + 1) != 1) {
+        //         if (pacmanY % 32 != 0) {
+        //             if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 blueGhostX += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             blueGhostX += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetBlueGhostLocationX < 0) {
+        //     currentGhostDirection = Direction.LEFT;
+        //     if (this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridBlueGhostY).get(gridBlueGhostX - 1) != 1) {
+        //         if (pacmanY % 32 != 0) {
+        //             if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX - 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 blueGhostX -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             blueGhostX -= normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetBlueGhostLocationY > 0) {
+        //     currentGhostDirection = Direction.DOWN;
+        //     if (this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridBlueGhostY + 1).get(gridBlueGhostX) != 1) {
+        //         if (pacmanX % 32 != 0) {
+        //             if (arr.get(gridBlueGhostY + 1).get(gridBlueGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 blueGhostY += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             blueGhostY += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetBlueGhostLocationY < 0) {
+        //     currentGhostDirection = Direction.UP;
+        //     if (this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridBlueGhostY - 1).get(gridBlueGhostX) != 1) {
+        //         if (pacmanX % 32 != 0) {
+        //             if (arr.get(gridBlueGhostY - 1).get(gridBlueGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 blueGhostY -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             blueGhostY -= normalGhostSpeed;
+        //         }
+        //     }
+
+        //     for(int i = 0;i < blueCornerPairs.size();i++) {
+        //         Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
+        //         gridBlueGhostX = futurePair.left();
+        //         gridBlueGhostY = futurePair.right();
+        //         if (futurePair == null) {
+        //             futurePair = blueCornerPairs.get(0);
+        //         }
+        //     }
+        // }
     }
 
     public void redGhostScatter() {
-        int targetRedGhostLocationX = 19;
-        int targetRedGhostLocationY = 2;
-        if (targetRedGhostLocationX > 0) {
-            currentGhostDirection = Direction.RIGHT;
-            if (this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    redGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(targetRedGhostLocationX < 0) {
-            currentGhostDirection = Direction.LEFT;
-            if (this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    redGhostX -= normalGhostSpeed;
-                }
-            }
-        } else if(targetRedGhostLocationY > 0) {
-            currentGhostDirection = Direction.DOWN;
-            if (this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    redGhostY += normalGhostSpeed;
-                }
-            }
-        } else if(targetRedGhostLocationY < 0) {
-            currentGhostDirection = Direction.UP;
-            if (this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridRedGhostY - 1).get(gridRedGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        redGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    redGhostY -= normalGhostSpeed;
-                }
-            }
-            for (int i = 0;i < redCornerPairs.size();i++) {
-                Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
-                gridRedGhostX = futurePair.left();
-                gridRedGhostY = futurePair.right();
-                if (futurePair == null) {
-                    futurePair = redCornerPairs.get(0);
-                }
-            }
-        }
+        // int targetRedGhostLocationX = 19;
+        // int targetRedGhostLocationY = 2;
+        // if (targetRedGhostLocationX > 0) {
+        //     currentGhostDirection = Direction.RIGHT;
+        //     if (this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridRedGhostY).get(gridRedGhostX + 1) != 1) {
+        //         if (redGhostY % 32 != 0) {
+        //             if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 redGhostX += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             redGhostX += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetRedGhostLocationX < 0) {
+        //     currentGhostDirection = Direction.LEFT;
+        //     if (this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridRedGhostY).get(gridRedGhostX - 1) != 1) {
+        //         if (redGhostY % 32 != 0) {
+        //             if (arr.get(gridRedGhostY + 1).get(gridRedGhostX - 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 redGhostX -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             redGhostX -= normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetRedGhostLocationY > 0) {
+        //     currentGhostDirection = Direction.DOWN;
+        //     if (this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridRedGhostY + 1).get(gridRedGhostX) != 1) {
+        //         if (redGhostX % 32 != 0) {
+        //             if (arr.get(gridRedGhostY + 1).get(gridRedGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 redGhostY += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             redGhostY += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetRedGhostLocationY < 0) {
+        //     currentGhostDirection = Direction.UP;
+        //     if (this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridRedGhostY - 1).get(gridRedGhostX) != 1) {
+        //         if (redGhostX % 32 != 0) {
+        //             if (arr.get(gridRedGhostY - 1).get(gridRedGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 redGhostY -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             redGhostY -= normalGhostSpeed;
+        //         }
+        //     }
+        //     for (int i = 0;i < redCornerPairs.size();i++) {
+        //         Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
+        //         gridRedGhostX = futurePair.left();
+        //         gridRedGhostY = futurePair.right();
+        //         if (futurePair == null) {
+        //             futurePair = redCornerPairs.get(0);
+        //         }
+        //     }
+        // }
     }
 
     public void pinkGhostScatter() {
-        int targetPinkGhostLocationX = 2;
-        int targetPinkGhostLocationY = 2;
-        if (targetPinkGhostLocationX > 0) {
-            currentGhostDirection = Direction.RIGHT;
-            if (this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostX += normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostX += normalGhostSpeed;
-                }
-            }
-        } else if(targetPinkGhostLocationX < 0) {
-            currentGhostDirection = Direction.LEFT;
-            if (this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) != 1) {
-                if (pacmanY % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX - 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostX -= normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostX -= normalGhostSpeed;
-                }
-            }
-        } else if(targetPinkGhostLocationY > 0) {
-            currentGhostDirection = Direction.DOWN;
-            if (this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostY += normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostY += normalGhostSpeed;
-                }
-            }
-        } else if(targetPinkGhostLocationY < 0) {
-            currentGhostDirection = Direction.UP;
-            if (this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) == 1) {
-                currentGhostDirection = Direction.STOP;
-            } else if(this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) != 1) {
-                if (pacmanX % 32 != 0) {
-                    if (arr.get(gridPinkGhostY - 1).get(gridPinkGhostX + 1) == 1) {
-                        currentGhostDirection = Direction.STOP;
-                    }else {
-                        pinkGhostY -= normalGhostSpeed;
-                    }
-                } else {
-                    pinkGhostY -= normalGhostSpeed;
-                }
-            }
-        }
+        // int targetPinkGhostLocationX = 2;
+        // int targetPinkGhostLocationY = 2;
+        // if (targetPinkGhostLocationX > 0) {
+        //     currentGhostDirection = Direction.RIGHT;
+        //     if (this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridPinkGhostY).get(gridPinkGhostX + 1) != 1) {
+        //         if (pacmanY % 32 != 0) {
+        //             if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 pinkGhostX += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             pinkGhostX += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetPinkGhostLocationX < 0) {
+        //     currentGhostDirection = Direction.LEFT;
+        //     if (this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridPinkGhostY).get(gridPinkGhostX - 1) != 1) {
+        //         if (pinkGhostY % 32 != 0) {
+        //             if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX - 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 pinkGhostX -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             pinkGhostX -= normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetPinkGhostLocationY > 0) {
+        //     currentGhostDirection = Direction.DOWN;
+        //     if (this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridPinkGhostY + 1).get(gridPinkGhostX) != 1) {
+        //         if (pinkGhostX % 32 != 0) {
+        //             if (arr.get(gridPinkGhostY + 1).get(gridPinkGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 pinkGhostY += normalGhostSpeed;
+        //             }
+        //         } else {
+        //             pinkGhostY += normalGhostSpeed;
+        //         }
+        //     }
+        // } else if(targetPinkGhostLocationY < 0) {
+        //     currentGhostDirection = Direction.UP;
+        //     if (this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) == 1) {
+        //         currentGhostDirection = Direction.STOP;
+        //     } else if(this.arr.get(gridPinkGhostY - 1).get(gridPinkGhostX) != 1) {
+        //         if (pinkGhostX % 32 != 0) {
+        //             if (arr.get(gridPinkGhostY - 1).get(gridPinkGhostX + 1) == 1) {
+        //                 currentGhostDirection = Direction.STOP;
+        //             }else {
+        //                 pinkGhostY -= normalGhostSpeed;
+        //             }
+        //         } else {
+        //             pinkGhostY -= normalGhostSpeed;
+        //         }
+        //     }
+        // }
         
-        for(int i = 0; i < pinkCornerPairs.size(); i++) {
-            Pair<Integer, Integer> futurePair = pinkCornerPairs.get((i + 1) % pinkCornerPairs.size());
-            gridPinkGhostX = futurePair.left();
-            gridPinkGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = pinkCornerPairs.get(0);
-            }
-        }
+        // for(int i = 0; i < pinkCornerPairs.size(); i++) {
+        //     Pair<Integer, Integer> futurePair = pinkCornerPairs.get((i + 1) % pinkCornerPairs.size());
+        //     gridPinkGhostX = futurePair.left();
+        //     gridPinkGhostY = futurePair.right();
+        //     if (futurePair == null) {
+        //         futurePair = pinkCornerPairs.get(0);
+        //     }
+        // }
     }
 
     public void paintComponent(Graphics graphics, boolean ghostsVulnerable, long timerEnd1, long timerEnd2) {

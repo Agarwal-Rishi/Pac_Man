@@ -235,14 +235,12 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 score += 100;
             }
         }
-        // if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
-        //     score += 10;
-        //     this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
-        // } else if(this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
-        //     this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
-        //     timerEnd1 = System.currentTimeMillis() + 8000;
-        //     timerEnd2 = System.currentTimeMillis() + 10000;
-        // }
+
+        if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 3) {
+            timerEnd1 = System.currentTimeMillis() + 8000;
+            timerEnd2 = System.currentTimeMillis() + 10000;
+            this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
+        }
     }
 
     @Override
