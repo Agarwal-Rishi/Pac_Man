@@ -115,7 +115,7 @@ public class Pacman {
     public void drawPacman(Graphics graphics) {
         if (currentPacmanImage != null) {
             graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, null);
-            System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
+            // System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
         }
     }
 
@@ -163,11 +163,11 @@ public class Pacman {
         if (pacmanY % 32 != 0 && currentDirection == Direction.UP) {
             gridY += 1; 
         } 
-        System.out.println(gridX);
-        System.out.println(gridY);
-        System.out.println("here");
+        // System.out.println(gridX);
+        // System.out.println(gridY);
+        // System.out.println("here");
         if (currentDirection == Direction.RIGHT && gridX == 27) {
-            System.out.println("set x to 0");
+            // System.out.println("set x to 0");
             pacmanX = 0;
         } else if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
