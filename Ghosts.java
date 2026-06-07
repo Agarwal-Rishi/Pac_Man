@@ -315,8 +315,9 @@ public class Ghosts {
     }
 
     public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted) {
+        currentPacmanDirection = currentDirection;
         if (gameStarted) {
-            this.redGhostChaseAlgorithm();
+            this.redGhostChaseAlgorithm(gridPacmanX, gridPacmanY);
         }
 
     }
@@ -352,8 +353,10 @@ public class Ghosts {
             for (int i = 0; i < 4; i++) {
                 int diff_x = xdiffs[i]; 
                 int diff_y = ydiffs[i];
-                if (arr.get(cur.right() + diff_y).get(cur.left + diff_x) != 1 && cur.right() + diff_y != 27 && cur.left() + diff_x != 27 && cur.right() + diff_y != 0 && cur.left() + diff_x != 0) {
-                    Pair<Integer, Integer> nei = new Pair<Integer,Integer>(cur.left() + diff_x, cur.right() + diff_y);
+                int nextX = cur.left() + diff_x;
+                int nextY = cur.right() + diff_y;
+                Pair<Integer, Integer> nei = new Pair<Integer,Integer>(nextX, nextY);
+                if (nextX > 0 && nextX < 27 && nextY > 0 && nextY < 27 && arr.get(nextY).get(nextX) != 1 && !hashSet.contains(nei) && !hashmap.containsKey(nei)) {
                     queue.add(nei);
                     hashmap.put(nei, cur);
                 }
@@ -364,15 +367,19 @@ public class Ghosts {
             return Direction.STOP;
         } else {
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
-            while (backtrackStart != start) {
-                backtrackStart = hashmap.get(backtrackStart);
+            while (!backtrackStart.equals(start)) {
+                Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
+                if (previous == null) {
+                    return Direction.STOP;
+                }
+                backtrackStart = previous;
                 int startDiff = Math.abs((backtrackStart.left() + backtrackStart.right()) - (start.left() + start.right()));
                 if (startDiff == 1) {
                     if (start.right() == backtrackStart.right() + 1) {
-                        return Direction.DOWN;
+                        return Direction.UP;
                     }
                     if (start.right() == backtrackStart.right() - 1) {
-                        return Direction.UP;
+                        return Direction.DOWN;
                     }
                     if (start.left() == backtrackStart.left() + 1) {
                         return Direction.LEFT;
@@ -390,22 +397,23 @@ public class Ghosts {
 
     }
 
-    public void redGhostChaseAlgorithm() {
+    public void redGhostChaseAlgorithm(int gridPacmanX, int gridPacmanY) {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
-        int gridPacmanX = pacmanX / 32;
-        int gridPacmanY = pacmanY / 32;
-        if (this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.RIGHT) {
-            redGhostX += 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.LEFT) {
-            redGhostX -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.UP) {
-            redGhostY -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY) == Direction.DOWN) {
-            redGhostY += 4;
-        } 
         
-        System.out.println(this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY));
+        if (redGhostX % 32 == 0 && redGhostY % 32 == 0) {
+            Direction direction = this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY);
+            if (direction == Direction.RIGHT) {
+                redGhostX += 4;
+            } else if(direction == Direction.LEFT) {
+                redGhostX -= 4;
+            } else if(direction == Direction.UP) {
+                redGhostY -= 4;
+            } else if(direction == Direction.DOWN) {
+                redGhostY += 4;
+            } 
+        }
+        
     }
 
     public void pinkGhostChaseAlgorithm() {

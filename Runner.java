@@ -8,10 +8,11 @@ public class Runner {
 
         frame.add(screen);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.pack();
-        screen.animate();
+        screen.requestFocusInWindow();
+        new Thread(screen::animate).start();
         
         
     }

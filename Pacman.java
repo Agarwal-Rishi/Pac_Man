@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -112,10 +113,9 @@ public class Pacman {
         
     }
         
-    public void drawPacman(Graphics graphics) {
+    public void drawPacman(Graphics graphics, ImageObserver observer) {
         if (currentPacmanImage != null) {
-            graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, null);
-            // System.out.println("Pacman X: " + pacmanX + " Pacman Y: " + pacmanY);
+            graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, observer);
         }
     }
 
@@ -264,4 +264,3 @@ public class Pacman {
     }
 
 }
-

@@ -132,8 +132,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             graphics.drawLine(0,i,dimensionX,i);
         } 
 
-        pacman.drawPacman(graphics);
-
         for (int i = 0; i < arr.size(); i++) {
             for (int j = 0; j < arr.get(i).size(); j++) {
                 if (arr.get(i).get(j) == 1) {
@@ -151,6 +149,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 }
             }
         }
+
+        pacman.drawPacman(graphics, this);
 
         ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
         
@@ -180,28 +180,29 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent event) {
         // code to move the pacman
-        if (event.getKeyCode() == 39) {
+        if (event.getKeyCode() == KeyEvent.VK_RIGHT) {
+
             // move the pacman to the right and change the image to the right
             this.pacman.currentDirection = Direction.RIGHT;
             this.pacman.pacmanAnimationRight();
             gameStarted = true;
             
         }
-        if (event.getKeyCode() == 37) {
+        if (event.getKeyCode() == KeyEvent.VK_LEFT) {
             // move the pacman to the left and change the image to the left
             this.pacman.currentDirection = Direction.LEFT;
             this.pacman.pacmanAnimationLeft();
             gameStarted = true;
             
         }
-        if (event.getKeyCode() == 38) {
+        if (event.getKeyCode() == KeyEvent.VK_UP) {
             // move the pacman up and change the image to the up
             this.pacman.currentDirection = Direction.UP;
             this.pacman.pacmanAnimationUp();
             gameStarted = true;
             
         }
-        if (event.getKeyCode() == 40) {
+        if (event.getKeyCode() == KeyEvent.VK_DOWN) {
             // move the pacman down and change the image to the down
             this.pacman.currentDirection = Direction.DOWN;
             this.pacman.pacmanAnimationDown();
@@ -222,12 +223,12 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
         } else if (amount == 16) {
             if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
                 score += 100;
-                this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 0);
+                this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
             }
             
             if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
                 score += 100;
-                this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 0);
+                this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 2);
             }
         } else if (amount < 16) {
             if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
