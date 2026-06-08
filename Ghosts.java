@@ -327,21 +327,24 @@ public class Ghosts {
         Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
         HashSet<Pair<Integer, Integer>> hashSet = new HashSet<>();
         boolean pacmanFound = false;
-            // TO REMEMBER: URGENT
-            // dirtomove = bfs(start, end), 
-            // take in: start location, end location
-            // returb: directiont o move in
+        // TO REMEMBER: URGENT
+        // dirtomove = bfs(start, end), 
+        // take in: start location, end location
+        // returb: directiont o move in
 
         Pair<Integer, Integer> start = new Pair<Integer,Integer>(startX, startY);
         queue.add(start);
         hashmap.put(start, null);
-        int[] xdiffs = {-1, 0, 1, 0};
-        int[] ydiffs = {0, -1, 0, 1};
+        int[] xdiffs = {-4, 0, 4, 0};
+        int[] ydiffs = {0, -4, 0, 4};
             
         while (!queue.isEmpty() && !pacmanFound) {
             Pair<Integer, Integer> cur = queue.poll();
             if (cur.equals(new Pair<Integer,Integer>(endX, endY))) {
+                // System.out.println(endX);
+                // System.out.println(endY);
                 pacmanFound = true;
+                System.out.println("the pacman has been found");
                 break;
             }
             if (hashSet.contains(cur)) {
@@ -356,7 +359,19 @@ public class Ghosts {
                 int nextX = cur.left() + diff_x;
                 int nextY = cur.right() + diff_y;
                 Pair<Integer, Integer> nei = new Pair<Integer,Integer>(nextX, nextY);
-                if (nextX > 0 && nextX < 27 && nextY > 0 && nextY < 27 && arr.get(nextY).get(nextX) != 1 && !hashSet.contains(nei) && !hashmap.containsKey(nei)) {
+                if (nextX >= 0 && nextX < 864 && nextY >= 0 && nextY < 864 && arr.get(nextY / 32).get(nextX /  32) != 1 && !hashSet.contains(nei)) {
+                    if (nextX > cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
+                        break;
+                    }
+                    if (nextX < cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
+                        break;
+                    }
+                    if (nextY > cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
+                        break;
+                    }
+                    if (nextY < cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
+                        break;
+                    }
                     queue.add(nei);
                     hashmap.put(nei, cur);
                 }
@@ -372,22 +387,29 @@ public class Ghosts {
                 if (previous == null) {
                     return Direction.STOP;
                 }
+
                 backtrackStart = previous;
                 int startDiff = Math.abs((backtrackStart.left() + backtrackStart.right()) - (start.left() + start.right()));
-                if (startDiff == 1) {
-                    if (start.right() == backtrackStart.right() + 1) {
+                if (startDiff == 32) {
+                    if (start.right() == backtrackStart.right() + 32) {
+                        System.out.println("UP");
                         return Direction.UP;
                     }
-                    if (start.right() == backtrackStart.right() - 1) {
+                    if (start.right() == backtrackStart.right() - 32) {
+                        System.out.println("DOWN");
                         return Direction.DOWN;
                     }
-                    if (start.left() == backtrackStart.left() + 1) {
+                    if (start.left() == backtrackStart.left() + 32) {
+                        System.out.println("LEFT");
                         return Direction.LEFT;
                     }
-                    if (start.left() == backtrackStart.left() - 1) {
+                    if (start.left() == backtrackStart.left() - 32) {
+                        System.out.println("RIGHT");
                         return Direction.RIGHT;
                     }
-                } else{
+                    System.out.println(backtrackStart);
+                    break;
+                } else {
                     continue;
                 }
             }
@@ -401,8 +423,9 @@ public class Ghosts {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
         
-        if (redGhostX % 32 == 0 && redGhostY % 32 == 0) {
-            Direction direction = this.bfs(gridRedGhostX, gridRedGhostY, gridPacmanX, gridPacmanY);
+        
+            Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
+            // System.out.println(direction);
             if (direction == Direction.RIGHT) {
                 redGhostX += 4;
             } else if(direction == Direction.LEFT) {
@@ -412,7 +435,7 @@ public class Ghosts {
             } else if(direction == Direction.DOWN) {
                 redGhostY += 4;
             } 
-        }
+        
         
     }
 

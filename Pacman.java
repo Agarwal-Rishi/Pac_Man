@@ -36,7 +36,16 @@ public class Pacman {
     Image scaledPacmanUpPhase3;
     Image scaledPacmanDownPhase3;
 
-    
+    Image scaledPacmanDyingPhase4;
+    Image scaledPacmanDyingPhase5;
+    Image scaledPacmanDyingPhase6;
+    Image scaledPacmanDyingPhase7;
+    Image scaledPacmanDyingPhase8;
+    Image scaledPacmanDyingPhase9;
+    Image scaledPacmanDyingPhase10;
+    Image scaledPacmanDyingPhase11;
+    Image scaledPacmanDyingPhase12;
+    Image scaledPacmanDyingPhase13;
 
     Image currentPacmanImage;
     int pacmanWidth = 32;
@@ -46,6 +55,7 @@ public class Pacman {
     Image[] scaledPacmanLeft;
     Image[] scaledPacmanUp;
     Image[] scaledPacmanDown;
+    Image[] scaledPacmanDying;
     
 
     int pacmanImageIndex;
@@ -93,12 +103,24 @@ public class Pacman {
         scaledPacmanLeftPhase3 = pacmanLeftPhase3.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
         scaledPacmanUpPhase3 = pacmanUpPhase3.getImage().getScaledInstance(pacmanWidth,pacmanLength, Image.SCALE_SMOOTH);
         scaledPacmanDownPhase3 = pacmanDownPhase3.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
-        
+
+
+        scaledPacmanDyingPhase4 = pacmanDyingPhase4.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase5 = pacmanDyingPhase5.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase6 = pacmanDyingPhase6.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase7 = pacmanDyingPhase7.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase8 = pacmanDyingPhase8.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase9 = pacmanDyingPhase9.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase10 = pacmanDyingPhase10.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase11 = pacmanDyingPhase11.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase12 = pacmanDyingPhase12.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
+        scaledPacmanDyingPhase13 = pacmanDyingPhase13.getImage().getScaledInstance(pacmanWidth,pacmanLength,Image.SCALE_SMOOTH);
 
         scaledPacmanRight = new Image[] {scaledPacmanPhase1, scaledPacmanRightPhase2, scaledPacmanRightPhase3};
         scaledPacmanLeft = new Image[] {scaledPacmanPhase1, scaledPacmanLeftPhase2, scaledPacmanLeftPhase3};
         scaledPacmanUp = new Image[] {scaledPacmanPhase1, scaledPacmanUpPhase2, scaledPacmanUpPhase3};
         scaledPacmanDown = new Image[] {scaledPacmanPhase1, scaledPacmanDownPhase2, scaledPacmanDownPhase3};
+        scaledPacmanDying = new Image[] {scaledPacmanDyingPhase4, scaledPacmanDyingPhase5, scaledPacmanDyingPhase6, scaledPacmanDyingPhase7, scaledPacmanDyingPhase8, scaledPacmanDyingPhase9, scaledPacmanDyingPhase10, scaledPacmanDyingPhase11, scaledPacmanDyingPhase12, scaledPacmanDyingPhase13};
 
         currentPacmanImage = scaledPacmanRight[0];
 
@@ -118,7 +140,17 @@ public class Pacman {
             graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, observer);
         }
     }
-
+    public void pacmanDying() {
+        
+            if (pacmanImageIndex != 12) {
+                pacmanImageIndex += 1;
+            }else {
+                pacmanImageIndex = 0;
+            }
+            currentPacmanImage = scaledPacmanDying[pacmanImageIndex];
+        
+        }
+    
     public void pacmanAnimationRight() {
         if (pacmanImageIndex != 2) {
             pacmanImageIndex += 1;

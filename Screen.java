@@ -45,6 +45,8 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
     
     int score;
+
+    int numOfPellets = 0;
     // constructor
     public Screen() {
 
@@ -73,6 +75,14 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 }
             }
             arr.add(smallArr);
+        }
+
+        for(int i = 0; i < arr.size(); i++) {
+            for(int j = 0; j < arr.get(i).size(); j++) {
+                if(arr.get(i).get(j) == 0) {
+                    numOfPellets += 1;
+                }
+            }
         }
 
 
@@ -113,7 +123,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 e.printStackTrace(); // or handle it in some other way
             }
         }
-    }     
+    } 
 
     @Override
     public Dimension getPreferredSize(){
@@ -122,39 +132,44 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void paintComponent(Graphics graphics){
-        super.paintComponent(graphics);
 
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0,0,dimensionX,dimensionY);
-
-        for (int i = 0; i <= dimensionX; i += gridLengthWidth) {
-            graphics.drawLine(i,0,i,dimensionY);
-            graphics.drawLine(0,i,dimensionX,i);
-        } 
-
-        for (int i = 0; i < arr.size(); i++) {
-            for (int j = 0; j < arr.get(i).size(); j++) {
-                if (arr.get(i).get(j) == 1) {
-                    graphics.drawImage(scaledWall, j * 32, i * 32, this);
-                } 
-            }
-        }
-
-        for (int i = 0; i < this.arr.size(); i++) {
-            for (int j = 0; j < this.arr.get(i).size(); j++) {
-                if (this.arr.get(i).get(j) == 0) {
-                    graphics.drawImage(scaledPowerPellet, j * 32, i * 32, this);
-                } else if(this.arr.get(i).get(j) ==  3) {
-                    graphics.drawImage(scaledBigPowerPellet, j * 32, i * 32, this);
+        if (!win()) {
+            super.paintComponent(graphics);
+    
+            graphics.setColor(Color.BLACK);
+            graphics.fillRect(0,0,dimensionX,dimensionY);
+    
+            for (int i = 0; i <= dimensionX; i += gridLengthWidth) {
+                graphics.drawLine(i,0,i,dimensionY);
+                graphics.drawLine(0,i,dimensionX,i);
+            } 
+    
+            for (int i = 0; i < arr.size(); i++) {
+                for (int j = 0; j < arr.get(i).size(); j++) {
+                    if (arr.get(i).get(j) == 1) {
+                        graphics.drawImage(scaledWall, j * 32, i * 32, this);
+                    } 
                 }
             }
+    
+            for (int i = 0; i < this.arr.size(); i++) {
+                for (int j = 0; j < this.arr.get(i).size(); j++) {
+                    if (this.arr.get(i).get(j) == 0) {
+                        graphics.drawImage(scaledPowerPellet, j * 32, i * 32, this);
+                    } else if(this.arr.get(i).get(j) ==  3) {
+                        graphics.drawImage(scaledBigPowerPellet, j * 32, i * 32, this);
+                    }
+                }
+            }
+    
+            pacman.drawPacman(graphics, this);
+    
+            ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
+            
+            graphics.drawString(String.valueOf(score), 5, 5); 
+        } else {
+            graphics.drawString("YOU WIN, LUCKY AAAH NO SKILLER", 400, 400);
         }
-
-        pacman.drawPacman(graphics, this);
-
-        ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
-        
-        graphics.drawString(String.valueOf(score), 5, 5); 
     }
     // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.
     
@@ -219,21 +234,25 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
                 this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
                 score += 100;
+                numOfPellets -= 1;
             }
         } else if (amount == 16) {
             if (this.arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 0) {
                 score += 100;
+                numOfPellets -= 1;
                 this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
             }
             
             if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
                 score += 100;
+                numOfPellets -= 1;
                 this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 2);
             }
         } else if (amount < 16) {
             if (this.arr.get(this.pacman.getGridY() + 1).get(this.pacman.getGridX()) == 0) {
                 this.arr.get(this.pacman.getGridY() + 1).set(this.pacman.getGridX(), 2);
                 score += 100;
+                numOfPellets -= 1;
             }
         }
 
@@ -242,8 +261,19 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             timerEnd2 = System.currentTimeMillis() + 10000;
             this.arr.get(this.pacman.getGridY()).set(this.pacman.getGridX(), 2);
         }
+
+        // these next lines will see if the pacman has won the game
+
+        
     }
 
+    public boolean win() {
+        if (numOfPellets == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     public void keyReleased(KeyEvent event) {
         // Required by KeyListener interface
