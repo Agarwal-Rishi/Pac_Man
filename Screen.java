@@ -111,6 +111,12 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     public void animate() {
         while (true) {
+            if (ghostsVulnerable()) {
+                ghosts.redGhostScatter();
+                ghosts.yellowGhostScatter();
+                ghosts.pinkGhostScatter();
+                ghosts.blueGhostScatter();
+            }
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
@@ -186,10 +192,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.
 
     private boolean ghostsVulnerable() {
-        ghosts.redGhostScatter();
-        ghosts.yellowGhostScatter();
-        ghosts.pinkGhostScatter();
-        ghosts.blueGhostScatter();
         if (System.currentTimeMillis() < this.timerEnd2) {
             return true;
         } else {

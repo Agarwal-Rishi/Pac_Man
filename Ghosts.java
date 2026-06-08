@@ -316,14 +316,51 @@ public class Ghosts {
 
     public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted, int pacmanX, int pacmanY) {
         currentPacmanDirection = currentDirection;
-        if (gameStarted) {
-            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+        if (pacmanX != 416 || pacmanY != 288) {
+            firstSwitch = System.currentTimeMillis() + 7000;
+            secondSwitch = System.currentTimeMillis() + 27000;
+            thirdSwitch = System.currentTimeMillis() + 34000;
+            fourthSwitch = System.currentTimeMillis() + 54000;
+            fifthSwitch = System.currentTimeMillis() + 59000;
+            sixthSwitch = System.currentTimeMillis() + 79000;
+            seventhSwitch = System.currentTimeMillis() + 84000;
+            if (System.currentTimeMillis() <= firstSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.blueGhostScatter();
+            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
+            } else if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.yellowGhostScatter();
+            } else if(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                this.pinkGhostChaseAlgorithm();
+                this.yellowGhostChaseAlgorithm();
+            } else if(sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
+                this.blueGhostScatter();
+                this.redGhostScatter();
+                this.pinkGhostScatter();
+                this.yellowGhostScatter();
+            } else if(System.currentTimeMillis() <= seventhSwitch) {
+                this.blueGhostChaseAlgorithm(currentDirection);
+                this.yellowGhostChaseAlgorithm();
+                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                this.pinkGhostChaseAlgorithm();
+            }
         }
 
     }
 
     public Direction bfs(int startX, int startY, int endX, int endY) {
-        
+        System.out.println("RUNNING BFS");
         HashMap<Pair<Integer, Integer>, Pair<Integer, Integer>> hashmap = new HashMap<>();
         Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
         HashSet<Pair<Integer, Integer>> hashSet = new HashSet<>();
@@ -380,22 +417,22 @@ public class Ghosts {
         }
 
         if (!pacmanFound) {
-            System.out.println("STOP");
+            // System.out.println("STOP");
             return Direction.STOP;
         } else {
-            System.out.println("BACKTRACK");
+            // System.out.println("BACKTRACK");
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
 
             while (!backtrackStart.equals(start)) {
                 Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
                 
                 if (previous == null) {
-                    System.out.println("ISSUE, STOP");
+                    // System.out.println("ISSUE, STOP");
                     return Direction.STOP;
                 }
 
                 if (previous.equals(start)) {
-                    System.out.println("FOUND");
+                    // System.out.println("FOUND");
                     if (backtrackStart.left() + 4 == start.left()) {
                         return Direction.LEFT;
                     }
@@ -420,19 +457,20 @@ public class Ghosts {
     public void redGhostChaseAlgorithm(int pacmanX, int pacmanY) {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
+
+        System.out.println("RED GHOST ALG");
         
-            Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
-            // System.out.println(direction);
-            if (direction == Direction.RIGHT) {
-                redGhostX += normalGhostSpeed;
-            } else if(direction == Direction.LEFT) {
-                redGhostX -= normalGhostSpeed;
-            } else if(direction == Direction.UP) {
-                redGhostY -= normalGhostSpeed;
-            } else if(direction == Direction.DOWN) {
-                redGhostY += normalGhostSpeed;
-            } 
-        
+        Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
+        // System.out.println(direction);
+        if (direction == Direction.RIGHT) {
+            redGhostX += 4;
+        } else if(direction == Direction.LEFT) {
+            redGhostX -= 4;
+        } else if(direction == Direction.UP) {
+            redGhostY -= 4;
+        } else if(direction == Direction.DOWN) {
+            redGhostY += 4;
+        } 
         
     }
 
