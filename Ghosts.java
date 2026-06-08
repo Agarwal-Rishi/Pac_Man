@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 public class Ghosts {
     int ghostWidth = 28;
     int ghostLength = 28;
-    int normalGhostSpeed = 4;
+    int normalGhostSpeed = 3;
 
     int redGhostX = 448;
     int redGhostY = 416;
@@ -362,16 +362,16 @@ public class Ghosts {
                 Pair<Integer, Integer> nei = new Pair<Integer,Integer>(nextX, nextY);
                 if (nextX >= 0 && nextX < 864 && nextY >= 0 && nextY < 864 && arr.get(nextY / 32).get(nextX /  32) != 1 && !hashSet.contains(nei)) {
                     if (nextX > cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
-                        break;
+                        continue;
                     }
                     if (nextX < cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
-                        break;
+                        continue;
                     }
                     if (nextY > cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
-                        break;
+                        continue;
                     }
                     if (nextY < cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
-                        break;
+                        continue;
                     }
                     queue.add(nei);
                     hashmap.put(nei, cur);
@@ -385,14 +385,17 @@ public class Ghosts {
         } else {
             System.out.println("BACKTRACK");
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
+
             while (!backtrackStart.equals(start)) {
                 Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
+                
                 if (previous == null) {
                     System.out.println("ISSUE, STOP");
                     return Direction.STOP;
                 }
-                backtrackStart = previous;
+
                 if (previous.equals(start)) {
+                    System.out.println("FOUND");
                     if (backtrackStart.left() + 4 == start.left()) {
                         return Direction.LEFT;
                     }
@@ -406,7 +409,7 @@ public class Ghosts {
                         return Direction.DOWN;
                     }
                 }
-                    break;
+                backtrackStart = previous;
             }
 
         }
@@ -421,13 +424,13 @@ public class Ghosts {
             Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
             // System.out.println(direction);
             if (direction == Direction.RIGHT) {
-                redGhostX += 4;
+                redGhostX += normalGhostSpeed;
             } else if(direction == Direction.LEFT) {
-                redGhostX -= 4;
+                redGhostX -= normalGhostSpeed;
             } else if(direction == Direction.UP) {
-                redGhostY -= 4;
+                redGhostY -= normalGhostSpeed;
             } else if(direction == Direction.DOWN) {
-                redGhostY += 4;
+                redGhostY += normalGhostSpeed;
             } 
         
         
@@ -540,12 +543,17 @@ public class Ghosts {
             yellowGhostY += 4;
         } 
         
-        for(int i = 0;i < yellowCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-            gridYellowGhostX = futurePair.left();                gridYellowGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = yellowCornerPairs.get(0);
+        for (int i = 0;i < yellowCornerPairs.size();i++) {
+            if (i != 27) {
+                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
+                gridYellowGhostX = futurePair.left();
+                gridYellowGhostY = futurePair.right();
+            } else {
+                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(0);
+                gridYellowGhostX = futurePair.left();  
+                gridYellowGhostY = futurePair.right();
             }
+            
         }
         
     }
@@ -565,13 +573,17 @@ public class Ghosts {
             blueGhostY += 4;
         } 
         
-        for(int i = 0;i < blueCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
-            gridBlueGhostX = futurePair.left();
-            gridBlueGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = blueCornerPairs.get(0);
+        for (int i = 0;i < blueCornerPairs.size();i++) {
+            if (i!= 27) {
+                Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
+                gridBlueGhostX = futurePair.left();
+                gridBlueGhostY = futurePair.right();
+            } else {
+                Pair<Integer, Integer> futurePair = blueCornerPairs.get(0);
+                gridBlueGhostX = futurePair.left();  
+                gridBlueGhostY = futurePair.right();
             }
+            
         }
     }
 
@@ -591,12 +603,16 @@ public class Ghosts {
 
         
         for (int i = 0;i < redCornerPairs.size();i++) {
-            Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
-            gridRedGhostX = futurePair.left();
-            gridRedGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = redCornerPairs.get(0);
+            if (i != 27) {
+                Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
+                gridRedGhostX = futurePair.left();
+                gridRedGhostY = futurePair.right();
+            } else {
+                Pair<Integer, Integer> futurePair = redCornerPairs.get(0);
+                gridRedGhostX = futurePair.left();  
+                gridRedGhostY = futurePair.right();
             }
+            
         }
     }
 
@@ -614,13 +630,17 @@ public class Ghosts {
             pinkGhostY += 4;
         } 
 
-        for(int i = 0; i < pinkCornerPairs.size(); i++) {
-            Pair<Integer, Integer> futurePair = pinkCornerPairs.get((i + 1) % pinkCornerPairs.size());
-            gridPinkGhostX = futurePair.left();
-            gridPinkGhostY = futurePair.right();
-            if (futurePair == null) {
-                futurePair = pinkCornerPairs.get(0);
+        for (int i = 0;i < pinkCornerPairs.size();i++) {
+            if (i != 27) {
+                Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
+                gridPinkGhostX = futurePair.left();
+                gridPinkGhostY = futurePair.right();
+            } else {
+                Pair<Integer, Integer> futurePair = pinkCornerPairs.get(0);
+                gridPinkGhostX = futurePair.left();  
+                gridPinkGhostY = futurePair.right();
             }
+            
         }
     }
 

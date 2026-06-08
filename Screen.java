@@ -168,23 +168,28 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             
             graphics.drawString(String.valueOf(score), 5, 5); 
         } else {
-            graphics.drawString("YOU WIN, LUCKY AAAH NO SKILLER", 400, 400);
+            graphics.drawString("YOU WIN, LUCKY AHHH NO SKILLER", 400, 400);
         }
-    }
-    // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.
-    
-    private boolean deadOrAlive() {
-        if (ghostsVulnerable()) {
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
-                return true;
-            }
-        }
-        return false;
     }
 
-    
+
+    public boolean deadOrAlive() {
+        if(!ghostsVulnerable() && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
+            this.pacman.pacmanDying();
+            return true;
+        }else {
+            
+            return false;
+        }
+    }
+
+    // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.
 
     private boolean ghostsVulnerable() {
+        ghosts.redGhostScatter();
+        ghosts.yellowGhostScatter();
+        ghosts.pinkGhostScatter();
+        ghosts.blueGhostScatter();
         if (System.currentTimeMillis() < this.timerEnd2) {
             return true;
         } else {
