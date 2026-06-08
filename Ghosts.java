@@ -314,15 +314,16 @@ public class Ghosts {
         
     }
 
-    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted) {
+    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted, int pacmanX, int pacmanY) {
         currentPacmanDirection = currentDirection;
         if (gameStarted) {
-            this.redGhostChaseAlgorithm(gridPacmanX, gridPacmanY);
+            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
         }
 
     }
 
     public Direction bfs(int startX, int startY, int endX, int endY) {
+        
         HashMap<Pair<Integer, Integer>, Pair<Integer, Integer>> hashmap = new HashMap<>();
         Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
         HashSet<Pair<Integer, Integer>> hashSet = new HashSet<>();
@@ -379,39 +380,33 @@ public class Ghosts {
         }
 
         if (!pacmanFound) {
+            System.out.println("STOP");
             return Direction.STOP;
         } else {
+            System.out.println("BACKTRACK");
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
             while (!backtrackStart.equals(start)) {
                 Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
                 if (previous == null) {
+                    System.out.println("ISSUE, STOP");
                     return Direction.STOP;
                 }
-
                 backtrackStart = previous;
-                int startDiff = Math.abs((backtrackStart.left() + backtrackStart.right()) - (start.left() + start.right()));
-                if (startDiff == 32) {
-                    if (start.right() == backtrackStart.right() + 32) {
-                        System.out.println("UP");
-                        return Direction.UP;
-                    }
-                    if (start.right() == backtrackStart.right() - 32) {
-                        System.out.println("DOWN");
-                        return Direction.DOWN;
-                    }
-                    if (start.left() == backtrackStart.left() + 32) {
-                        System.out.println("LEFT");
+                if (previous.equals(start)) {
+                    if (backtrackStart.left() + 4 == start.left()) {
                         return Direction.LEFT;
                     }
-                    if (start.left() == backtrackStart.left() - 32) {
-                        System.out.println("RIGHT");
+                    if (backtrackStart.right() + 4 == start.right()) {
+                        return Direction.UP;
+                    }
+                    if (backtrackStart.left() - 4 == start.left()) {
                         return Direction.RIGHT;
                     }
-                    System.out.println(backtrackStart);
-                    break;
-                } else {
-                    continue;
+                    if (backtrackStart.right() - 4 == start.right()) {
+                        return Direction.DOWN;
+                    }
                 }
+                    break;
             }
 
         }
@@ -419,10 +414,9 @@ public class Ghosts {
 
     }
 
-    public void redGhostChaseAlgorithm(int gridPacmanX, int gridPacmanY) {
+    public void redGhostChaseAlgorithm(int pacmanX, int pacmanY) {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
-        
         
             Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
             // System.out.println(direction);

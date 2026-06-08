@@ -114,7 +114,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
-            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted);
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted, pacman.getPacmanX(), pacman.getPacmanY());
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
