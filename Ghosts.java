@@ -14,8 +14,8 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 
 public class Ghosts {
-    int ghostWidth = 28;
-    int ghostLength = 28;
+    int ghostWidth = 32;
+    int ghostLength = 32;
     int normalGhostSpeed = 3;
 
     int redGhostX = 448;
@@ -317,8 +317,10 @@ public class Ghosts {
     }
 
     public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted, int pacmanX, int pacmanY) {
+        // System.out.println("ANIMATE");
         currentPacmanDirection = currentDirection;
         if (pacmanX != 416 || pacmanY != 288) {
+            // System.out.println("LOOP");
             firstSwitch = System.currentTimeMillis() + 7000;
             secondSwitch = System.currentTimeMillis() + 27000;
             thirdSwitch = System.currentTimeMillis() + 34000;
@@ -326,32 +328,37 @@ public class Ghosts {
             fifthSwitch = System.currentTimeMillis() + 59000;
             sixthSwitch = System.currentTimeMillis() + 79000;
             seventhSwitch = System.currentTimeMillis() + 84000;
-            if (System.currentTimeMillis() <= firstSwitch) {
+            while(System.currentTimeMillis() <= firstSwitch) {
                 // this.blueGhostScatter();
                 this.redGhostScatter();
                 // this.pinkGhostScatter();
                 // this.blueGhostScatter();
-            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
+            } 
+            while( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
                 // this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
                 // this.pinkGhostChaseAlgorithm();
                 // this.yellowGhostChaseAlgorithm();
-            } else if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
+            } 
+            while(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
                 // this.blueGhostScatter();
                 this.redGhostScatter();
                 // this.pinkGhostScatter();
                 // this.yellowGhostScatter();
-            } else if(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
+            } 
+            while(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
                 // this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
                 // this.pinkGhostChaseAlgorithm();
                 // this.yellowGhostChaseAlgorithm();
-            } else if(sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
+            } 
+            while(sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
                 // this.blueGhostScatter();
                 this.redGhostScatter();
                 // this.pinkGhostScatter();
                 // this.yellowGhostScatter();
-            } else if(System.currentTimeMillis() <= seventhSwitch) {
+            } 
+            while(System.currentTimeMillis() <= seventhSwitch) {
                 // this.blueGhostChaseAlgorithm(currentDirection);
                 // this.yellowGhostChaseAlgorithm();
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
@@ -389,7 +396,7 @@ public class Ghosts {
                 // System.out.println(endX);
                 // System.out.println(endY);
                 pacmanFound = true;
-                System.out.println("the pacman has been found");
+                // System.out.println("the pacman has been found");
                 break;
             }
             if (hashSet.contains(cur)) {
@@ -405,22 +412,34 @@ public class Ghosts {
                 int nextX = cur.left() + diff_x;
                 int nextY = cur.right() + diff_y;
                 Pair<Integer, Integer> nei = new Pair<Integer,Integer>(nextX, nextY);
-                if (nextX >= 0 && nextX < 864 && nextY >= 0 && nextY < 864 && arr.get(nextY / 32).get(nextX /  32) != 1 && !hashSet.contains(nei)) {
-                    if (nextX > cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
-                        continue;
+                
+                if (nextX < 0 || nextX >= 864 || nextY < 0 || nextY >= 864 || arr.get(nextY / 32).get(nextX /  32) == 1) {
+                    continue;
+                }
+
+                int leftCol   = nextX / 32;
+                int rightCol  = (nextX + ghostWidth - 1) / 32;
+                int topRow    = nextY / 32;
+                int bottomRow = (nextY + ghostLength - 1) / 32;
+
+                int squares = (rightCol - leftCol) + (bottomRow - topRow);
+                // System.out.println(squares);
+
+                boolean blocked = false;
+                for (int r = topRow; r <= bottomRow && !blocked; r++) {
+                    for (int c = leftCol; c <= rightCol; c++) {
+                        if (arr.get(r).get(c) == 1) {   // 1 == wall
+                            blocked = true;
+                            break;
+                        }
                     }
-                    if (nextX < cur.left() && arr.get(nextY / 32 + 1).get(nextX / 32) == 1 && nextY % 32 != 0) {
-                        continue;
-                    }
-                    if (nextY > cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
-                        continue;
-                    }
-                    if (nextY < cur.right() && arr.get(nextY / 32).get(nextX / 32 + 1) == 1 && nextX % 32 != 0) {
-                        continue;
-                    }
+                }
+
+                if (!blocked && !hashSet.contains(nei)) {
                     queue.add(nei);
                     hashmap.put(nei, cur);
                 }
+
             }
         }
 
@@ -428,13 +447,13 @@ public class Ghosts {
             // System.out.println("STOP");
             return Direction.STOP;
         } else {
-            System.out.println("BACKTRACK");
+            // System.out.println("BACKTRACK");
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
 
             
 
             while (!backtrackStart.equals(start)) {
-                System.out.println("HERE");
+                // System.out.println("HERE");
                 Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
                 
                 if (previous == null) {
@@ -445,19 +464,19 @@ public class Ghosts {
                 if (previous.equals(start)) {
                     // System.out.println("FOUND");
                     if (backtrackStart.left() + 4 == start.left()) {
-                        System.out.println("LEFT");
+                        // System.out.println("LEFT");
                         return Direction.LEFT;
                     }
                     if (backtrackStart.right() + 4 == start.right()) {
-                        System.out.println("UP");
+                        // System.out.println("UP");
                         return Direction.UP;
                     }
                     if (backtrackStart.left() - 4 == start.left()) {
-                        System.out.println("RIGHT");
+                        // System.out.println("RIGHT");
                         return Direction.RIGHT;
                     }
                     if (backtrackStart.right() - 4 == start.right()) {
-                        System.out.println("DOWN");
+                        // System.out.println("DOWN");
                         return Direction.DOWN;
                     }
                 }
@@ -473,7 +492,7 @@ public class Ghosts {
         gridRedGhostY = redGhostY / 32;
         gridRedGhostX = redGhostX / 32;
 
-        System.out.println("RED GHOST ALG");
+        // System.out.println("RED GHOST ALG");
         
         Direction direction = this.bfs(redGhostX, redGhostY, pacmanX, pacmanY);
         // System.out.println(direction);
@@ -643,6 +662,7 @@ public class Ghosts {
     public void redGhostScatter() {
         int targetRedGhostLocationX = 576;
         int targetRedGhostLocationY = 224;
+        System.out.println("red ghost scatter");
         // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
         // redCornerPairs relys on start location where call bfs to. But its a wall so we need to have claude or codex redo the corner pairs
         Direction shortenedBFS = this.bfs(redGhostX, redGhostY, targetRedGhostLocationX, targetRedGhostLocationY);
@@ -654,18 +674,33 @@ public class Ghosts {
             redGhostY -= 4;
         } else if(shortenedBFS == Direction.DOWN) {
             redGhostY += 4;
-        } 
+        }  
 
         
         for (int i = 0;i < redCornerPairs.size();i++) {
+            Pair<Integer, Integer> futurePair;
             if (i != 27) {
-                Pair<Integer, Integer> futurePair = redCornerPairs.get(i + 1);
-                gridRedGhostX = futurePair.left();
-                gridRedGhostY = futurePair.right();
+                futurePair = redCornerPairs.get(i + 1);
+                if (futurePair.left() > redGhostX) {
+                    redGhostX += 4;
+                } else if(futurePair.left() < redGhostX) {
+                    redGhostX -= 4;
+                } else if(futurePair.right() > redGhostY) {
+                    redGhostY -= 4;
+                } else if(futurePair.right() < redGhostY) {
+                    redGhostY += 4;
+                }
             } else {
-                Pair<Integer, Integer> futurePair = redCornerPairs.get(0);
-                gridRedGhostX = futurePair.left();  
-                gridRedGhostY = futurePair.right();
+                futurePair = redCornerPairs.get(0);
+                if (futurePair.left() > redGhostX) {
+                    redGhostX += 4;
+                } else if(futurePair.left() < redGhostX) {
+                    redGhostX -= 4;
+                } else if(futurePair.right() > redGhostY) {
+                    redGhostY -= 4;
+                } else if(futurePair.right() < redGhostY) {
+                    redGhostY += 4;
+                }
             }
             
         }
@@ -690,13 +725,24 @@ public class Ghosts {
                 Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
                 if (futurePair.left() > pinkGhostX) {
                     pinkGhostX += 4;
+                } else if(futurePair.left() < pinkGhostX) {
+                    pinkGhostX -= 4;
+                } else if(futurePair.right() > pinkGhostY) {
+                    pinkGhostY -= 4;
+                } else if(futurePair.right() < pinkGhostY) {
+                    pinkGhostY += 4;
                 }
-                gridPinkGhostX = futurePair.left();
-                gridPinkGhostY = futurePair.right();
             } else {
                 Pair<Integer, Integer> futurePair = pinkCornerPairs.get(0);
-                gridPinkGhostX = futurePair.left();  
-                gridPinkGhostY = futurePair.right();
+                if (futurePair.left() > pinkGhostX) {
+                    pinkGhostX += 4;
+                } else if(futurePair.left() < pinkGhostX) {
+                    pinkGhostX -= 4;
+                } else if(futurePair.right() > pinkGhostY) {
+                    pinkGhostY -= 4;
+                } else if(futurePair.right() < pinkGhostY) {
+                    pinkGhostY += 4;
+                }
             }
             
         }

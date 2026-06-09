@@ -112,10 +112,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     public void animate() {
         while (true) {
             if (ghostsVulnerable()) {
-                ghosts.redGhostScatter();
-                ghosts.yellowGhostScatter();
-                ghosts.pinkGhostScatter();
-                ghosts.blueGhostScatter();
+                this.ghosts.redGhostScatter();
+                // this.ghosts.yellowGhostScatter();
+                // this.ghosts.pinkGhostScatter();
+                // this.ghosts.blueGhostScatter();
             }
             repaint();  
             pacman.move(gameStarted);
@@ -180,13 +180,28 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
 
     public boolean deadOrAlive() {
-        if(!ghostsVulnerable() && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
-            this.pacman.pacmanDying();
-            return true;
+        if(!ghostsVulnerable()) {
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX()) || (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX()))) {
+                this.pacman.pacmanDying();
+                return true;
+            }
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX())) {
+                this.pacman.pacmanDying();
+                return true;
+            }
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
+                this.pacman.pacmanDying();
+                return true;
+            }
+            if (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX())) {
+                this.pacman.pacmanDying();
+                return true;
+            }
         }else {
             
             return false;
         }
+        return false;
     }
 
     // DONT REMOVE:some functions have variables that need to be updated, but don't get called alot. This means we have to store them in a different file.

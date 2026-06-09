@@ -187,6 +187,7 @@ public class Pacman {
     }
     
     public void move(boolean gameStarted) {
+        System.out.println("MOVE");
         gridY = pacmanY / 32;
         gridX = pacmanX / 32;
         if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
