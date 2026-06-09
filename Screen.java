@@ -181,19 +181,29 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     public boolean deadOrAlive() {
         if(!ghostsVulnerable()) {
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) || arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX()) || (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX()))) {
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
+            arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || 
+            arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
+            arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) ||
+             arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+              arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX()) ||
+               (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+                arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX()))) {
                 this.pacman.pacmanDying();
                 return true;
             }
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX())) {
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+             arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX())) {
                 this.pacman.pacmanDying();
                 return true;
             }
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+             arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
                 this.pacman.pacmanDying();
                 return true;
             }
-            if (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX())) {
+            if (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+             arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX())) {
                 this.pacman.pacmanDying();
                 return true;
             }
