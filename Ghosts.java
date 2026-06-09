@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.GraphicsDevice.WindowTranslucency;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -115,34 +116,34 @@ public class Ghosts {
 
     static {
         List<Pair<Integer, Integer>> yellowCoords = new ArrayList<>();
-        yellowCoords.add(new Pair<Integer,Integer>(2,21));
-        yellowCoords.add(new Pair<Integer,Integer>(3,21));
-        yellowCoords.add(new Pair<Integer,Integer>(4,21));
-        yellowCoords.add(new Pair<Integer,Integer>(5,21));
-        yellowCoords.add(new Pair<Integer,Integer>(6,21));
-        yellowCoords.add(new Pair<Integer,Integer>(7,21));
-        yellowCoords.add(new Pair<Integer,Integer>(8,21));
-        yellowCoords.add(new Pair<Integer,Integer>(9,21));
-        yellowCoords.add(new Pair<Integer,Integer>(10,21));
-        yellowCoords.add(new Pair<Integer,Integer>(10,22));
-        yellowCoords.add(new Pair<Integer,Integer>(10,23));
-        yellowCoords.add(new Pair<Integer,Integer>(10,24));
-        yellowCoords.add(new Pair<Integer,Integer>(10,25));
-        yellowCoords.add(new Pair<Integer,Integer>(10,26));
-        yellowCoords.add(new Pair<Integer,Integer>(10,27));
-        yellowCoords.add(new Pair<Integer,Integer>(9,27));
-        yellowCoords.add(new Pair<Integer,Integer>(8,27));
-        yellowCoords.add(new Pair<Integer,Integer>(7,27));
-        yellowCoords.add(new Pair<Integer,Integer>(6,27));
-        yellowCoords.add(new Pair<Integer,Integer>(5,27));
-        yellowCoords.add(new Pair<Integer,Integer>(4,27));
-        yellowCoords.add(new Pair<Integer,Integer>(3,27));
-        yellowCoords.add(new Pair<Integer,Integer>(2,27));
+        yellowCoords.add(new Pair<Integer,Integer>(9,20));
+        yellowCoords.add(new Pair<Integer,Integer>(8,20));
+        yellowCoords.add(new Pair<Integer,Integer>(7,20));
+        yellowCoords.add(new Pair<Integer,Integer>(6,20));
+        yellowCoords.add(new Pair<Integer,Integer>(5,20));
+        yellowCoords.add(new Pair<Integer,Integer>(4,20));
+        yellowCoords.add(new Pair<Integer,Integer>(3,20));
+        yellowCoords.add(new Pair<Integer,Integer>(2,20));
+        yellowCoords.add(new Pair<Integer,Integer>(1,20));
+        yellowCoords.add(new Pair<Integer,Integer>(1,21));
+        yellowCoords.add(new Pair<Integer,Integer>(1,22));
+        yellowCoords.add(new Pair<Integer,Integer>(1,23));
+        yellowCoords.add(new Pair<Integer,Integer>(1,24));
+        yellowCoords.add(new Pair<Integer,Integer>(1,25));
+        yellowCoords.add(new Pair<Integer,Integer>(1,26)); // ★
         yellowCoords.add(new Pair<Integer,Integer>(2,26));
-        yellowCoords.add(new Pair<Integer,Integer>(2,25));
-        yellowCoords.add(new Pair<Integer,Integer>(2,24));
-        yellowCoords.add(new Pair<Integer,Integer>(2,23));
-        yellowCoords.add(new Pair<Integer,Integer>(2,22));
+        yellowCoords.add(new Pair<Integer,Integer>(3,26));
+        yellowCoords.add(new Pair<Integer,Integer>(4,26));
+        yellowCoords.add(new Pair<Integer,Integer>(5,26));
+        yellowCoords.add(new Pair<Integer,Integer>(6,26));
+        yellowCoords.add(new Pair<Integer,Integer>(7,26));
+        yellowCoords.add(new Pair<Integer,Integer>(8,26));
+        yellowCoords.add(new Pair<Integer,Integer>(9,26));
+        yellowCoords.add(new Pair<Integer,Integer>(9,25));
+        yellowCoords.add(new Pair<Integer,Integer>(9,24));
+        yellowCoords.add(new Pair<Integer,Integer>(9,23));
+        yellowCoords.add(new Pair<Integer,Integer>(9,22));
+        yellowCoords.add(new Pair<Integer,Integer>(9,21));
         
         yellowCornerPairs = Collections.unmodifiableList(yellowCoords);
     }
@@ -150,101 +151,102 @@ public class Ghosts {
     static {
         List<Pair<Integer, Integer>> redCoords = new ArrayList<>();
 
-        redCoords.add(new Pair<Integer,Integer>(19,2));
-        redCoords.add(new Pair<Integer,Integer>(20,2));
-        redCoords.add(new Pair<Integer,Integer>(21,2));
-        redCoords.add(new Pair<Integer,Integer>(22,2));
-        redCoords.add(new Pair<Integer,Integer>(23,2));
-        redCoords.add(new Pair<Integer,Integer>(24,2));
-        redCoords.add(new Pair<Integer,Integer>(25,2));
+        redCoords.add(new Pair<Integer,Integer>(18,7));
+        redCoords.add(new Pair<Integer,Integer>(18,6));
+        redCoords.add(new Pair<Integer,Integer>(18,5));
+        redCoords.add(new Pair<Integer,Integer>(18,4));
+        redCoords.add(new Pair<Integer,Integer>(18,3));
+        redCoords.add(new Pair<Integer,Integer>(18,2));
+        redCoords.add(new Pair<Integer,Integer>(18,1));
+        redCoords.add(new Pair<Integer,Integer>(19,1));
+        redCoords.add(new Pair<Integer,Integer>(20,1));
+        redCoords.add(new Pair<Integer,Integer>(21,1));
+        redCoords.add(new Pair<Integer,Integer>(22,1));
+        redCoords.add(new Pair<Integer,Integer>(23,1));
+        redCoords.add(new Pair<Integer,Integer>(24,1));
+        redCoords.add(new Pair<Integer,Integer>(25,1));
+        redCoords.add(new Pair<Integer,Integer>(26,1)); // ★
         redCoords.add(new Pair<Integer,Integer>(26,2));
-        redCoords.add(new Pair<Integer,Integer>(27,2));
-        redCoords.add(new Pair<Integer,Integer>(27,3));
-        redCoords.add(new Pair<Integer,Integer>(27,4));
-        redCoords.add(new Pair<Integer,Integer>(27,5));
-        redCoords.add(new Pair<Integer,Integer>(27,6));
-        redCoords.add(new Pair<Integer,Integer>(27,7));
-        redCoords.add(new Pair<Integer,Integer>(27,8));
-        redCoords.add(new Pair<Integer,Integer>(26,8));
-        redCoords.add(new Pair<Integer,Integer>(25,8));
-        redCoords.add(new Pair<Integer,Integer>(24,8));
-        redCoords.add(new Pair<Integer,Integer>(23,8));
-        redCoords.add(new Pair<Integer,Integer>(22,8));
-        redCoords.add(new Pair<Integer,Integer>(21,8));
-        redCoords.add(new Pair<Integer,Integer>(20,8));
-        redCoords.add(new Pair<Integer,Integer>(19,8));
+        redCoords.add(new Pair<Integer,Integer>(26,3));
+        redCoords.add(new Pair<Integer,Integer>(26,4));
+        redCoords.add(new Pair<Integer,Integer>(26,5));
+        redCoords.add(new Pair<Integer,Integer>(26,6));
+        redCoords.add(new Pair<Integer,Integer>(26,7));
+        redCoords.add(new Pair<Integer,Integer>(25,7));
+        redCoords.add(new Pair<Integer,Integer>(24,7));
+        redCoords.add(new Pair<Integer,Integer>(23,7));
+        redCoords.add(new Pair<Integer,Integer>(22,7));
+        redCoords.add(new Pair<Integer,Integer>(21,7));
+        redCoords.add(new Pair<Integer,Integer>(20,7));
         redCoords.add(new Pair<Integer,Integer>(19,7));
-        redCoords.add(new Pair<Integer,Integer>(19,6));
-        redCoords.add(new Pair<Integer,Integer>(19,5));
-        redCoords.add(new Pair<Integer,Integer>(19,4));
-        redCoords.add(new Pair<Integer,Integer>(19,3));
 
         redCornerPairs = Collections.unmodifiableList(redCoords);
     }
 
     static{
         List<Pair<Integer, Integer>> pinkCoords = new ArrayList<>();
-        pinkCoords.add(new Pair<Integer,Integer>(2,2));
-        pinkCoords.add(new Pair<Integer,Integer>(3,2));
-        pinkCoords.add(new Pair<Integer,Integer>(4,2));
-        pinkCoords.add(new Pair<Integer,Integer>(5,2));
-        pinkCoords.add(new Pair<Integer,Integer>(6,2));
-        pinkCoords.add(new Pair<Integer,Integer>(7,2));
-        pinkCoords.add(new Pair<Integer,Integer>(8,2));
+        pinkCoords.add(new Pair<Integer,Integer>(9,7));
+        pinkCoords.add(new Pair<Integer,Integer>(9,6));
+        pinkCoords.add(new Pair<Integer,Integer>(9,5));
+        pinkCoords.add(new Pair<Integer,Integer>(9,4));
+        pinkCoords.add(new Pair<Integer,Integer>(9,3));
         pinkCoords.add(new Pair<Integer,Integer>(9,2));
-        pinkCoords.add(new Pair<Integer,Integer>(10,2));
-        pinkCoords.add(new Pair<Integer,Integer>(10,3));
-        pinkCoords.add(new Pair<Integer,Integer>(10,4));
-        pinkCoords.add(new Pair<Integer,Integer>(10,5));
-        pinkCoords.add(new Pair<Integer,Integer>(10,6));
-        pinkCoords.add(new Pair<Integer,Integer>(10,7));
-        pinkCoords.add(new Pair<Integer,Integer>(10,8));
-        pinkCoords.add(new Pair<Integer,Integer>(9,8));
-        pinkCoords.add(new Pair<Integer,Integer>(8,8));
-        pinkCoords.add(new Pair<Integer,Integer>(7,8));
-        pinkCoords.add(new Pair<Integer,Integer>(6,8));
-        pinkCoords.add(new Pair<Integer,Integer>(5,8));
-        pinkCoords.add(new Pair<Integer,Integer>(4,8));
-        pinkCoords.add(new Pair<Integer,Integer>(3,8));
-        pinkCoords.add(new Pair<Integer,Integer>(2,8));
+        pinkCoords.add(new Pair<Integer,Integer>(9,1));
+        pinkCoords.add(new Pair<Integer,Integer>(8,1));
+        pinkCoords.add(new Pair<Integer,Integer>(7,1));
+        pinkCoords.add(new Pair<Integer,Integer>(6,1));
+        pinkCoords.add(new Pair<Integer,Integer>(5,1));
+        pinkCoords.add(new Pair<Integer,Integer>(4,1));
+        pinkCoords.add(new Pair<Integer,Integer>(3,1));
+        pinkCoords.add(new Pair<Integer,Integer>(2,1));
+        pinkCoords.add(new Pair<Integer,Integer>(1,1)); // ★
+        pinkCoords.add(new Pair<Integer,Integer>(1,2));
+        pinkCoords.add(new Pair<Integer,Integer>(1,3));
+        pinkCoords.add(new Pair<Integer,Integer>(1,4));
+        pinkCoords.add(new Pair<Integer,Integer>(1,5));
+        pinkCoords.add(new Pair<Integer,Integer>(1,6));
+        pinkCoords.add(new Pair<Integer,Integer>(1,7));
         pinkCoords.add(new Pair<Integer,Integer>(2,7));
-        pinkCoords.add(new Pair<Integer,Integer>(2,6));
-        pinkCoords.add(new Pair<Integer,Integer>(2,5));
-        pinkCoords.add(new Pair<Integer,Integer>(2,4));
-        pinkCoords.add(new Pair<Integer,Integer>(2,3));
+        pinkCoords.add(new Pair<Integer,Integer>(3,7));
+        pinkCoords.add(new Pair<Integer,Integer>(4,7));
+        pinkCoords.add(new Pair<Integer,Integer>(5,7));
+        pinkCoords.add(new Pair<Integer,Integer>(6,7));
+        pinkCoords.add(new Pair<Integer,Integer>(7,7));
+        pinkCoords.add(new Pair<Integer,Integer>(8,7));
+
         pinkCornerPairs = Collections.unmodifiableList(pinkCoords);
     }
 
     static{
         List<Pair<Integer, Integer>> blueCoords = new ArrayList<>();
-        blueCoords.add(new Pair<Integer,Integer>(19,21));
-        blueCoords.add(new Pair<Integer,Integer>(20,21));
-        blueCoords.add(new Pair<Integer,Integer>(21,21));
-        blueCoords.add(new Pair<Integer,Integer>(22,21));
-        blueCoords.add(new Pair<Integer,Integer>(23,21));
-        blueCoords.add(new Pair<Integer,Integer>(24,21));
-        blueCoords.add(new Pair<Integer,Integer>(25,21));
-        blueCoords.add(new Pair<Integer,Integer>(26,21));
-        blueCoords.add(new Pair<Integer,Integer>(27,21));
-        blueCoords.add(new Pair<Integer,Integer>(27,22));
-        blueCoords.add(new Pair<Integer,Integer>(27,23));
-        blueCoords.add(new Pair<Integer,Integer>(27,24));
-        blueCoords.add(new Pair<Integer,Integer>(27,25));
-        blueCoords.add(new Pair<Integer,Integer>(27,26));
-        blueCoords.add(new Pair<Integer,Integer>(27,27));
-        blueCoords.add(new Pair<Integer,Integer>(26,27));
-        blueCoords.add(new Pair<Integer,Integer>(25,27));
-        blueCoords.add(new Pair<Integer,Integer>(24,27));
-        blueCoords.add(new Pair<Integer,Integer>(23,27));
-        blueCoords.add(new Pair<Integer,Integer>(22,27));
-        blueCoords.add(new Pair<Integer,Integer>(21,27));
-        blueCoords.add(new Pair<Integer,Integer>(20,27));
-        blueCoords.add(new Pair<Integer,Integer>(19,27));
+        blueCoords.add(new Pair<Integer,Integer>(18,20));
+        blueCoords.add(new Pair<Integer,Integer>(18,21));
+        blueCoords.add(new Pair<Integer,Integer>(18,22));
+        blueCoords.add(new Pair<Integer,Integer>(18,23));
+        blueCoords.add(new Pair<Integer,Integer>(18,24));
+        blueCoords.add(new Pair<Integer,Integer>(18,25));
+        blueCoords.add(new Pair<Integer,Integer>(18,26));
         blueCoords.add(new Pair<Integer,Integer>(19,26));
-        blueCoords.add(new Pair<Integer,Integer>(19,25));
-        blueCoords.add(new Pair<Integer,Integer>(19,24));
-        blueCoords.add(new Pair<Integer,Integer>(19,23));
-        blueCoords.add(new Pair<Integer,Integer>(19,22));
+        blueCoords.add(new Pair<Integer,Integer>(20,26));
+        blueCoords.add(new Pair<Integer,Integer>(21,26));
+        blueCoords.add(new Pair<Integer,Integer>(22,26));
+        blueCoords.add(new Pair<Integer,Integer>(23,26));
+        blueCoords.add(new Pair<Integer,Integer>(24,26));
+        blueCoords.add(new Pair<Integer,Integer>(25,26));
+        blueCoords.add(new Pair<Integer,Integer>(26,26)); // ★
+        blueCoords.add(new Pair<Integer,Integer>(26,25));
+        blueCoords.add(new Pair<Integer,Integer>(26,24));
+        blueCoords.add(new Pair<Integer,Integer>(26,23));
+        blueCoords.add(new Pair<Integer,Integer>(26,22));
+        blueCoords.add(new Pair<Integer,Integer>(26,21));
+        blueCoords.add(new Pair<Integer,Integer>(26,20));
+        blueCoords.add(new Pair<Integer,Integer>(25,20));
+        blueCoords.add(new Pair<Integer,Integer>(24,20));
+        blueCoords.add(new Pair<Integer,Integer>(23,20));
+        blueCoords.add(new Pair<Integer,Integer>(22,20));
+        blueCoords.add(new Pair<Integer,Integer>(21,20));
+        blueCoords.add(new Pair<Integer,Integer>(20,20));
+        blueCoords.add(new Pair<Integer,Integer>(19,20));
         blueCornerPairs = Collections.unmodifiableList(blueCoords);
     }
 
@@ -325,42 +327,47 @@ public class Ghosts {
             sixthSwitch = System.currentTimeMillis() + 79000;
             seventhSwitch = System.currentTimeMillis() + 84000;
             if (System.currentTimeMillis() <= firstSwitch) {
-                this.blueGhostScatter();
+                // this.blueGhostScatter();
                 this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.blueGhostScatter();
+                // this.pinkGhostScatter();
+                // this.blueGhostScatter();
             } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
-                this.blueGhostChaseAlgorithm(currentDirection);
+                // this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm();
-                this.yellowGhostChaseAlgorithm();
+                // this.pinkGhostChaseAlgorithm();
+                // this.yellowGhostChaseAlgorithm();
             } else if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
-                this.blueGhostScatter();
+                // this.blueGhostScatter();
                 this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.yellowGhostScatter();
+                // this.pinkGhostScatter();
+                // this.yellowGhostScatter();
             } else if(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
-                this.blueGhostChaseAlgorithm(currentDirection);
+                // this.blueGhostChaseAlgorithm(currentDirection);
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm();
-                this.yellowGhostChaseAlgorithm();
+                // this.pinkGhostChaseAlgorithm();
+                // this.yellowGhostChaseAlgorithm();
             } else if(sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
-                this.blueGhostScatter();
+                // this.blueGhostScatter();
                 this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.yellowGhostScatter();
+                // this.pinkGhostScatter();
+                // this.yellowGhostScatter();
             } else if(System.currentTimeMillis() <= seventhSwitch) {
-                this.blueGhostChaseAlgorithm(currentDirection);
-                this.yellowGhostChaseAlgorithm();
+                // this.blueGhostChaseAlgorithm(currentDirection);
+                // this.yellowGhostChaseAlgorithm();
                 this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm();
+                // this.pinkGhostChaseAlgorithm();
             }
         }
 
     }
 
     public Direction bfs(int startX, int startY, int endX, int endY) {
-        System.out.println("RUNNING BFS");
+        // System.out.println(startX);
+        // System.out.println(startY);
+        // System.out.println(endX);
+        // System.out.println(endY);
+        // System.out.println("=================");
+        // System.out.println("RUNNING BFS");
         HashMap<Pair<Integer, Integer>, Pair<Integer, Integer>> hashmap = new HashMap<>();
         Queue<Pair<Integer, Integer>> queue = new LinkedList<>();
         HashSet<Pair<Integer, Integer>> hashSet = new HashSet<>();
@@ -392,6 +399,7 @@ public class Ghosts {
             }
                 
             for (int i = 0; i < 4; i++) {
+                // System.out.println("FOR LOOP");
                 int diff_x = xdiffs[i]; 
                 int diff_y = ydiffs[i];
                 int nextX = cur.left() + diff_x;
@@ -420,10 +428,13 @@ public class Ghosts {
             // System.out.println("STOP");
             return Direction.STOP;
         } else {
-            // System.out.println("BACKTRACK");
+            System.out.println("BACKTRACK");
             Pair<Integer, Integer> backtrackStart = new Pair<>(endX, endY);
 
+            
+
             while (!backtrackStart.equals(start)) {
+                System.out.println("HERE");
                 Pair<Integer, Integer> previous = hashmap.get(backtrackStart);
                 
                 if (previous == null) {
@@ -434,15 +445,19 @@ public class Ghosts {
                 if (previous.equals(start)) {
                     // System.out.println("FOUND");
                     if (backtrackStart.left() + 4 == start.left()) {
+                        System.out.println("LEFT");
                         return Direction.LEFT;
                     }
                     if (backtrackStart.right() + 4 == start.right()) {
+                        System.out.println("UP");
                         return Direction.UP;
                     }
                     if (backtrackStart.left() - 4 == start.left()) {
+                        System.out.println("RIGHT");
                         return Direction.RIGHT;
                     }
                     if (backtrackStart.right() - 4 == start.right()) {
+                        System.out.println("DOWN");
                         return Direction.DOWN;
                     }
                 }
@@ -568,16 +583,16 @@ public class Ghosts {
     public void yellowGhostScatter() {
         gridYellowGhostY = yellowGhostY / 32;
         gridYellowGhostX = yellowGhostX / 32;
-        int targetYellowGhostLocationX = 2;
-        int targetYellowGhostLocationY  = 21;
-        Direction shortenedBFS = this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY);
-        if (this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.RIGHT) {
-            redGhostX += 4;
-        } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.LEFT) {
+        int targetYellowGhostLocationX = 288;
+        int targetYellowGhostLocationY  = 640;
+        Direction shortenedBFS = this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY);
+        if (this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.RIGHT) {
+            yellowGhostX += 4;
+        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.LEFT) {
             yellowGhostX -= 4;
-        } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.UP) {
+        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.UP) {
             yellowGhostY -= 4;
-        } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.DOWN) {
+        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.DOWN) {
             yellowGhostY += 4;
         } 
         
@@ -598,16 +613,16 @@ public class Ghosts {
 
 
     public void blueGhostScatter() {
-        int targetBlueGhostLocationX = 19;
-        int targetBlueGhostLocationY = 21;
-
-        if (this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.RIGHT) {
+        int targetBlueGhostLocationX = 576;
+        int targetBlueGhostLocationY = 640;
+        // System.out.println(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY));
+        if (this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.RIGHT) {
             blueGhostX += 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.LEFT) {
+        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.LEFT) {
             blueGhostX -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.UP) {
+        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.UP) {
             blueGhostY -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.DOWN) {
+        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.DOWN) {
             blueGhostY += 4;
         } 
         
@@ -626,16 +641,18 @@ public class Ghosts {
     }
 
     public void redGhostScatter() {
-        int targetRedGhostLocationX = 19;
-        int targetRedGhostLocationY = 2;
-
-        if (this.bfs(gridRedGhostX, gridRedGhostY, targetRedGhostLocationX, targetRedGhostLocationY) == Direction.RIGHT) {
+        int targetRedGhostLocationX = 576;
+        int targetRedGhostLocationY = 224;
+        // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
+        // redCornerPairs relys on start location where call bfs to. But its a wall so we need to have claude or codex redo the corner pairs
+        Direction shortenedBFS = this.bfs(redGhostX, redGhostY, targetRedGhostLocationX, targetRedGhostLocationY);
+        if (shortenedBFS == Direction.RIGHT) {
             redGhostX += 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetRedGhostLocationX, targetRedGhostLocationY) == Direction.LEFT) {
+        } else if(shortenedBFS == Direction.LEFT) {
             redGhostX -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetRedGhostLocationX, targetRedGhostLocationY) == Direction.UP) {
+        } else if(shortenedBFS == Direction.UP) {
             redGhostY -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetRedGhostLocationX, targetRedGhostLocationY) == Direction.DOWN) {
+        } else if(shortenedBFS == Direction.DOWN) {
             redGhostY += 4;
         } 
 
@@ -655,22 +672,25 @@ public class Ghosts {
     }
 
     public void pinkGhostScatter() {
-        int targetPinkGhostLocationX = 2;
-        int targetPinkGhostLocationY = 2;
+        int targetPinkGhostLocationX = 288;
+        int targetPinkGhostLocationY = 224;
 
-        if (this.bfs(gridRedGhostX, gridRedGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.RIGHT) {
+        if (this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.RIGHT) {
             pinkGhostX += 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.LEFT) {
+        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.LEFT) {
             pinkGhostX -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.UP) {
+        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.UP) {
             pinkGhostY -= 4;
-        } else if(this.bfs(gridRedGhostX, gridRedGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.DOWN) {
+        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.DOWN) {
             pinkGhostY += 4;
         } 
 
         for (int i = 0;i < pinkCornerPairs.size();i++) {
             if (i != 27) {
                 Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
+                if (futurePair.left() > pinkGhostX) {
+                    pinkGhostX += 4;
+                }
                 gridPinkGhostX = futurePair.left();
                 gridPinkGhostY = futurePair.right();
             } else {
