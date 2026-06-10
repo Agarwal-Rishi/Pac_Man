@@ -120,7 +120,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
-            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted, pacman.getPacmanX(), pacman.getPacmanY());
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted, pacman.getPacmanX(), pacman.getPacmanY(), this.pacman.hasMoved);
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
@@ -198,9 +198,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 return true;
             } 
             if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getBlueGhostX()) < 32 &&
-             Math.abs(this.pacman.getPacmanY() - this.ghosts.getBlueGhostY()) < 32) {
+            Math.abs(this.pacman.getPacmanY() - this.ghosts.getBlueGhostY()) < 32) {
                 return true;
             } 
+            
         }else {
             return false;
         }
@@ -216,7 +217,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
             return false;
         }
     }
-
+    
     @Override
     public void keyPressed(KeyEvent event) {
         // code to move the pacman

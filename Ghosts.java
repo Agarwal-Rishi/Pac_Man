@@ -111,6 +111,8 @@ public class Ghosts {
 
     record Pair<L, R>(L left, R right) {}
 
+    boolean hasRun = false;
+
     private static final List<Pair<Integer, Integer>> yellowCornerPairs;
     private static final List<Pair<Integer, Integer>> redCornerPairs;
     private static final List<Pair<Integer, Integer>> pinkCornerPairs;
@@ -118,11 +120,11 @@ public class Ghosts {
 
     static {
         List<Pair<Integer, Integer>> yellowCoords = new ArrayList<>();
-        yellowCoords.add(new Pair<Integer,Integer>(9,20));
-        yellowCoords.add(new Pair<Integer,Integer>(8,20));
-        yellowCoords.add(new Pair<Integer,Integer>(7,20));
-        yellowCoords.add(new Pair<Integer,Integer>(6,20));
         yellowCoords.add(new Pair<Integer,Integer>(5,20));
+        yellowCoords.add(new Pair<Integer,Integer>(6,20));
+        yellowCoords.add(new Pair<Integer,Integer>(7,20));
+        yellowCoords.add(new Pair<Integer,Integer>(8,20));
+        yellowCoords.add(new Pair<Integer,Integer>(9,20));
         yellowCoords.add(new Pair<Integer,Integer>(4,20));
         yellowCoords.add(new Pair<Integer,Integer>(3,20));
         yellowCoords.add(new Pair<Integer,Integer>(2,20));
@@ -153,9 +155,6 @@ public class Ghosts {
     static {
         List<Pair<Integer, Integer>> redCoords = new ArrayList<>();
 
-        redCoords.add(new Pair<Integer,Integer>(18,7));
-        redCoords.add(new Pair<Integer,Integer>(18,6));
-        redCoords.add(new Pair<Integer,Integer>(18,5));
         redCoords.add(new Pair<Integer,Integer>(18,4));
         redCoords.add(new Pair<Integer,Integer>(18,3));
         redCoords.add(new Pair<Integer,Integer>(18,2));
@@ -181,16 +180,19 @@ public class Ghosts {
         redCoords.add(new Pair<Integer,Integer>(21,7));
         redCoords.add(new Pair<Integer,Integer>(20,7));
         redCoords.add(new Pair<Integer,Integer>(19,7));
+        redCoords.add(new Pair<Integer,Integer>(18,7));
+        redCoords.add(new Pair<Integer,Integer>(18,6));
+        redCoords.add(new Pair<Integer,Integer>(18,5));
 
         redCornerPairs = Collections.unmodifiableList(redCoords);
     }
 
     static{
         List<Pair<Integer, Integer>> pinkCoords = new ArrayList<>();
-        pinkCoords.add(new Pair<Integer,Integer>(9,7));
-        pinkCoords.add(new Pair<Integer,Integer>(9,6));
-        pinkCoords.add(new Pair<Integer,Integer>(9,5));
         pinkCoords.add(new Pair<Integer,Integer>(9,4));
+        pinkCoords.add(new Pair<Integer,Integer>(9,5));
+        pinkCoords.add(new Pair<Integer,Integer>(9,6));
+        pinkCoords.add(new Pair<Integer,Integer>(9,7));
         pinkCoords.add(new Pair<Integer,Integer>(9,3));
         pinkCoords.add(new Pair<Integer,Integer>(9,2));
         pinkCoords.add(new Pair<Integer,Integer>(9,1));
@@ -221,6 +223,10 @@ public class Ghosts {
 
     static{
         List<Pair<Integer, Integer>> blueCoords = new ArrayList<>();
+        blueCoords.add(new Pair<Integer,Integer>(22,20));
+        blueCoords.add(new Pair<Integer,Integer>(21,20));
+        blueCoords.add(new Pair<Integer,Integer>(20,20));
+        blueCoords.add(new Pair<Integer,Integer>(19,20));
         blueCoords.add(new Pair<Integer,Integer>(18,20));
         blueCoords.add(new Pair<Integer,Integer>(18,21));
         blueCoords.add(new Pair<Integer,Integer>(18,22));
@@ -245,10 +251,6 @@ public class Ghosts {
         blueCoords.add(new Pair<Integer,Integer>(25,20));
         blueCoords.add(new Pair<Integer,Integer>(24,20));
         blueCoords.add(new Pair<Integer,Integer>(23,20));
-        blueCoords.add(new Pair<Integer,Integer>(22,20));
-        blueCoords.add(new Pair<Integer,Integer>(21,20));
-        blueCoords.add(new Pair<Integer,Integer>(20,20));
-        blueCoords.add(new Pair<Integer,Integer>(19,20));
         blueCornerPairs = Collections.unmodifiableList(blueCoords);
     }
 
@@ -321,12 +323,8 @@ public class Ghosts {
         
     }
 
-    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted, int pacmanX, int pacmanY) {
-        // System.out.println("ANIMATE");
-        currentPacmanDirection = currentDirection;
-        if (pacmanX != 416 || pacmanY != 288) {
-
-        //     // System.out.println("LOOP");
+    public void checker(boolean hasMoved) {
+        if (hasMoved && !hasRun) {
             firstSwitch = System.currentTimeMillis() + 7000;
             secondSwitch = System.currentTimeMillis() + 27000;
             thirdSwitch = System.currentTimeMillis() + 34000;
@@ -334,44 +332,66 @@ public class Ghosts {
             fifthSwitch = System.currentTimeMillis() + 59000;
             sixthSwitch = System.currentTimeMillis() + 79000;
             seventhSwitch = System.currentTimeMillis() + 84000;
-            if(System.currentTimeMillis() <= firstSwitch) {
-                // this.blueGhostScatter();
-                this.redGhostScatter();
-                // this.pinkGhostScatter();
-                // this.blueGhostScatter();
-            } 
-            if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
-                // this.blueGhostChaseAlgorithm(currentDirection);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                // this.pinkGhostChaseAlgorithm();
-                // this.yellowGhostChaseAlgorithm();
-            } 
-            if(fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
-                // this.blueGhostScatter();
-                this.redGhostScatter();
-                // this.pinkGhostScatter();
-                // this.yellowGhostScatter();
-            } 
-            if(fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
-                // this.blueGhostChaseAlgorithm(currentDirection);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                // this.pinkGhostChaseAlgorithm();
-                // this.yellowGhostChaseAlgorithm();
-            } 
-            if (sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
-                // this.blueGhostScatter();
-                this.redGhostScatter();
-                // this.pinkGhostScatter();
-                // this.yellowGhostScatter();
-            } 
-            if(System.currentTimeMillis() <= seventhSwitch) {
-                // this.blueGhostChaseAlgorithm(currentDirection);
-                // this.yellowGhostChaseAlgorithm();
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                // this.pinkGhostChaseAlgorithm();
-            }
+            hasRun = true;
         }
+    }
 
+    public void ghostAnimate(Direction currentDirection, int gridPacmanX, int gridPacmanY, boolean vulnerableGhosts, boolean gameStarted, int pacmanX, int pacmanY, boolean hasMoved) {
+        // System.out.println("ANIMATE");
+        // problem: rn, we r continuesly running first switch and others and that is causing our errors
+        //contenders for other functions: 
+        this.checker(hasMoved);
+        currentPacmanDirection = currentDirection;
+
+        if(System.currentTimeMillis() <= firstSwitch) {
+            System.out.println("first");
+            // this.blueGhostScatter();
+            this.redGhostScatter();
+            // this.pinkGhostScatter();
+            // this.blueGhostScatter();
+        } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
+            System.out.println("second");
+            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+            // this.pinkGhostChaseAlgorithm();
+            // this.yellowGhostChaseAlgorithm();
+        } else if( secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= thirdSwitch) {
+            System.out.println("third");
+            // this.blueGhostScatter();
+            this.redGhostScatter();
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();   
+        } else if( thirdSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fourthSwitch) {
+            System.out.println("fourth");
+            // this.blueGhostScatter();
+            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();
+        } else if( fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
+            System.out.println("fifth");
+            // this.blueGhostScatter();
+            this.redGhostScatter();
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();
+        } else if( fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
+            System.out.println("sixth");
+            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();
+        } else if( sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
+            System.out.println("seventh");
+            // this.blueGhostScatter();
+            this.redGhostScatter();
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();
+        } else {
+            System.out.println("true");
+            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+            // this.pinkGhostScatter();
+            // this.yellowGhostScatter();
+        }
     }
 
     public Direction bfs(int startX, int startY, int endX, int endY) {
@@ -608,7 +628,7 @@ public class Ghosts {
     public void yellowGhostScatter() {
         gridYellowGhostY = yellowGhostY / 32;
         gridYellowGhostX = yellowGhostX / 32;
-        int targetYellowGhostLocationX = 288;
+        int targetYellowGhostLocationX = 160;
         int targetYellowGhostLocationY  = 640;
         Direction shortenedBFS = this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY);
         if (this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.RIGHT) {
@@ -638,7 +658,7 @@ public class Ghosts {
 
 
     public void blueGhostScatter() {
-        int targetBlueGhostLocationX = 576;
+        int targetBlueGhostLocationX = 704;
         int targetBlueGhostLocationY = 640;
         // System.out.println(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY));
         if (this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.RIGHT) {
@@ -666,17 +686,16 @@ public class Ghosts {
     }
 
     public void redGhostScatter() {
-        gridRedGhostX = redGhostX / 32;
-        gridRedGhostY = redGhostY / 32;
+        gridRedGhostX = this.redGhostX / 32;
+        gridRedGhostY = this.redGhostY / 32;
         int nextIndex;
         // System.out.println(gridRedGhostX);
         // System.out.println(gridRedGhostY);
         // System.out.println("==============");
         int targetRedGhostLocationX = 576;
-        int targetRedGhostLocationY = 224;
+        int targetRedGhostLocationY = 128;
         // System.out.println("red ghost");
         // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
-        // redCornerPairs relys on start location where call bfs to. But its a wall so we need to have claude or codex redo the corner pairs
         if (redCornerPairs.contains(new Pair<Integer,Integer>(gridRedGhostX, gridRedGhostY))) {
             // System.out.println("its getting to the iteration");
             if (redPatrolIndex != 27) {
@@ -684,37 +703,44 @@ public class Ghosts {
             } else {
                 nextIndex = redPatrolIndex = 0;
             }
-            Pair<Integer, Integer> next = redCornerPairs.get(nextIndex);
-            Direction shortenedBFS = this.bfs(redGhostX, redGhostY, next.left(), next.right());
-            System.out.println(shortenedBFS);
+            int nextX = redCornerPairs.get(nextIndex).left() * 32;
+            int nextY = redCornerPairs.get(nextIndex).right() * 32;
+            Direction shortenedBFS = this.bfs(this.redGhostX, this.redGhostY, nextX, nextY);
+            // System.out.println(redCornerPairs.get(nextIndex));
+            // System.out.println("--------------------");
+            // System.out.println(shortenedBFS);
             if (shortenedBFS == Direction.RIGHT) {
-                redGhostX += 4;
+                this.redGhostX += 4;
             } else if(shortenedBFS == Direction.LEFT) {
-                redGhostX -= 4;
+                this.redGhostX -= 4;
             } else if(shortenedBFS == Direction.UP) {
-                redGhostY -= 4;
+                this.redGhostY -= 4;
             } else if(shortenedBFS == Direction.DOWN) {
-                redGhostY += 4;
+                this.redGhostY += 4;
             }
-            redPatrolIndex += 1;
-            // System.out.println(redPatrolIndex);
+            this.redPatrolIndex += 1;
+            // System.out.println("red ghost index: " + redPatrolIndex);
         } else {
             Direction shortenedBFS2 = this.bfs(redGhostX, redGhostY, targetRedGhostLocationX, targetRedGhostLocationY);
+            System.out.println(shortenedBFS2);
             if (shortenedBFS2 == Direction.RIGHT) {
-                redGhostX += 4;
+                this.redGhostX += 4;
+                System.out.println("red ghost x: " + redGhostX);
+                // System.out.println("moving right");
+                // System.out.println(redGhostX);
             } else if(shortenedBFS2 == Direction.LEFT) {
-                redGhostX -= 4;
+                this.redGhostX -= 4;
             } else if(shortenedBFS2 == Direction.UP) {
-                redGhostY -= 4;
+                this.redGhostY -= 4;
             } else if(shortenedBFS2 == Direction.DOWN) {
-                redGhostY += 4;
+                this.redGhostY += 4;
             }
         }
     }
 
     public void pinkGhostScatter() {
         int targetPinkGhostLocationX = 288;
-        int targetPinkGhostLocationY = 224;
+        int targetPinkGhostLocationY = 128;
 
         if (this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.RIGHT) {
             pinkGhostX += 4;

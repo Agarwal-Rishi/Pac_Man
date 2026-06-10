@@ -57,9 +57,7 @@ public class Pacman {
     Image[] scaledPacmanDown;
     Image[] scaledPacmanDying;
     
-
     int pacmanImageIndex;
-
 
     int pacmanX = 416;
     int pacmanY = 288;
@@ -70,7 +68,8 @@ public class Pacman {
     Direction currentDirection;
 
     ArrayList<ArrayList<Integer>> arr;
-    
+
+    boolean hasMoved = false;
 
     public Pacman(ArrayList<ArrayList<Integer>> arr) {
 
@@ -179,7 +178,7 @@ public class Pacman {
     }
     
     public void move(boolean gameStarted) {
-        System.out.println("MOVE");
+        // System.out.println("MOVE");
         gridY = pacmanY / 32;
         gridX = pacmanX / 32;
         if (pacmanX % 32 != 0 && currentDirection == Direction.LEFT) {
@@ -188,11 +187,9 @@ public class Pacman {
         if (pacmanY % 32 != 0 && currentDirection == Direction.UP) {
             gridY += 1; 
         } 
-        // System.out.println(gridX);
-        // System.out.println(gridY);
-        // System.out.println("here");
+
         if (currentDirection == Direction.RIGHT && gridX == 27) {
-            // System.out.println("set x to 0");
+            hasMoved = true;
             pacmanX = 0;
         } else if (currentDirection == Direction.RIGHT && this.arr.get(gridY).get(gridX + 1) == 1) {
             currentDirection = Direction.STOP;
@@ -201,15 +198,18 @@ public class Pacman {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
                 } else {
+                    hasMoved = true;
                     pacmanX += 4;
                     this.pacmanAnimationRight();
                 }
             } else {
+                hasMoved = true;
                 pacmanX += 4;
                 this.pacmanAnimationRight();
             }
         }
         if(currentDirection == Direction.LEFT && gridX == 0) {
+            hasMoved = true;
             pacmanX = 864;
         } else if (currentDirection == Direction.LEFT && this.arr.get(gridY).get(gridX - 1) == 1) {
             currentDirection = Direction.STOP;
@@ -218,10 +218,12 @@ public class Pacman {
                 if (arr.get(gridY + 1).get(gridX - 1) == 1) {
                     currentDirection = Direction.STOP;
                 }else {
+                    hasMoved = true;
                     pacmanX -= 4;
                     this.pacmanAnimationLeft();
                 }
             } else {
+                hasMoved = true;
                 pacmanX -= 4;
                 this.pacmanAnimationLeft();
             }
@@ -234,10 +236,12 @@ public class Pacman {
                 if (arr.get(gridY - 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
                 }else {
+                    hasMoved = true;
                     pacmanY -= 4;
                     this.pacmanAnimationUp();
                 }
             } else {
+                hasMoved = true;
                 pacmanY -= 4;
                 this.pacmanAnimationUp();
             }
@@ -250,10 +254,12 @@ public class Pacman {
                 if (arr.get(gridY + 1).get(gridX + 1) == 1) {
                     currentDirection = Direction.STOP;
                 }else {
+                    hasMoved = true;
                     pacmanY += 4;
                     this.pacmanAnimationDown();
                 }
             } else {
+                hasMoved = true;
                 pacmanY += 4;
                 this.pacmanAnimationDown();
             }
