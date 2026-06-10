@@ -60,6 +60,7 @@ public class Pacman {
 
     int pacmanImageIndex;
 
+
     int pacmanX = 416;
     int pacmanY = 288;
 
@@ -126,6 +127,7 @@ public class Pacman {
 
         pacmanImageIndex = 0;   
 
+
         currentDirection = Direction.STOP;
 
         this.arr = arr;
@@ -140,17 +142,7 @@ public class Pacman {
             graphics.drawImage(currentPacmanImage, pacmanX, pacmanY, observer);
         }
     }
-    public void pacmanDying() {
-        
-            if (pacmanImageIndex != 12) {
-                pacmanImageIndex += 1;
-            }else {
-                pacmanImageIndex = 0;
-            }
-            currentPacmanImage = scaledPacmanDying[pacmanImageIndex];
-        
-        }
-    
+
     public void pacmanAnimationRight() {
         if (pacmanImageIndex != 2) {
             pacmanImageIndex += 1;

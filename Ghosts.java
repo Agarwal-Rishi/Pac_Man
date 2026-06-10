@@ -107,6 +107,8 @@ public class Ghosts {
     long sixthSwitch;
     long seventhSwitch;
 
+    int redPatrolIndex = 0;
+
     record Pair<L, R>(L left, R right) {}
 
     private static final List<Pair<Integer, Integer>> yellowCornerPairs;
@@ -313,6 +315,9 @@ public class Ghosts {
 
         currentGhostDirection = Direction.STOP;
 
+
+        
+
         
     }
 
@@ -414,7 +419,7 @@ public class Ghosts {
                 int nextY = cur.right() + diff_y;
                 Pair<Integer, Integer> nei = new Pair<Integer,Integer>(nextX, nextY);
                 
-                if (nextX < 0 || nextX >= 896 || nextY < 0 || nextY >= 896 || arr.get(nextY / 32).get(nextX /  32) == 1) {
+                if (nextX < 0 || nextX + ghostWidth >= 896 || nextY < 0 || nextY + ghostLength >= 896 || arr.get(nextY / 32).get(nextX /  32) == 1) {
                     continue;
                 }
 
@@ -423,7 +428,7 @@ public class Ghosts {
                 int topRow    = nextY / 32;
                 int bottomRow = (nextY + ghostLength - 1) / 32;
 
-                int squares = (rightCol - leftCol) + (bottomRow - topRow);
+                // int squares = (rightCol - leftCol) + (bottomRow - topRow);
                 // System.out.println(squares);
 
                 boolean blocked = false;
@@ -661,14 +666,24 @@ public class Ghosts {
     }
 
     public void redGhostScatter() {
-        int redPatrolIndex = 0;
+        gridRedGhostX = redGhostX / 32;
+        gridRedGhostY = redGhostY / 32;
+        int nextIndex;
+        System.out.println(gridRedGhostX);
+        System.out.println(gridRedGhostY);
+        System.out.println("==============");
         int targetRedGhostLocationX = 576;
         int targetRedGhostLocationY = 224;
         // System.out.println("red ghost");
         // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
         // redCornerPairs relys on start location where call bfs to. But its a wall so we need to have claude or codex redo the corner pairs
         if (redCornerPairs.contains(new Pair<Integer,Integer>(gridRedGhostX, gridRedGhostY))) {
-            int nextIndex = (redPatrolIndex + 1) % redCornerPairs.size();
+            System.out.println("its getting to the iteration");
+            if (redPatrolIndex != 27) {
+                nextIndex = redPatrolIndex + 1;
+            } else {
+                nextIndex = redPatrolIndex = 0;
+            }
             Pair<Integer, Integer> next = redCornerPairs.get(nextIndex);
             Direction shortenedBFS = this.bfs(redGhostX, redGhostY, next.left(), next.right());
             if (shortenedBFS == Direction.RIGHT) {

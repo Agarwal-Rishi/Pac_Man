@@ -117,6 +117,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 // this.ghosts.pinkGhostScatter();
                 // this.ghosts.blueGhostScatter();
             }
+            this.deadOrAlive();
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
@@ -140,39 +141,45 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics graphics){
 
         if (!win()) {
-            super.paintComponent(graphics);
-    
-            graphics.setColor(Color.BLACK);
-            graphics.fillRect(0,0,dimensionX,dimensionY);
-    
-            for (int i = 0; i <= dimensionX; i += gridLengthWidth) {
-                graphics.drawLine(i,0,i,dimensionY);
-                graphics.drawLine(0,i,dimensionX,i);
-            } 
-    
-            for (int i = 0; i < arr.size(); i++) {
-                for (int j = 0; j < arr.get(i).size(); j++) {
-                    if (arr.get(i).get(j) == 1) {
-                        graphics.drawImage(scaledWall, j * 32, i * 32, this);
-                    } 
-                }
-            }
-    
-            for (int i = 0; i < this.arr.size(); i++) {
-                for (int j = 0; j < this.arr.get(i).size(); j++) {
-                    if (this.arr.get(i).get(j) == 0) {
-                        graphics.drawImage(scaledPowerPellet, j * 32, i * 32, this);
-                    } else if(this.arr.get(i).get(j) ==  3) {
-                        graphics.drawImage(scaledBigPowerPellet, j * 32, i * 32, this);
+
+            if (!deadOrAlive()) {
+                super.paintComponent(graphics);
+        
+                graphics.setColor(Color.BLACK);
+                graphics.fillRect(0,0,dimensionX,dimensionY);
+        
+                for (int i = 0; i <= dimensionX; i += gridLengthWidth) {
+                    graphics.drawLine(i,0,i,dimensionY);
+                    graphics.drawLine(0,i,dimensionX,i);
+                } 
+        
+                for (int i = 0; i < arr.size(); i++) {
+                    for (int j = 0; j < arr.get(i).size(); j++) {
+                        if (arr.get(i).get(j) == 1) {
+                            graphics.drawImage(scaledWall, j * 32, i * 32, this);
+                        } 
                     }
                 }
+        
+                for (int i = 0; i < this.arr.size(); i++) {
+                    for (int j = 0; j < this.arr.get(i).size(); j++) {
+                        if (this.arr.get(i).get(j) == 0) {
+                            graphics.drawImage(scaledPowerPellet, j * 32, i * 32, this);
+                        } else if(this.arr.get(i).get(j) ==  3) {
+                            graphics.drawImage(scaledBigPowerPellet, j * 32, i * 32, this);
+                        }
+                    }
+                }
+                
+        
+                pacman.drawPacman(graphics, this);
+        
+                ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
+                
+                graphics.drawString(String.valueOf(score), 5, 5); 
+            } else {
+                graphics.drawString("YOU LOSE SUCKY AHHH NO SKILLER", 400, 400);
             }
-    
-            pacman.drawPacman(graphics, this);
-    
-            ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
-            
-            graphics.drawString(String.valueOf(score), 5, 5); 
         } else {
             graphics.drawString("YOU WIN, LUCKY AHHH NO SKILLER", 400, 400);
         }
@@ -181,34 +188,22 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     public boolean deadOrAlive() {
         if(!ghostsVulnerable()) {
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
-            arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX()) || 
-            arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
-            arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX()) ||
-             arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
-              arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX()) ||
-               (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
-                arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX()))) {
-                this.pacman.pacmanDying();
-                return true;
-            }
             if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
              arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX())) {
-                this.pacman.pacmanDying();
                 return true;
             }
             if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
              arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
-                this.pacman.pacmanDying();
                 return true;
             }
-            if (gameStarted && arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
              arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX())) {
-                this.pacman.pacmanDying();
                 return true;
+            }
+            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
+            arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX())) {
             }
         }else {
-            
             return false;
         }
         return false;
