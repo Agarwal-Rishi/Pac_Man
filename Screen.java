@@ -117,7 +117,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                 // this.ghosts.pinkGhostScatter();
                 // this.ghosts.blueGhostScatter();
             }
-            this.deadOrAlive();
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
@@ -141,8 +140,7 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics graphics){
 
         if (!win()) {
-
-            if (!deadOrAlive()) {
+            if (!this.deadOrAlive()) {
                 super.paintComponent(graphics);
         
                 graphics.setColor(Color.BLACK);
@@ -170,8 +168,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
                         }
                     }
                 }
-                
-        
                 pacman.drawPacman(graphics, this);
         
                 ghosts.paintComponent(graphics, this.ghostsVulnerable(), this.timerEnd1, this.timerEnd2);
@@ -187,22 +183,24 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
 
     public boolean deadOrAlive() {
+        System.out.println();
         if(!ghostsVulnerable()) {
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
-             arr.get(this.ghosts.getGridPinkGhostY()).get(this.ghosts.getGridPinkGhostX())) {
+            if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getRedGhostX()) < 32 &&
+             Math.abs(this.pacman.getPacmanY() - this.ghosts.getRedGhostY()) < 32) {
                 return true;
-            }
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
-             arr.get(this.ghosts.getGridYellowGhostY()).get(this.ghosts.getGridYellowGhostX())) {
+            } 
+            if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getYellowGhostX()) < 32 &&
+             Math.abs(this.pacman.getPacmanY() - this.ghosts.getYellowGhostY()) < 32) {
                 return true;
-            }
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) ==
-             arr.get(this.ghosts.getGridRedGhostY()).get(this.ghosts.getGridRedGhostX())) {
+            } 
+            if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getPinkGhostX()) < 32 &&
+             Math.abs(this.pacman.getPacmanY() - this.ghosts.getPinkGhostY()) < 32) {
                 return true;
-            }
-            if (arr.get(this.pacman.getGridY()).get(this.pacman.getGridX()) == 
-            arr.get(this.ghosts.getGridBlueGhostY()).get(this.ghosts.getGridBlueGhostX())) {
-            }
+            } 
+            if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getBlueGhostX()) < 32 &&
+             Math.abs(this.pacman.getPacmanY() - this.ghosts.getBlueGhostY()) < 32) {
+                return true;
+            } 
         }else {
             return false;
         }
