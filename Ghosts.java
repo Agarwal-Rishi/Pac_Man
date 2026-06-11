@@ -108,6 +108,9 @@ public class Ghosts {
     long seventhSwitch;
 
     int redPatrolIndex = 0;
+    int pinkPatrolIndex = 0;
+    int bluePatrolIndex = 0;
+    int yellowPatrolIndex = 0;
 
     record Pair<L, R>(L left, R right) {}
 
@@ -345,52 +348,52 @@ public class Ghosts {
 
         if(System.currentTimeMillis() <= firstSwitch) {
             System.out.println("first");
-            // this.blueGhostScatter();
+            this.blueGhostScatter();
             this.redGhostScatter();
-            // this.pinkGhostScatter();
-            // this.blueGhostScatter();
+            this.pinkGhostScatter();
+            this.yellowGhostScatter();
         } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
             System.out.println("second");
-            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
             this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-            // this.pinkGhostChaseAlgorithm();
-            // this.yellowGhostChaseAlgorithm();
-        } else if( secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= thirdSwitch) {
+            this.pinkGhostChaseAlgorithm(pacmanX, pacmanY);
+            this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+        } else if(secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= thirdSwitch) {
             System.out.println("third");
-            // this.blueGhostScatter();
+            this.blueGhostScatter();
             this.redGhostScatter();
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();   
+            this.pinkGhostScatter();
+            this.yellowGhostScatter();   
         } else if( thirdSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fourthSwitch) {
             System.out.println("fourth");
-            // this.blueGhostScatter();
+            this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
             this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();
+            this.pinkGhostChaseAlgorithm(pacmanX, pacmanY);
+            this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
         } else if( fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
             System.out.println("fifth");
-            // this.blueGhostScatter();
+            this.blueGhostScatter();
             this.redGhostScatter();
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();
+            this.pinkGhostScatter();
+            this.yellowGhostScatter();
         } else if( fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
             System.out.println("sixth");
-            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
             this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();
+            this.pinkGhostChaseAlgorithm(pacmanX, pacmanY);
+            this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
         } else if( sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
             System.out.println("seventh");
-            // this.blueGhostScatter();
+            this.blueGhostScatter();
             this.redGhostScatter();
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();
+            this.pinkGhostScatter();
+            this.yellowGhostScatter();
         } else {
             System.out.println("true");
-            // this.blueGhostChaseAlgorithm(currentDirection);
+            this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
             this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-            // this.pinkGhostScatter();
-            // this.yellowGhostScatter();
+            this.pinkGhostChaseAlgorithm(pacmanX, pacmanY);
+            this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
         }
     }
 
@@ -534,7 +537,7 @@ public class Ghosts {
         
     }
 
-    public void pinkGhostChaseAlgorithm() {
+    public void pinkGhostChaseAlgorithm(int pacmanX, int pacmanY) {
         gridPinkGhostY = pinkGhostY / 32;
         gridPinkGhostX = pinkGhostX / 32;
         int gridPacmanY = pacmanY / 32;
@@ -542,15 +545,15 @@ public class Ghosts {
         int xChange = 0;
         int yChange = 0;
         if (currentPacmanDirection == Direction.RIGHT) {
-            xChange = 4;
+            xChange = 128;
         } else if (currentPacmanDirection == Direction.LEFT) {
-            xChange = -4;
+            xChange = -128;
         } else if (currentPacmanDirection == Direction.UP) {
-            yChange = -4;
+            yChange = -128;
         } else if (currentPacmanDirection == Direction.DOWN) {
-            yChange = 4;
+            yChange = 128;
         }
-        Direction shortenedBFS = this.bfs(gridPinkGhostX, gridPinkGhostY, gridPacmanX + xChange, gridPacmanY + yChange);
+        Direction shortenedBFS = this.bfs(pinkGhostX, pinkGhostY, pacmanX + xChange, pacmanY + yChange);
         if (shortenedBFS == Direction.RIGHT) {
             pinkGhostX += 4;
         } else if (shortenedBFS == Direction.LEFT) {
@@ -563,7 +566,7 @@ public class Ghosts {
         
     }
 
-    public void blueGhostChaseAlgorithm(Direction currentDirection) {
+    public void blueGhostChaseAlgorithm(Direction currentDirection, int redGhostX, int redGhostY, int pacmanX, int pacmanY) {
         int gridPacmanY = pacmanY / 32;
         int gridPacmanX = pacmanX / 32;
         gridBlueGhostY = blueGhostY / 32;
@@ -574,53 +577,52 @@ public class Ghosts {
         int xChange = 0;
         int yChange = 0;
         if (currentPacmanDirection == Direction.RIGHT) {
-            xChange = 2;
+            xChange = 64;
         } else if (currentPacmanDirection == Direction.LEFT) {
-            xChange = -2;
+            xChange = -64;
         } else if (currentPacmanDirection == Direction.UP) {
-            yChange = -2;
+            yChange = -64;
         } else if (currentPacmanDirection == Direction.DOWN) {
-            yChange = 2;
+            yChange = 64;
         }
         
-        int targetLocX = gridRedGhostX + 2 * (gridPacmanX + xChange - gridRedGhostX);
-        int targetLocY = gridRedGhostY + 2 * (gridPacmanY + yChange - gridRedGhostY);
-        Direction shortenedBFS = this.bfs(gridPinkGhostX, gridPinkGhostY, targetLocX, targetLocY + yChange);
+        int targetLocX = redGhostX + 2 * (pacmanX + xChange - redGhostX);
+        int targetLocY = redGhostY + 2 * (pacmanY + yChange - redGhostY);
+        if (targetLocX < 0 || targetLocY > 895 || targetLocY < 0 || targetLocX > 895 || arr.get(targetLocY / 32).get(targetLocX / 32) == 1) {
+            targetLocX = pacmanX;
+            targetLocY = pacmanY;
+        }
+        
+        Direction shortenedBFS = this.bfs(blueGhostX, blueGhostY, targetLocX, targetLocY);
         if (shortenedBFS == Direction.RIGHT) {
-            gridBlueGhostX += 4;
+            blueGhostX += 4;
         } else if (shortenedBFS == Direction.LEFT) {
-            gridBlueGhostX -= 4;
+            blueGhostX -= 4;
         } else if(shortenedBFS == Direction.UP) {
-            gridBlueGhostY -= 4;
+            blueGhostY -= 4;
         } else if (shortenedBFS == Direction.DOWN) {
-            gridBlueGhostY += 4;
+            blueGhostY += 4;
         }
     }
 
-    public void yellowGhostChaseAlgorithm() {
+    public void yellowGhostChaseAlgorithm(int pacmanX, int pacmanY) {
         int gridPacmanY = pacmanY / 32;
         int gridPacmanX = pacmanX / 32;
         gridYellowGhostY = yellowGhostY / 32;
         gridYellowGhostX = yellowGhostX / 32;
         if (Math.abs(gridPacmanX + gridPacmanY - gridYellowGhostX + gridYellowGhostY) != 8) {
-            if (this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.RIGHT) {
+            Direction shortenedBFS =  this.bfs(yellowGhostX, yellowGhostY, pacmanX, pacmanY);
+            if (shortenedBFS == Direction.RIGHT) {
                 redGhostX += 4;
-            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.LEFT) {
+            } else if(shortenedBFS == Direction.LEFT) {
                 yellowGhostX -= 4;
-            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.UP) {
+            } else if(shortenedBFS == Direction.UP) {
                 yellowGhostY -= 4;
-            } else if(this.bfs(gridYellowGhostX, gridYellowGhostY, gridPacmanX, gridPacmanY) == Direction.DOWN) {
+            } else if(shortenedBFS == Direction.DOWN) {
                 yellowGhostY += 4;
             }
         } else {
-            for(int i = 0;i < yellowCornerPairs.size();i++) {
-                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-                gridYellowGhostX = futurePair.left();
-                gridYellowGhostY = futurePair.right();
-                if (futurePair == null) {
-                    futurePair = yellowCornerPairs.get(0);
-                }
-            }
+            this.yellowGhostScatter();
         }
     }
 
@@ -630,58 +632,114 @@ public class Ghosts {
         gridYellowGhostX = yellowGhostX / 32;
         int targetYellowGhostLocationX = 160;
         int targetYellowGhostLocationY  = 640;
-        Direction shortenedBFS = this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY);
-        if (this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.RIGHT) {
-            yellowGhostX += 4;
-        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.LEFT) {
-            yellowGhostX -= 4;
-        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.UP) {
-            yellowGhostY -= 4;
-        } else if(this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY) == Direction.DOWN) {
-            yellowGhostY += 4;
-        } 
-        
-        for (int i = 0;i < yellowCornerPairs.size();i++) {
-            if (i != 27) {
-                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(i + 1);
-                gridYellowGhostX = futurePair.left();
-                gridYellowGhostY = futurePair.right();
+        gridYellowGhostX = this.yellowGhostX / 32;
+        gridYellowGhostY = this.yellowGhostY / 32;
+        int nextIndex;
+        // System.out.println(gridRedGhostX);
+        // System.out.println(gridRedGhostY);
+        // System.out.println("==============");
+        // System.out.println("red ghost");
+        // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
+        if (yellowCornerPairs.contains(new Pair<Integer,Integer>(gridYellowGhostX, gridYellowGhostY))) {
+            // System.out.println("its getting to the iteration");
+            if (yellowPatrolIndex != 27) {
+                nextIndex = yellowPatrolIndex + 1;
             } else {
-                Pair<Integer, Integer> futurePair = yellowCornerPairs.get(0);
-                gridYellowGhostX = futurePair.left();  
-                gridYellowGhostY = futurePair.right();
+                nextIndex = yellowPatrolIndex = 0;
             }
-            
+            int nextX = yellowCornerPairs.get(nextIndex).left() * 32;
+            int nextY = yellowCornerPairs.get(nextIndex).right() * 32;
+            Direction shortenedBFS = this.bfs(this.yellowGhostX, this.yellowGhostY, nextX, nextY);
+            // System.out.println(redCornerPairs.get(nextIndex));
+            // System.out.println("--------------------");
+            // System.out.println(shortenedBFS);
+            if (shortenedBFS == Direction.RIGHT) {
+                this.yellowGhostX += 4;
+            } else if(shortenedBFS == Direction.LEFT) {
+                this.yellowGhostX -= 4;
+            } else if(shortenedBFS == Direction.UP) {
+                this.yellowGhostY -= 4;
+            } else if(shortenedBFS == Direction.DOWN) {
+                this.yellowGhostY += 4;
+            }
+            if (gridYellowGhostX == yellowCornerPairs.get(nextIndex).left() && gridYellowGhostY == yellowCornerPairs.get(nextIndex).right()) {
+                this.yellowPatrolIndex += 1;
+            }
+
+            // System.out.println("red ghost index: " + redPatrolIndex);
+        } else {
+            Direction shortenedBFS2 = this.bfs(yellowGhostX, yellowGhostY, targetYellowGhostLocationX, targetYellowGhostLocationY);
+            System.out.println(shortenedBFS2);
+            if (shortenedBFS2 == Direction.RIGHT) {
+                this.yellowGhostX += 4;
+                // System.out.println("yellow ghost x: " + yellowGhostX);
+                // System.out.println("moving right");
+                // System.out.println(redGhostX);
+            } else if(shortenedBFS2 == Direction.LEFT) {
+                this.yellowGhostX -= 4;
+            } else if(shortenedBFS2 == Direction.UP) {
+                this.yellowGhostY -= 4;
+            } else if(shortenedBFS2 == Direction.DOWN) {
+                this.yellowGhostY += 4;
+            }
         }
         
     }
 
 
     public void blueGhostScatter() {
+        gridBlueGhostX = blueGhostX / 32;
+        gridBlueGhostY = blueGhostY / 32;
         int targetBlueGhostLocationX = 704;
         int targetBlueGhostLocationY = 640;
-        // System.out.println(this.bfs(gridRedGhostX, gridRedGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY));
-        if (this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.RIGHT) {
-            blueGhostX += 4;
-        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.LEFT) {
-            blueGhostX -= 4;
-        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.UP) {
-            blueGhostY -= 4;
-        } else if(this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY) == Direction.DOWN) {
-            blueGhostY += 4;
-        } 
-        
-        for (int i = 0;i < blueCornerPairs.size();i++) {
-            if (i!= 27) {
-                Pair<Integer, Integer> futurePair = blueCornerPairs.get(i + 1);
-                gridBlueGhostX = futurePair.left();
-                gridBlueGhostY = futurePair.right();
+        int nextIndex;
+        // System.out.println(gridRedGhostX);
+        // System.out.println(gridRedGhostY);
+        // System.out.println("==============");
+        // System.out.println("red ghost");
+        // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
+        if (blueCornerPairs.contains(new Pair<Integer,Integer>(gridBlueGhostX, gridBlueGhostY))) {
+            // System.out.println("its getting to the iteration");
+            if (bluePatrolIndex != 27) {
+                nextIndex = bluePatrolIndex + 1;
             } else {
-                Pair<Integer, Integer> futurePair = blueCornerPairs.get(0);
-                gridBlueGhostX = futurePair.left();  
-                gridBlueGhostY = futurePair.right();
+                nextIndex = bluePatrolIndex = 0;
             }
-            
+            int nextX = blueCornerPairs.get(nextIndex).left() * 32;
+            int nextY = blueCornerPairs.get(nextIndex).right() * 32;
+            Direction shortenedBFS = this.bfs(this.blueGhostX, this.blueGhostY, nextX, nextY);
+            // System.out.println(redCornerPairs.get(nextIndex));
+            // System.out.println("--------------------");
+            // System.out.println(shortenedBFS);
+            if (shortenedBFS == Direction.RIGHT) {
+                this.blueGhostX += 4;
+            } else if(shortenedBFS == Direction.LEFT) {
+                this.blueGhostX -= 4;
+            } else if(shortenedBFS == Direction.UP) {
+                this.blueGhostY -= 4;
+            } else if(shortenedBFS == Direction.DOWN) {
+                this.blueGhostY += 4;
+            }
+            if (gridBlueGhostX == blueCornerPairs.get(nextIndex).left() && gridBlueGhostY == blueCornerPairs.get(nextIndex).right()) {
+                this.bluePatrolIndex += 1;
+            }
+
+            // System.out.println("red ghost index: " + redPatrolIndex);
+        } else {
+            Direction shortenedBFS2 = this.bfs(blueGhostX, blueGhostY, targetBlueGhostLocationX, targetBlueGhostLocationY);
+            System.out.println(shortenedBFS2);
+            if (shortenedBFS2 == Direction.RIGHT) {
+                this.blueGhostX += 4;
+                // System.out.println("blue ghost x: " + blueGhostX);
+                // System.out.println("moving right");
+                // System.out.println(redGhostX);
+            } else if(shortenedBFS2 == Direction.LEFT) {
+                this.blueGhostX -= 4;
+            } else if(shortenedBFS2 == Direction.UP) {
+                this.blueGhostY -= 4;
+            } else if(shortenedBFS2 == Direction.DOWN) {
+                this.blueGhostY += 4;
+            }
         }
     }
 
@@ -718,14 +776,17 @@ public class Ghosts {
             } else if(shortenedBFS == Direction.DOWN) {
                 this.redGhostY += 4;
             }
-            this.redPatrolIndex += 1;
+            if (gridRedGhostX == redCornerPairs.get(nextIndex).left() && gridRedGhostY == redCornerPairs.get(nextIndex).right()) {
+                this.redPatrolIndex += 1;
+            }
+
             // System.out.println("red ghost index: " + redPatrolIndex);
         } else {
             Direction shortenedBFS2 = this.bfs(redGhostX, redGhostY, targetRedGhostLocationX, targetRedGhostLocationY);
-            System.out.println(shortenedBFS2);
+            // System.out.println(shortenedBFS2);
             if (shortenedBFS2 == Direction.RIGHT) {
                 this.redGhostX += 4;
-                System.out.println("red ghost x: " + redGhostX);
+                // System.out.println("red ghost x: " + redGhostX);
                 // System.out.println("moving right");
                 // System.out.println(redGhostX);
             } else if(shortenedBFS2 == Direction.LEFT) {
@@ -742,41 +803,56 @@ public class Ghosts {
         int targetPinkGhostLocationX = 288;
         int targetPinkGhostLocationY = 128;
 
-        if (this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.RIGHT) {
-            pinkGhostX += 4;
-        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.LEFT) {
-            pinkGhostX -= 4;
-        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.UP) {
-            pinkGhostY -= 4;
-        } else if(this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY) == Direction.DOWN) {
-            pinkGhostY += 4;
-        } 
-
-        for (int i = 0;i < pinkCornerPairs.size();i++) {
-            if (i != 27) {
-                Pair<Integer, Integer> futurePair = pinkCornerPairs.get(i + 1);
-                if (futurePair.left() > pinkGhostX) {
-                    pinkGhostX += 4;
-                } else if(futurePair.left() < pinkGhostX) {
-                    pinkGhostX -= 4;
-                } else if(futurePair.right() > pinkGhostY) {
-                    pinkGhostY -= 4;
-                } else if(futurePair.right() < pinkGhostY) {
-                    pinkGhostY += 4;
-                }
+        gridPinkGhostX = this.pinkGhostX / 32;
+        gridPinkGhostY = this.pinkGhostY / 32;
+        int nextIndex;
+        // System.out.println(gridRedGhostX);
+        // System.out.println(gridRedGhostY);
+        // System.out.println("==============");
+        // System.out.println("red ghost");
+        // System.out.println(arr.get(targetRedGhostLocationY / 32).get(targetRedGhostLocationX / 32));
+        if (pinkCornerPairs.contains(new Pair<Integer,Integer>(gridPinkGhostX, gridPinkGhostY))) {
+            // System.out.println("its getting to the iteration");
+            if (pinkPatrolIndex != 27) {
+                nextIndex = pinkPatrolIndex + 1;
             } else {
-                Pair<Integer, Integer> futurePair = pinkCornerPairs.get(0);
-                if (futurePair.left() > pinkGhostX) {
-                    pinkGhostX += 4;
-                } else if(futurePair.left() < pinkGhostX) {
-                    pinkGhostX -= 4;
-                } else if(futurePair.right() > pinkGhostY) {
-                    pinkGhostY -= 4;
-                } else if(futurePair.right() < pinkGhostY) {
-                    pinkGhostY += 4;
-                }
+                nextIndex = pinkPatrolIndex = 0;
             }
-            
+            int nextX = pinkCornerPairs.get(nextIndex).left() * 32;
+            int nextY = pinkCornerPairs.get(nextIndex).right() * 32;
+            Direction shortenedBFS = this.bfs(this.pinkGhostX, this.pinkGhostY, nextX, nextY);
+            // System.out.println(redCornerPairs.get(nextIndex));
+            // System.out.println("--------------------");
+            // System.out.println(shortenedBFS);
+            if (shortenedBFS == Direction.RIGHT) {
+                this.pinkGhostX += 4;
+            } else if(shortenedBFS == Direction.LEFT) {
+                this.pinkGhostX -= 4;
+            } else if(shortenedBFS == Direction.UP) {
+                this.pinkGhostY -= 4;
+            } else if(shortenedBFS == Direction.DOWN) {
+                this.pinkGhostY += 4;
+            }
+            if (gridPinkGhostX == pinkCornerPairs.get(nextIndex).left() && gridPinkGhostY == pinkCornerPairs.get(nextIndex).right()) {
+                this.pinkPatrolIndex += 1;
+            }
+
+            // System.out.println("red ghost index: " + redPatrolIndex);
+        } else {
+            Direction shortenedBFS2 = this.bfs(pinkGhostX, pinkGhostY, targetPinkGhostLocationX, targetPinkGhostLocationY);
+            // System.out.println(shortenedBFS2);
+            if (shortenedBFS2 == Direction.RIGHT) {
+                this.pinkGhostX += 4;
+                // System.out.println("pink ghost x: " + pinkGhostX);
+                // System.out.println("moving right");
+                // System.out.println(redGhostX);
+            } else if(shortenedBFS2 == Direction.LEFT) {
+                this.pinkGhostX -= 4;
+            } else if(shortenedBFS2 == Direction.UP) {
+                this.pinkGhostY -= 4;
+            } else if(shortenedBFS2 == Direction.DOWN) {
+                this.pinkGhostY += 4;
+            }
         }
     }
 
