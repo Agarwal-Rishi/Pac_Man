@@ -47,11 +47,14 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     int score;
 
     int numOfPellets = 0;
+
+    JButton startButton = new JButton("START THE MASTERPEICE, CHICKEN");
     // constructor
     public Screen() {
-
+        add(startButton);
         setFocusable(true);
         addKeyListener(this);
+        startButton.addActionListener(this);
 
         this.timerEnd2 = System.currentTimeMillis();
 
@@ -306,6 +309,11 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         // Required by ActionListener interface
+        if (event.getSource() == startButton) {
+            gameStarted = true;
+            startButton.setVisible(false);
+            requestFocusInWindow();
+        }
     }
 
     

@@ -347,60 +347,62 @@ public class Ghosts {
         currentPacmanDirection = currentDirection;
        
         
-        if (ghostsVunerable) {
-            this.yellowGhostScatter();
-            this.blueGhostScatter();
-            this.redGhostScatter();
-            this.pinkGhostScatter();
-        } else {
-            if(System.currentTimeMillis() <= firstSwitch) {
-                // System.out.println("first");
-                this.blueGhostScatter();
-                this.redGhostScatter();
-                this.pinkGhostScatter();
+        if (gameStarted) {
+            if (ghostsVunerable) {
                 this.yellowGhostScatter();
-            } else if( firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= secondSwitch) {
-                // System.out.println("second");
-                this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
-                this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
-            } else if(secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= thirdSwitch) {
-                // System.out.println("third");
                 this.blueGhostScatter();
                 this.redGhostScatter();
                 this.pinkGhostScatter();
-                this.yellowGhostScatter();   
-            } else if( thirdSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fourthSwitch) {
-                // System.out.println("fourth");
-                this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
-                this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
-            } else if( fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= fifthSwitch) {
-                // System.out.println("fifth");
-                this.blueGhostScatter();
-                this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.yellowGhostScatter();
-            } else if( fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= sixthSwitch) {
-                // System.out.println("sixth");
-                this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
-                this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
-            } else if( sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() <= seventhSwitch) {
-                // System.out.println("seventh");
-                this.blueGhostScatter();
-                this.redGhostScatter();
-                this.pinkGhostScatter();
-                this.yellowGhostScatter();
             } else {
-                // System.out.println("true");
-                this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
-                this.redGhostChaseAlgorithm(pacmanX, pacmanY);
-                this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
-                this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+                if(System.currentTimeMillis() < firstSwitch) {
+                    // System.out.println("first");
+                    this.blueGhostScatter();
+                    this.redGhostScatter();
+                    this.pinkGhostScatter();
+                    this.yellowGhostScatter();
+                } else if(firstSwitch < System.currentTimeMillis() && System.currentTimeMillis() < secondSwitch) {
+                    // System.out.println("second");
+                    this.blueGhostChaseAlgorithm(currentPacmanDirection, redGhostX, redGhostY, pacmanX, pacmanY);
+                    this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                    this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentPacmanDirection);
+                    this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+                } else if(secondSwitch < System.currentTimeMillis() && System.currentTimeMillis() < thirdSwitch) {
+                    // System.out.println("third");
+                    this.blueGhostScatter();
+                    this.redGhostScatter();
+                    this.pinkGhostScatter();
+                    this.yellowGhostScatter();   
+                } else if(thirdSwitch < System.currentTimeMillis() && System.currentTimeMillis() < fourthSwitch) {
+                    // System.out.println("fourth");
+                    this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
+                    this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                    this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
+                    this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+                } else if( fourthSwitch < System.currentTimeMillis() && System.currentTimeMillis() < fifthSwitch) {
+                    // System.out.println("fifth");
+                    this.blueGhostScatter();
+                    this.redGhostScatter();
+                    this.pinkGhostScatter();
+                    this.yellowGhostScatter();
+                } else if( fifthSwitch < System.currentTimeMillis() && System.currentTimeMillis() < sixthSwitch) {
+                    // System.out.println("sixth");
+                    this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
+                    this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                    this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
+                    this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+                } else if( sixthSwitch < System.currentTimeMillis() && System.currentTimeMillis() < seventhSwitch) {
+                    // System.out.println("seventh");
+                    this.blueGhostScatter();
+                    this.redGhostScatter();
+                    this.pinkGhostScatter();
+                    this.yellowGhostScatter();
+                } else {
+                    // System.out.println("true");
+                    this.blueGhostChaseAlgorithm(currentDirection, redGhostX, redGhostY, pacmanX, pacmanY);
+                    this.redGhostChaseAlgorithm(pacmanX, pacmanY);
+                    this.pinkGhostChaseAlgorithm(pacmanX, pacmanY, currentDirection);
+                    this.yellowGhostChaseAlgorithm(pacmanX, pacmanY);
+                }
             }
         }
         
@@ -527,8 +529,6 @@ public class Ghosts {
     }
 
     public void redGhostChaseAlgorithm(int pacmanX, int pacmanY) {
-        gridRedGhostY = redGhostY / 32;
-        gridRedGhostX = redGhostX / 32;
 
         // System.out.println("RED GHOST ALG");
         
@@ -553,16 +553,22 @@ public class Ghosts {
         int gridPacmanX = pacmanX / 32;
         int xChange = 0;
         int yChange = 0;
-        if (currentDirection == Direction.RIGHT) {
+        if (currentPacmanDirection == Direction.RIGHT) {
             xChange = 128;
-        } else if (currentDirection == Direction.LEFT) {
+        } else if (currentPacmanDirection == Direction.LEFT) {
             xChange = -128;
-        } else if (currentDirection == Direction.UP) {
+        } else if (currentPacmanDirection == Direction.UP) {
             yChange = -128;
-        } else if (currentDirection == Direction.DOWN) {
+        } else if (currentPacmanDirection == Direction.DOWN) {
             yChange = 128;
         }
-        Direction shortenedBFS = this.bfs(pinkGhostX, pinkGhostY, pacmanX + xChange, pacmanY + yChange);
+        int targetLocX = pacmanX + xChange;
+        int targetLocY = pacmanY + yChange;
+        if (targetLocX < 0 || targetLocY > 895 || targetLocY < 0 || targetLocX > 895 || arr.get(targetLocY / 32).get(targetLocX / 32) == 1) {
+            targetLocX = pacmanX;
+            targetLocY = pacmanY;
+        }
+        Direction shortenedBFS = this.bfs(pinkGhostX, pinkGhostY, targetLocX, targetLocY);
         if (shortenedBFS == Direction.RIGHT) {
             pinkGhostX += 4;
         } else if (shortenedBFS == Direction.LEFT) {
@@ -619,10 +625,11 @@ public class Ghosts {
         int gridPacmanX = pacmanX / 32;
         gridYellowGhostY = yellowGhostY / 32;
         gridYellowGhostX = yellowGhostX / 32;
-        if (Math.abs(gridPacmanX + gridPacmanY - gridYellowGhostX + gridYellowGhostY) != 8) {
+        System.out.println();
+        if (Math.abs(gridPacmanX - gridYellowGhostX) > 8 || Math.abs(gridPacmanY - gridYellowGhostY) > 8) {
             Direction shortenedBFS =  this.bfs(yellowGhostX, yellowGhostY, pacmanX, pacmanY);
             if (shortenedBFS == Direction.RIGHT) {
-                redGhostX += 4;
+                yellowGhostX += 4;
             } else if(shortenedBFS == Direction.LEFT) {
                 yellowGhostX -= 4;
             } else if(shortenedBFS == Direction.UP) {
@@ -630,10 +637,11 @@ public class Ghosts {
             } else if(shortenedBFS == Direction.DOWN) {
                 yellowGhostY += 4;
             }
-            System.out.println(yellowGhostX);
-            System.out.println(yellowGhostY);
-            System.out.println("----------------");
+            // System.out.println(yellowGhostX);
+            // System.out.println(yellowGhostY);
+            // System.out.println("----------------");
         } else {
+            // System.out.println("THE YELLOW IS GETTING TO SCARED PART");
             this.yellowGhostScatter();
         }
     }
