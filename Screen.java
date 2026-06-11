@@ -111,16 +111,10 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
     public void animate() {
         while (true) {
-            if (ghostsVulnerable()) {
-                this.ghosts.redGhostScatter();
-                // this.ghosts.yellowGhostScatter();
-                // this.ghosts.pinkGhostScatter();
-                // this.ghosts.blueGhostScatter();
-            }
             repaint();  
             pacman.move(gameStarted);
             this.checkLocation();     
-            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted, pacman.getPacmanX(), pacman.getPacmanY(), this.pacman.hasMoved);
+            ghosts.ghostAnimate(pacman.currentDirection, pacman.getGridX(),pacman.getGridY(), this.ghostsVulnerable(), this.gameStarted, pacman.getPacmanX(), pacman.getPacmanY(), this.pacman.hasMoved, this.ghostsVulnerable());
             
             try {
                 Thread.sleep(50);// sleeps for 50 milliseconds
@@ -183,7 +177,6 @@ public class Screen extends JPanel implements ActionListener, KeyListener {
 
 
     public boolean deadOrAlive() {
-        System.out.println();
         if(!ghostsVulnerable()) {
             if (Math.abs(this.pacman.getPacmanX() - this.ghosts.getRedGhostX()) < 32 &&
              Math.abs(this.pacman.getPacmanY() - this.ghosts.getRedGhostY()) < 32) {

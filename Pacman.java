@@ -59,8 +59,8 @@ public class Pacman {
     
     int pacmanImageIndex;
 
-    int pacmanX = 416;
-    int pacmanY = 288;
+    int pacmanX = 448;
+    int pacmanY = 544;
 
     int gridX;
     int gridY;
